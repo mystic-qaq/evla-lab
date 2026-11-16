@@ -1,18 +1,20 @@
-# The main experiment: fine-tuning quality *and* inference cost on Push-T.
+# The main experiment: inference cost vs success rate at fixed weights.
 #
-# Read this file as the experimental design:
-#   A. zero-shot vs fine-tuned          -> does adaptation work at all?
-#   B. execution mode (receding / open-loop / temporal ensembling)
-#                                        -> latency vs reactivity, same weights
-#   C. precision fp32 vs bf16           -> free speedup?
-#   D. flow-matching steps 10 / 4 / 2   -> how far can the denoiser be shortened?
+# Experimental design (read this as the argument, not as a list of flags):
+#   A. zero-shot -> fine-tuned        does adaptation work at all?
+#   B. precision fp32 -> bf16         free speedup?
+#   C. torch.compile                  how much of the latency was Python overhead?
+#   D. flow-matching steps 10 -> 4    can the denoiser be shortened?
+#   E. execute_steps 50 / 20 / 1      how stale may a plan get?
+#   F. temporal ensembling            smoothing vs inference cost
 #
-# All configs share `seeds = seed0 .. seed0+episodes`, so every comparison is
-# paired and can be tested with McNemar (see evla/eval/leaderboard.py).
+# All configs share seeds 0..N-1, so every comparison is paired and testable with
+# McNemar (evla/eval/leaderboard.py). Rollouts are seeded end-to-end, including the
+# flow-matching noise, so a rerun reproduces the same episodes.
 #
 #   evla sweep -c configs/sweep_pusht.yaml --out results/pusht_sweep
 
-title: "SmolVLA on Push-T: fine-tuning and inference-cost study"
+title: "SmolVLA-450M on Push-T: fine-tuning and inference-cost study"
 
 policy:
   type: smolvla
@@ -23,18 +25,19 @@ env:
   name: pusht
   max_steps: 300
 
+# 40 episodes keeps the Wilson half-width near 12 points; fine comparisons
+# (bf16 vs fp32) would need hundreds, which is stated rather than faked.
 eval:
-  episodes: 20
+  episodes: 40
   seed0: 0
-  video: false
 
-reference: ft__fp32__ope50
+reference: ft__bf16__compile__flow4__ope20
 
 sweep:
-  # A. does fine-tuning help?
+  # ---- A. does fine-tuning help? (same execution strategy, same seeds)
   - label: zeroshot__ope50
     checkpoint: checkpoints/smolvla_base
-    precision: fp32
+    precision: bf16
     mode: open_loop
     execute_steps: 50
 
@@ -44,44 +47,58 @@ sweep:
     mode: open_loop
     execute_steps: 50
 
-  # C. precision
+  # ---- B. precision
   - label: ft__bf16__ope50
     checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
     precision: bf16
     mode: open_loop
     execute_steps: 50
 
-  # B. execution strategy
-  - label: ft__bf16__ope20
+  # ---- C. torch.compile (the largest single win measured here)
+  - label: ft__bf16__compile__ope50
     checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
     precision: bf16
+    optimize:
+      compile: true
     mode: open_loop
-    execute_steps: 20
+    execute_steps: 50
 
-  - label: ft__bf16__receding
-    checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
-    precision: bf16
-    mode: receding
-    execute_steps: 1
-    episodes: 10          # 300 inferences per episode: budgeted separately
-
-  - label: ft__bf16__ens10
-    checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
-    precision: bf16
-    mode: temporal_ens
-    execute_steps: 10
-
-  # D. flow-matching steps
-  - label: ft__bf16__flow4__ope50
+  # ---- D. flow-matching steps, once compiled
+  - label: ft__bf16__compile__flow4__ope50
     checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
     precision: bf16
     num_flow_steps: 4
+    optimize:
+      compile: true
     mode: open_loop
     execute_steps: 50
 
-  - label: ft__bf16__flow2__ope50
+  # ---- E. execution strategy at the fast operating point
+  - label: ft__bf16__compile__flow4__ope20
     checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
     precision: bf16
-    num_flow_steps: 2
+    num_flow_steps: 4
+    optimize:
+      compile: true
     mode: open_loop
-    execute_steps: 50
+    execute_steps: 20
+
+  - label: ft__bf16__compile__flow4__receding
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
+    precision: bf16
+    num_flow_steps: 4
+    optimize:
+      compile: true
+    mode: receding
+    execute_steps: 1
+    episodes: 20          # 300 inferences per episode: budgeted separately
+
+  # ---- F. temporal ensembling
+  - label: ft__bf16__compile__flow4__ens10
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
+    precision: bf16
+    num_flow_steps: 4
+    optimize:
+      compile: true
+    mode: temporal_ens
+    execute_steps: 10

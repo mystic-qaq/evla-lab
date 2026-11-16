@@ -13,6 +13,11 @@ policy:
   image_key: top
   num_flow_steps: 4
 
+# Same operating point as the best config in results/pusht_sweep
+# (bf16 + compile + 4 flow steps, execute 20 of 50 predicted actions).
+optimize:
+  compile: true
+
 env:
   name: pusht
   max_steps: 300

@@ -18,7 +18,8 @@ from pathlib import Path
 
 from evla.eval.runner import EvalResult
 
-_COLOURS = ["#2f6f9f", "#c0504d", "#4f9d69", "#8064a2", "#e0a33e", "#4bacc6", "#7f7f7f"]
+_COLOURS = ["#2f6f9f", "#c0504d", "#4f9d69", "#8064a2", "#e0a33e", "#4bacc6", "#7f7f7f", "#9d4f4f"]
+_MARKERS = ["o", "s", "^", "D", "v", "P", "X", "*"]
 
 
 def _mpl():
@@ -32,15 +33,16 @@ def _mpl():
 
 
 def markdown_table(results: list[EvalResult]) -> str:
-    graded = any(r.mean_best_pos_err is not None for r in results)
+    graded = any(r.mean_best_coverage is not None for r in results)
+    graded_legacy = not graded and any(r.mean_best_pos_err is not None for r in results)
     header = (
         "| # | config | mode (exec/chunk) | success | 95% Wilson CI | control Hz | p50 lat (ms) | "
         "p95 lat (ms) | steps/inference | mean steps |"
-        + (" best Δpos (px) |" if graded else "")
+        + (" best coverage |" if graded else " best Δpos (px) |" if graded_legacy else "")
         + "\n"
         "|---|--------|-------------------|---------|---------------|------------|--------------|"
         "--------------|-----------------|------------|"
-        + ("-----------------|" if graded else "")
+        + ("-----------------|" if (graded or graded_legacy) else "")
         + "\n"
     )
     rows = []
@@ -54,15 +56,18 @@ def markdown_table(results: list[EvalResult]) -> str:
             f"{reuse} | {r.mean_steps:.0f} |"
         )
         if graded:
+            cov = r.mean_best_coverage
+            row += f" {'-' if cov is None else f'{cov:.2f}'} |"
+        elif graded_legacy:
             value = r.mean_best_pos_err
             row += f" {'-' if value is None else f'{value:.0f}'} |"
         rows.append(row)
     note = (
         "\n`control Hz` is the effective closed-loop rate (1 / mean environment step time, "
         "including reused actions); `p50/p95 lat` are per-inference latencies measured with "
-        "CUDA synchronisation; `steps/inference` is how many control steps one forward pass buys."
-        " `best Δpos` is the mean closest block-to-goal distance reached during an episode -- a"
-        " graded signal that keeps moving when binary success is still stuck at zero.\n"
+        "CUDA synchronisation; `steps/inference` is how many control steps one forward pass buys. "
+        "`best coverage` is the mean best pose overlap reached during an episode (success needs "
+        "0.95) -- a graded signal that keeps moving when binary success is still stuck at zero.\n"
     )
     return header + "\n".join(rows) + "\n" + note
 
@@ -97,44 +102,92 @@ def plot_success(results: list[EvalResult], path: Path, title: str = "Task succe
     return path
 
 
+def _short_labels(results: list[EvalResult]) -> dict[str, str]:
+    """Strip the shared prefix so annotations/legends stay readable."""
+    labels = [r.label for r in results]
+    if len(labels) < 2:
+        return {lab: lab for lab in labels}
+    prefix = labels[0]
+    for lab in labels[1:]:
+        while not lab.startswith(prefix) and prefix:
+            prefix = prefix[:-1]
+    cut = prefix.rfind("__") + 2 if "__" in prefix else len(prefix)
+    out = {}
+    for lab in labels:
+        short = lab[cut:] if cut and lab.startswith(lab[:cut]) else lab
+        out[lab] = short.replace("__", " · ") or lab
+    return out
+
+
 def plot_pareto(results: list[EvalResult], path: Path) -> Path | None:
+    """Quality vs effective control frequency.
+
+    The y-axis is the graded coverage when the environment reports it: binary success
+    is usually 0 or saturated, which collapses this figure into a single row of points
+    at y=0 and hides the trade-off the figure exists to show.
+    """
     if not results:
         return None
     plt = _mpl()
-    fig, ax = plt.subplots(figsize=(6.0, 3.8))
+    fig, ax = plt.subplots(figsize=(7.6, 3.9))
     hz_values = [max(1e-3, r.control_hz) for r in results]
+    graded = [r.mean_best_coverage for r in results]
+    use_coverage = all(v is not None for v in graded)
+    short = _short_labels(results)
     for i, (r, hz) in enumerate(zip(results, hz_values, strict=False)):
         est = r.rate_estimate
+        if use_coverage:
+            y, yerr = float(graded[i]), None  # type: ignore[arg-type]
+        else:
+            y = est.rate
+            yerr = [[max(0.0, est.rate - est.lo)], [max(0.0, est.hi - est.rate)]]
         ax.errorbar(
-            hz,
-            est.rate,
-            yerr=[[max(0.0, est.rate - est.lo)], [max(0.0, est.hi - est.rate)]],
-            fmt="o",
-            ms=8,
-            color=_COLOURS[i % len(_COLOURS)],
-            markeredgecolor="white",
-            ecolor="#999999",
-            elinewidth=1.0,
-            capsize=3,
-            zorder=3,
-            label=r.label,
-        )
-        ax.annotate(
-            r.label,
-            (hz, est.rate),
-            textcoords="offset points",
-            xytext=(7, 4),
-            fontsize=7,
+            hz, y, yerr=yerr, fmt=_MARKERS[i % len(_MARKERS)], ms=9,
+            color=_COLOURS[i % len(_COLOURS)], markeredgecolor="white",
+            ecolor="#999999", elinewidth=1.0, capsize=3, zorder=3,
+            label=f"{short[r.label]}  ({est.successes}/{est.episodes})",
         )
     if max(hz_values) / min(hz_values) > 20:
         ax.set_xscale("log")
-    ax.margins(x=0.15, y=0.15)
-    ax.axhline(1.0, color="#bbbbbb", ls="--", lw=0.8)
+    ax.margins(x=0.20, y=0.18)
+    if use_coverage:
+        ax.axhline(0.95, color="#bbbbbb", ls="--", lw=0.9)
+        ax.text(min(hz_values), 0.955, "success threshold", fontsize=7, color="#777")
+        ax.set_ylabel("best pose coverage (graded)")
+    else:
+        ax.axhline(1.0, color="#bbbbbb", ls="--", lw=0.8)
+        ax.set_ylabel("success rate (Wilson 95% CI)")
     ax.set_xlabel("effective control frequency (Hz)")
-    ax.set_ylabel("success rate (Wilson 95% CI)")
-    ax.set_ylim(-0.08, 1.12)
+    ax.set_ylim(0, 1.05)
+
     ax.grid(alpha=0.25, which="both")
-    ax.set_title("Success / latency Pareto frontier")
+    ax.set_title("Quality / control-rate Pareto frontier")
+    ax.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), fontsize=7, frameon=False)
+    fig.tight_layout()
+    fig.savefig(path, dpi=160)
+    plt.close(fig)
+    return path
+
+
+def plot_coverage(results: list[EvalResult], path: Path) -> Path | None:
+    """Graded quality per config -- the figure that still discriminates when success is 0."""
+    rows = [(r, r.mean_best_coverage) for r in results if r.mean_best_coverage is not None]
+    if not rows:
+        return None
+    plt = _mpl()
+    fig, ax = plt.subplots(figsize=(max(5.2, 0.62 * len(rows) + 2.2), 3.3))
+    for i, (_r, cov) in enumerate(rows):
+        ax.bar(i, cov, color=_COLOURS[i % len(_COLOURS)], alpha=0.85, width=0.66)
+        ax.text(i, cov + 0.015, f"{cov:.2f}", ha="center", fontsize=8, color="#333")
+    ax.axhline(0.95, color="#c0504d", ls="--", lw=0.9)
+    ax.text(len(rows) - 0.5, 0.962, "success threshold = 0.95", fontsize=7,
+            color="#c0504d", ha="right")
+    ax.set_xticks(range(len(rows)))
+    ax.set_xticklabels([r.label for r, _ in rows], rotation=25, ha="right")
+    ax.set_ylabel("mean best pose coverage")
+    ax.set_ylim(0, 1.05)
+    ax.set_title("How close did each configuration get?")
+    ax.grid(axis="y", alpha=0.25)
     fig.tight_layout()
     fig.savefig(path, dpi=160)
     plt.close(fig)
@@ -184,35 +237,59 @@ def _step_from_label(label: str) -> int | None:
 
 
 def plot_learning_curve(results: list[EvalResult], path: Path) -> Path | None:
-    """Success rate vs training steps, when the labels encode a step budget."""
+    """How quality evolves with fine-tuning steps, when labels encode a step budget.
+
+    Plots the graded coverage when available: binary success stays at 0 for most of
+    the curve (the task needs a 0.95 pose match), so a success-rate learning curve
+    would be a flat line at zero and hide all the actual learning.
+    """
     points = []
     for r in results:
         step = _step_from_label(r.label)
         if step is not None:
             est = r.rate_estimate
-            points.append((step, est.rate, est.lo, est.hi, r.label))
+            points.append((step, r, est))
     if len(points) < 3:
         return None
-    points.sort()
+    points.sort(key=lambda p: p[0])
     zero = [r for r in results if _step_from_label(r.label) is None]
+    use_coverage = all(r.mean_best_coverage is not None for _, r, _ in points)
+
     plt = _mpl()
-    fig, ax = plt.subplots(figsize=(5.6, 3.6))
+    fig, ax = plt.subplots(figsize=(5.8, 3.6))
     steps = [p[0] for p in points]
-    rates = [p[1] for p in points]
-    lows = [p[2] for p in points]
-    highs = [p[3] for p in points]
-    ax.plot(steps, rates, marker="o", color=_COLOURS[0], lw=1.6, label="fine-tuned")
-    ax.fill_between(steps, lows, highs, color=_COLOURS[0], alpha=0.18, lw=0)
-    for z in zero:
-        ax.axhline(z.rate_estimate.rate, color=_COLOURS[1], ls="--", lw=1.2, label=z.label)
-    for step, rate, _, _, label in points:
-        ax.annotate(label.split("__")[-1], (step, rate), textcoords="offset points", xytext=(0, 8),
-                    fontsize=7, ha="center")
+    if use_coverage:
+        ys = [float(p[1].mean_best_coverage) for p in points]  # type: ignore[arg-type]
+        ax.plot(steps, ys, marker="o", color=_COLOURS[0], lw=1.6, label="fine-tuned (coverage)")
+        for step, r, est in points:
+            cov = float(r.mean_best_coverage)  # type: ignore[arg-type]
+            ax.annotate(f"{cov:.2f}\n{est.successes}/{est.episodes}", (step, cov),
+                        textcoords="offset points", xytext=(0, 9), fontsize=7, ha="center")
+        for z in zero:
+            if z.mean_best_coverage is not None:
+                ax.axhline(z.mean_best_coverage, color=_COLOURS[1], ls="--", lw=1.1,
+                           label=f"{z.label} ({z.mean_best_coverage:.2f})")
+        ax.axhline(0.95, color="#c0504d", ls=":", lw=1.0)
+        ax.text(steps[0], 0.955, "success threshold 0.95", fontsize=7, color="#c0504d")
+        ax.set_ylabel("best pose coverage (graded)")
+        ax.set_ylim(0, 1.06)
+    else:
+        rates = [p[2].rate for p in points]
+        lows = [p[2].lo for p in points]
+        highs = [p[2].hi for p in points]
+        ax.plot(steps, rates, marker="o", color=_COLOURS[0], lw=1.6, label="fine-tuned")
+        ax.fill_between(steps, lows, highs, color=_COLOURS[0], alpha=0.18, lw=0)
+        for z in zero:
+            ax.axhline(z.rate_estimate.rate, color=_COLOURS[1], ls="--", lw=1.2, label=z.label)
+        for step, _, est in points:
+            ax.annotate(f"{est.successes}/{est.episodes}", (step, est.rate),
+                        textcoords="offset points", xytext=(0, 8), fontsize=7, ha="center")
+        ax.set_ylabel("success rate")
+        ax.set_ylim(-0.05, 1.05)
+
     ax.set_xlabel("fine-tuning steps")
-    ax.set_ylabel("success rate")
-    ax.set_ylim(-0.05, 1.05)
     ax.grid(alpha=0.25)
-    ax.legend(fontsize=7, frameon=False)
+    ax.legend(fontsize=7, frameon=False, loc="lower right")
     ax.set_title("Does more fine-tuning keep helping?")
     fig.tight_layout()
     fig.savefig(path, dpi=160)
@@ -231,7 +308,7 @@ def _taxonomy_markdown(results: list[EvalResult]) -> str | None:
     )
     if not has_signal:
         return None
-    return to_markdown([taxonomy(r) for r in results], title="Failure taxonomy")
+    return to_markdown([taxonomy(r) for r in results], title=None)
 
 
 def load_results(paths: list[str | Path]) -> list[EvalResult]:
@@ -253,6 +330,7 @@ def write_report(results: list[EvalResult], out_dir: str | Path, title: str = "E
     out_dir.mkdir(parents=True, exist_ok=True)
     figures = {
         "success": plot_success(results, out_dir / "success_rates.png"),
+        "coverage": plot_coverage(results, out_dir / "coverage.png"),
         "pareto": plot_pareto(results, out_dir / "pareto.png"),
         "latency": plot_latency(results, out_dir / "latency.png"),
         "learning_curve": plot_learning_curve(results, out_dir / "learning_curve.png"),

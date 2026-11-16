@@ -1,0 +1,2396 @@
+[
+  {
+    "label": "base__zeroshot",
+    "policy": {
+      "name": "smolvla",
+      "class": "SmolVLAPolicy",
+      "action_dim": 6,
+      "chunk_size": 50,
+      "checkpoint": "smolvla_base",
+      "precision": "bf16",
+      "num_flow_steps": 10,
+      "params_m": 450.0,
+      "compiled": null,
+      "latency": {
+        "n": 120,
+        "mean_ms": 238.14,
+        "p50_ms": 237.28,
+        "p95_ms": 245.22,
+        "p99_ms": 250.17,
+        "max_ms": 253.66,
+        "achiev_hz_at_p95": 4.08
+      }
+    },
+    "env": {
+      "name": "pusht",
+      "task": "Push the T-shaped block onto the T-shaped target.",
+      "action_dim": 2,
+      "max_steps": 300
+    },
+    "mode": "open_loop",
+    "execute_steps": 50,
+    "n_episodes": 20,
+    "successes": 0,
+    "success_rate": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.1611,
+    "mean_steps": 300.0,
+    "mean_episode_s": 2.19,
+    "control_hz": 137.2,
+    "mean_best_pos_err": 130.52,
+    "mean_best_coverage": 0.2971,
+    "latency": {
+      "n": 120,
+      "mean_ms": 238.14,
+      "p50_ms": 237.28,
+      "p95_ms": 245.22,
+      "p99_ms": 250.17,
+      "max_ms": 253.66,
+      "achiev_hz_at_p95": 4.08
+    },
+    "executor": {
+      "n_steps": 6000,
+      "n_inference": 120,
+      "action_reuse": 50.0
+    },
+    "wall_time_s": 43.8,
+    "video": null,
+    "episodes": [
+      {
+        "episode": 0,
+        "seed": 0,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.231,
+        "mean_step_ms": 7.435,
+        "final_distance": 55.89409637451172,
+        "info": {
+          "is_success": false,
+          "coverage": 0.15318795247708572,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 55.89409637451172,
+          "best_pos_err": 19.123079299926758,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 1,
+        "seed": 1,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.221,
+        "mean_step_ms": 7.403,
+        "final_distance": 203.86138916015625,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 203.86138916015625,
+          "best_pos_err": 203.86138916015625,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 2,
+        "seed": 2,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.225,
+        "mean_step_ms": 7.417,
+        "final_distance": 82.72795867919922,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 82.72795867919922,
+          "best_pos_err": 82.72795867919922,
+          "max_contacts": 0
+        }
+      },
+      {
+        "episode": 3,
+        "seed": 3,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.193,
+        "mean_step_ms": 7.309,
+        "final_distance": 65.5826644897461,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0005848365926479893,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 65.5826644897461,
+          "best_pos_err": 65.5826644897461,
+          "max_contacts": 0
+        }
+      },
+      {
+        "episode": 4,
+        "seed": 4,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.166,
+        "mean_step_ms": 7.22,
+        "final_distance": 143.65391540527344,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 143.65391540527344,
+          "best_pos_err": 143.65391540527344,
+          "max_contacts": 0
+        }
+      },
+      {
+        "episode": 5,
+        "seed": 5,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.176,
+        "mean_step_ms": 7.251,
+        "final_distance": 169.27098083496094,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 169.27098083496094,
+          "best_pos_err": 169.27098083496094,
+          "max_contacts": 0
+        }
+      },
+      {
+        "episode": 6,
+        "seed": 6,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.185,
+        "mean_step_ms": 7.281,
+        "final_distance": 112.05020904541016,
+        "info": {
+          "is_success": false,
+          "coverage": 0.1825420646636444,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 112.05020904541016,
+          "best_pos_err": 52.1917724609375,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 7,
+        "seed": 7,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.164,
+        "mean_step_ms": 7.211,
+        "final_distance": 189.80960083007812,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 189.80960083007812,
+          "best_pos_err": 189.80960083007812,
+          "max_contacts": 0
+        }
+      },
+      {
+        "episode": 8,
+        "seed": 8,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.168,
+        "mean_step_ms": 7.226,
+        "final_distance": 209.066650390625,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 209.066650390625,
+          "best_pos_err": 209.066650390625,
+          "max_contacts": 0
+        }
+      },
+      {
+        "episode": 9,
+        "seed": 9,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.191,
+        "mean_step_ms": 7.3,
+        "final_distance": 170.40948486328125,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 170.40948486328125,
+          "best_pos_err": 170.40948486328125,
+          "max_contacts": 0
+        }
+      },
+      {
+        "episode": 10,
+        "seed": 10,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.207,
+        "mean_step_ms": 7.355,
+        "final_distance": 217.451416015625,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 217.451416015625,
+          "best_pos_err": 46.510128021240234,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 11,
+        "seed": 11,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.191,
+        "mean_step_ms": 7.303,
+        "final_distance": 109.8073959350586,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 109.8073959350586,
+          "best_pos_err": 109.8073959350586,
+          "max_contacts": 0
+        }
+      },
+      {
+        "episode": 12,
+        "seed": 12,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.16,
+        "mean_step_ms": 7.198,
+        "final_distance": 211.41163635253906,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 211.41163635253906,
+          "best_pos_err": 211.41163635253906,
+          "max_contacts": 0
+        }
+      },
+      {
+        "episode": 13,
+        "seed": 13,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.174,
+        "mean_step_ms": 7.244,
+        "final_distance": 154.67874145507812,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 154.67874145507812,
+          "best_pos_err": 154.67874145507812,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 14,
+        "seed": 14,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.194,
+        "mean_step_ms": 7.313,
+        "final_distance": 84.58985137939453,
+        "info": {
+          "is_success": false,
+          "coverage": 0.19213014761687747,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 84.58985137939453,
+          "best_pos_err": 84.58985137939453,
+          "max_contacts": 0
+        }
+      },
+      {
+        "episode": 15,
+        "seed": 15,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.181,
+        "mean_step_ms": 7.269,
+        "final_distance": 109.28594970703125,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 109.28594970703125,
+          "best_pos_err": 109.28594970703125,
+          "max_contacts": 0
+        }
+      },
+      {
+        "episode": 16,
+        "seed": 16,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.179,
+        "mean_step_ms": 7.263,
+        "final_distance": 86.80868530273438,
+        "info": {
+          "is_success": false,
+          "coverage": 0.006954347094407994,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 86.80868530273438,
+          "best_pos_err": 86.08818817138672,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 17,
+        "seed": 17,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.188,
+        "mean_step_ms": 7.293,
+        "final_distance": 254.8732147216797,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 254.8732147216797,
+          "best_pos_err": 150.6986083984375,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 18,
+        "seed": 18,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.18,
+        "mean_step_ms": 7.265,
+        "final_distance": 167.03921508789062,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0015528888145693851,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 167.03921508789062,
+          "best_pos_err": 167.03921508789062,
+          "max_contacts": 0
+        }
+      },
+      {
+        "episode": 19,
+        "seed": 19,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.165,
+        "mean_step_ms": 7.215,
+        "final_distance": 184.68943786621094,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.2970723313495477,
+          "pos_err": 184.68943786621094,
+          "best_pos_err": 184.68943786621094,
+          "max_contacts": 0
+        }
+      }
+    ]
+  },
+  {
+    "label": "expertonly__12k",
+    "policy": {
+      "name": "smolvla",
+      "class": "SmolVLAPolicy",
+      "action_dim": 2,
+      "chunk_size": 50,
+      "checkpoint": "pretrained_model",
+      "precision": "bf16",
+      "num_flow_steps": 10,
+      "params_m": 450.0,
+      "compiled": null,
+      "latency": {
+        "n": 120,
+        "mean_ms": 263.36,
+        "p50_ms": 264.16,
+        "p95_ms": 270.87,
+        "p99_ms": 280.52,
+        "max_ms": 286.28,
+        "achiev_hz_at_p95": 3.69
+      }
+    },
+    "env": {
+      "name": "pusht",
+      "task": "Push the T-shaped block onto the T-shaped target.",
+      "action_dim": 2,
+      "max_steps": 300
+    },
+    "mode": "open_loop",
+    "execute_steps": 50,
+    "n_episodes": 20,
+    "successes": 0,
+    "success_rate": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.1611,
+    "mean_steps": 300.0,
+    "mean_episode_s": 2.36,
+    "control_hz": 127.32,
+    "mean_best_pos_err": 59.35,
+    "mean_best_coverage": 0.9211,
+    "latency": {
+      "n": 120,
+      "mean_ms": 263.36,
+      "p50_ms": 264.16,
+      "p95_ms": 270.87,
+      "p99_ms": 280.52,
+      "max_ms": 286.28,
+      "achiev_hz_at_p95": 3.69
+    },
+    "executor": {
+      "n_steps": 6000,
+      "n_inference": 120,
+      "action_reuse": 50.0
+    },
+    "wall_time_s": 47.2,
+    "video": null,
+    "episodes": [
+      {
+        "episode": 0,
+        "seed": 0,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.409,
+        "mean_step_ms": 8.027,
+        "final_distance": 22.991065979003906,
+        "info": {
+          "is_success": false,
+          "coverage": 0.5288924046373433,
+          "best_coverage": 0.8911568165882244,
+          "pos_err": 22.991065979003906,
+          "best_pos_err": 3.0249834060668945,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 1,
+        "seed": 1,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.428,
+        "mean_step_ms": 8.092,
+        "final_distance": 222.59336853027344,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.8911568165882244,
+          "pos_err": 222.59336853027344,
+          "best_pos_err": 94.27273559570312,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 2,
+        "seed": 2,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.366,
+        "mean_step_ms": 7.885,
+        "final_distance": 26.347942352294922,
+        "info": {
+          "is_success": false,
+          "coverage": 0.36910020333248617,
+          "best_coverage": 0.8911568165882244,
+          "pos_err": 26.347942352294922,
+          "best_pos_err": 8.043173789978027,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 3,
+        "seed": 3,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.384,
+        "mean_step_ms": 7.946,
+        "final_distance": 10.189583778381348,
+        "info": {
+          "is_success": false,
+          "coverage": 0.7250593551242552,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 10.189583778381348,
+          "best_pos_err": 3.2153372764587402,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 4,
+        "seed": 4,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.38,
+        "mean_step_ms": 7.932,
+        "final_distance": 69.60284423828125,
+        "info": {
+          "is_success": false,
+          "coverage": 0.38057360166455734,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 69.60284423828125,
+          "best_pos_err": 42.96079635620117,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 5,
+        "seed": 5,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.354,
+        "mean_step_ms": 7.844,
+        "final_distance": 279.28509521484375,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 279.28509521484375,
+          "best_pos_err": 169.27098083496094,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 6,
+        "seed": 6,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.385,
+        "mean_step_ms": 7.948,
+        "final_distance": 34.21184539794922,
+        "info": {
+          "is_success": false,
+          "coverage": 0.29457802666809796,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 34.21184539794922,
+          "best_pos_err": 25.166034698486328,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 7,
+        "seed": 7,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.352,
+        "mean_step_ms": 7.837,
+        "final_distance": 15.335816383361816,
+        "info": {
+          "is_success": false,
+          "coverage": 0.6568967876251911,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 15.335816383361816,
+          "best_pos_err": 2.8713858127593994,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 8,
+        "seed": 8,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.355,
+        "mean_step_ms": 7.849,
+        "final_distance": 258.33441162109375,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 258.33441162109375,
+          "best_pos_err": 209.066650390625,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 9,
+        "seed": 9,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.372,
+        "mean_step_ms": 7.906,
+        "final_distance": 16.770801544189453,
+        "info": {
+          "is_success": false,
+          "coverage": 0.3643454364748087,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 16.770801544189453,
+          "best_pos_err": 16.770801544189453,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 10,
+        "seed": 10,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.371,
+        "mean_step_ms": 7.901,
+        "final_distance": 35.305030822753906,
+        "info": {
+          "is_success": false,
+          "coverage": 0.43137489981623506,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 35.305030822753906,
+          "best_pos_err": 9.750353813171387,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 11,
+        "seed": 11,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.357,
+        "mean_step_ms": 7.855,
+        "final_distance": 6.956481456756592,
+        "info": {
+          "is_success": false,
+          "coverage": 0.6797467138684955,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 6.956481456756592,
+          "best_pos_err": 6.956481456756592,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 12,
+        "seed": 12,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.347,
+        "mean_step_ms": 7.823,
+        "final_distance": 262.48291015625,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 262.48291015625,
+          "best_pos_err": 177.2455596923828,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 13,
+        "seed": 13,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.362,
+        "mean_step_ms": 7.872,
+        "final_distance": 49.525474548339844,
+        "info": {
+          "is_success": false,
+          "coverage": 0.3617407979112676,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 49.525474548339844,
+          "best_pos_err": 49.525474548339844,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 14,
+        "seed": 14,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.364,
+        "mean_step_ms": 7.878,
+        "final_distance": 97.74359893798828,
+        "info": {
+          "is_success": false,
+          "coverage": 0.06025491121924674,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 97.74359893798828,
+          "best_pos_err": 11.681702613830566,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 15,
+        "seed": 15,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.349,
+        "mean_step_ms": 7.828,
+        "final_distance": 25.381389617919922,
+        "info": {
+          "is_success": false,
+          "coverage": 0.33102801069265075,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 25.381389617919922,
+          "best_pos_err": 23.820463180541992,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 16,
+        "seed": 16,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.304,
+        "mean_step_ms": 7.68,
+        "final_distance": 198.56004333496094,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 198.56004333496094,
+          "best_pos_err": 40.05175018310547,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 17,
+        "seed": 17,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.288,
+        "mean_step_ms": 7.623,
+        "final_distance": 268.9204406738281,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 268.9204406738281,
+          "best_pos_err": 150.6986083984375,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 18,
+        "seed": 18,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.28,
+        "mean_step_ms": 7.597,
+        "final_distance": 273.22064208984375,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 273.22064208984375,
+          "best_pos_err": 134.93003845214844,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 19,
+        "seed": 19,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.328,
+        "mean_step_ms": 7.757,
+        "final_distance": 31.218952178955078,
+        "info": {
+          "is_success": false,
+          "coverage": 0.3432598625907462,
+          "best_coverage": 0.9263502873510929,
+          "pos_err": 31.218952178955078,
+          "best_pos_err": 7.727025032043457,
+          "max_contacts": 1
+        }
+      }
+    ]
+  },
+  {
+    "label": "expertonly__16k",
+    "policy": {
+      "name": "smolvla",
+      "class": "SmolVLAPolicy",
+      "action_dim": 2,
+      "chunk_size": 50,
+      "checkpoint": "pretrained_model",
+      "precision": "bf16",
+      "num_flow_steps": 10,
+      "params_m": 450.0,
+      "compiled": null,
+      "latency": {
+        "n": 120,
+        "mean_ms": 257.7,
+        "p50_ms": 257.28,
+        "p95_ms": 259.56,
+        "p99_ms": 267.96,
+        "max_ms": 270.82,
+        "achiev_hz_at_p95": 3.85
+      }
+    },
+    "env": {
+      "name": "pusht",
+      "task": "Push the T-shaped block onto the T-shaped target.",
+      "action_dim": 2,
+      "max_steps": 300
+    },
+    "mode": "open_loop",
+    "execute_steps": 50,
+    "n_episodes": 20,
+    "successes": 0,
+    "success_rate": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.1611,
+    "mean_steps": 300.0,
+    "mean_episode_s": 2.32,
+    "control_hz": 129.14,
+    "mean_best_pos_err": 59.56,
+    "mean_best_coverage": 0.7343,
+    "latency": {
+      "n": 120,
+      "mean_ms": 257.7,
+      "p50_ms": 257.28,
+      "p95_ms": 259.56,
+      "p99_ms": 267.96,
+      "max_ms": 270.82,
+      "achiev_hz_at_p95": 3.85
+    },
+    "executor": {
+      "n_steps": 6000,
+      "n_inference": 120,
+      "action_reuse": 50.0
+    },
+    "wall_time_s": 46.5,
+    "video": null,
+    "episodes": [
+      {
+        "episode": 0,
+        "seed": 0,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.333,
+        "mean_step_ms": 7.776,
+        "final_distance": 217.01962280273438,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.38950232173458244,
+          "pos_err": 217.01962280273438,
+          "best_pos_err": 19.123079299926758,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 1,
+        "seed": 1,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.352,
+        "mean_step_ms": 7.837,
+        "final_distance": 76.19223022460938,
+        "info": {
+          "is_success": false,
+          "coverage": 0.4499976621993638,
+          "best_coverage": 0.4499976621993638,
+          "pos_err": 76.19223022460938,
+          "best_pos_err": 76.19223022460938,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 2,
+        "seed": 2,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.324,
+        "mean_step_ms": 7.746,
+        "final_distance": 38.322509765625,
+        "info": {
+          "is_success": false,
+          "coverage": 0.1636173130369883,
+          "best_coverage": 0.4499976621993638,
+          "pos_err": 38.322509765625,
+          "best_pos_err": 38.322509765625,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 3,
+        "seed": 3,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.332,
+        "mean_step_ms": 7.772,
+        "final_distance": 21.287731170654297,
+        "info": {
+          "is_success": false,
+          "coverage": 0.5383518903015408,
+          "best_coverage": 0.6115827968759691,
+          "pos_err": 21.287731170654297,
+          "best_pos_err": 19.629690170288086,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 4,
+        "seed": 4,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.321,
+        "mean_step_ms": 7.734,
+        "final_distance": 236.05601501464844,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.6115827968759691,
+          "pos_err": 236.05601501464844,
+          "best_pos_err": 47.474456787109375,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 5,
+        "seed": 5,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.324,
+        "mean_step_ms": 7.744,
+        "final_distance": 260.4989013671875,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.6115827968759691,
+          "pos_err": 260.4989013671875,
+          "best_pos_err": 169.27098083496094,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 6,
+        "seed": 6,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.334,
+        "mean_step_ms": 7.779,
+        "final_distance": 17.00713539123535,
+        "info": {
+          "is_success": false,
+          "coverage": 0.44181254873669085,
+          "best_coverage": 0.6115827968759691,
+          "pos_err": 17.00713539123535,
+          "best_pos_err": 11.299966812133789,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 7,
+        "seed": 7,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.334,
+        "mean_step_ms": 7.78,
+        "final_distance": 36.63470458984375,
+        "info": {
+          "is_success": false,
+          "coverage": 0.4156274030814734,
+          "best_coverage": 0.6115827968759691,
+          "pos_err": 36.63470458984375,
+          "best_pos_err": 21.73213768005371,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 8,
+        "seed": 8,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.304,
+        "mean_step_ms": 7.678,
+        "final_distance": 274.758056640625,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.6115827968759691,
+          "pos_err": 274.758056640625,
+          "best_pos_err": 209.066650390625,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 9,
+        "seed": 9,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.324,
+        "mean_step_ms": 7.746,
+        "final_distance": 74.16726684570312,
+        "info": {
+          "is_success": false,
+          "coverage": 0.1430611822059685,
+          "best_coverage": 0.8842321661178556,
+          "pos_err": 74.16726684570312,
+          "best_pos_err": 1.3585091829299927,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 10,
+        "seed": 10,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.318,
+        "mean_step_ms": 7.725,
+        "final_distance": 230.9065399169922,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.8842321661178556,
+          "pos_err": 230.9065399169922,
+          "best_pos_err": 21.351696014404297,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 11,
+        "seed": 11,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.327,
+        "mean_step_ms": 7.754,
+        "final_distance": 26.976329803466797,
+        "info": {
+          "is_success": false,
+          "coverage": 0.45509750985507313,
+          "best_coverage": 0.8842321661178556,
+          "pos_err": 26.976329803466797,
+          "best_pos_err": 4.2271623611450195,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 12,
+        "seed": 12,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.323,
+        "mean_step_ms": 7.743,
+        "final_distance": 264.9831848144531,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.8842321661178556,
+          "pos_err": 264.9831848144531,
+          "best_pos_err": 169.06436157226562,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 13,
+        "seed": 13,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.327,
+        "mean_step_ms": 7.754,
+        "final_distance": 89.85160064697266,
+        "info": {
+          "is_success": false,
+          "coverage": 0.5178363451647743,
+          "best_coverage": 0.8842321661178556,
+          "pos_err": 89.85160064697266,
+          "best_pos_err": 74.0938949584961,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 14,
+        "seed": 14,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.333,
+        "mean_step_ms": 7.774,
+        "final_distance": 135.63185119628906,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.8842321661178556,
+          "pos_err": 135.63185119628906,
+          "best_pos_err": 10.43535041809082,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 15,
+        "seed": 15,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.323,
+        "mean_step_ms": 7.741,
+        "final_distance": 65.61566925048828,
+        "info": {
+          "is_success": false,
+          "coverage": 0.518961309386662,
+          "best_coverage": 0.8842321661178556,
+          "pos_err": 65.61566925048828,
+          "best_pos_err": 8.194571495056152,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 16,
+        "seed": 16,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.303,
+        "mean_step_ms": 7.675,
+        "final_distance": 214.60189819335938,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.8842321661178556,
+          "pos_err": 214.60189819335938,
+          "best_pos_err": 86.08818817138672,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 17,
+        "seed": 17,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.296,
+        "mean_step_ms": 7.651,
+        "final_distance": 248.9261932373047,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.8842321661178556,
+          "pos_err": 248.9261932373047,
+          "best_pos_err": 150.6986083984375,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 18,
+        "seed": 18,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.313,
+        "mean_step_ms": 7.707,
+        "final_distance": 181.25308227539062,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.8842321661178556,
+          "pos_err": 181.25308227539062,
+          "best_pos_err": 9.149603843688965,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 19,
+        "seed": 19,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.328,
+        "mean_step_ms": 7.757,
+        "final_distance": 275.8177185058594,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.8842321661178556,
+          "pos_err": 275.8177185058594,
+          "best_pos_err": 44.420989990234375,
+          "max_contacts": 1
+        }
+      }
+    ]
+  },
+  {
+    "label": "expertonly__20k",
+    "policy": {
+      "name": "smolvla",
+      "class": "SmolVLAPolicy",
+      "action_dim": 2,
+      "chunk_size": 50,
+      "checkpoint": "pretrained_model",
+      "precision": "bf16",
+      "num_flow_steps": 10,
+      "params_m": 450.0,
+      "compiled": null,
+      "latency": {
+        "n": 120,
+        "mean_ms": 256.73,
+        "p50_ms": 255.67,
+        "p95_ms": 265.07,
+        "p99_ms": 267.6,
+        "max_ms": 269.63,
+        "achiev_hz_at_p95": 3.77
+      }
+    },
+    "env": {
+      "name": "pusht",
+      "task": "Push the T-shaped block onto the T-shaped target.",
+      "action_dim": 2,
+      "max_steps": 300
+    },
+    "mode": "open_loop",
+    "execute_steps": 50,
+    "n_episodes": 20,
+    "successes": 1,
+    "success_rate": 0.05,
+    "ci_lo": 0.0089,
+    "ci_hi": 0.2361,
+    "mean_steps": 298.85,
+    "mean_episode_s": 2.31,
+    "control_hz": 129.21,
+    "mean_best_pos_err": 64.0,
+    "mean_best_coverage": 0.9538,
+    "latency": {
+      "n": 120,
+      "mean_ms": 256.73,
+      "p50_ms": 255.67,
+      "p95_ms": 265.07,
+      "p99_ms": 267.6,
+      "max_ms": 269.63,
+      "achiev_hz_at_p95": 3.77
+    },
+    "executor": {
+      "n_steps": 5977,
+      "n_inference": 120,
+      "action_reuse": 49.808
+    },
+    "wall_time_s": 46.3,
+    "video": null,
+    "episodes": [
+      {
+        "episode": 0,
+        "seed": 0,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.365,
+        "mean_step_ms": 7.882,
+        "final_distance": 9.430435180664062,
+        "info": {
+          "is_success": false,
+          "coverage": 0.8269909726515104,
+          "best_coverage": 0.9410721667629541,
+          "pos_err": 9.430435180664062,
+          "best_pos_err": 0.6425185799598694,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 1,
+        "seed": 1,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.327,
+        "mean_step_ms": 7.756,
+        "final_distance": 210.42295837402344,
+        "info": {
+          "is_success": false,
+          "coverage": 7.0613685383188e-05,
+          "best_coverage": 0.9410721667629541,
+          "pos_err": 210.42295837402344,
+          "best_pos_err": 67.53223419189453,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 2,
+        "seed": 2,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.342,
+        "mean_step_ms": 7.804,
+        "final_distance": 197.6147003173828,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9410721667629541,
+          "pos_err": 197.6147003173828,
+          "best_pos_err": 35.310176849365234,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 3,
+        "seed": 3,
+        "success": true,
+        "steps": 277,
+        "wall_time_s": 2.278,
+        "mean_step_ms": 8.223,
+        "final_distance": 2.9720215797424316,
+        "info": {
+          "is_success": true,
+          "coverage": 0.9561012295241134,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 2.9720215797424316,
+          "best_pos_err": 0.8801524043083191,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 4,
+        "seed": 4,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.335,
+        "mean_step_ms": 7.781,
+        "final_distance": 77.09416198730469,
+        "info": {
+          "is_success": false,
+          "coverage": 0.14453813277261157,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 77.09416198730469,
+          "best_pos_err": 19.569110870361328,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 5,
+        "seed": 5,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.32,
+        "mean_step_ms": 7.732,
+        "final_distance": 264.8508605957031,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 264.8508605957031,
+          "best_pos_err": 169.27098083496094,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 6,
+        "seed": 6,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.323,
+        "mean_step_ms": 7.741,
+        "final_distance": 9.258414268493652,
+        "info": {
+          "is_success": false,
+          "coverage": 0.7278235998881867,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 9.258414268493652,
+          "best_pos_err": 7.5268120765686035,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 7,
+        "seed": 7,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.302,
+        "mean_step_ms": 7.672,
+        "final_distance": 214.84030151367188,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 214.84030151367188,
+          "best_pos_err": 53.841705322265625,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 8,
+        "seed": 8,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.306,
+        "mean_step_ms": 7.684,
+        "final_distance": 179.4192657470703,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 179.4192657470703,
+          "best_pos_err": 179.4192657470703,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 9,
+        "seed": 9,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.306,
+        "mean_step_ms": 7.684,
+        "final_distance": 30.03295135498047,
+        "info": {
+          "is_success": false,
+          "coverage": 0.43965582881711046,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 30.03295135498047,
+          "best_pos_err": 5.552114963531494,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 10,
+        "seed": 10,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.287,
+        "mean_step_ms": 7.622,
+        "final_distance": 144.17791748046875,
+        "info": {
+          "is_success": false,
+          "coverage": 0.019170838396482377,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 144.17791748046875,
+          "best_pos_err": 24.13735008239746,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 11,
+        "seed": 11,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.318,
+        "mean_step_ms": 7.726,
+        "final_distance": 119.31961822509766,
+        "info": {
+          "is_success": false,
+          "coverage": 0.031043438268137803,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 119.31961822509766,
+          "best_pos_err": 7.1932549476623535,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 12,
+        "seed": 12,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.315,
+        "mean_step_ms": 7.715,
+        "final_distance": 236.1780242919922,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 236.1780242919922,
+          "best_pos_err": 181.05618286132812,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 13,
+        "seed": 13,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.308,
+        "mean_step_ms": 7.692,
+        "final_distance": 264.19549560546875,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 264.19549560546875,
+          "best_pos_err": 114.74835205078125,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 14,
+        "seed": 14,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.32,
+        "mean_step_ms": 7.733,
+        "final_distance": 33.430328369140625,
+        "info": {
+          "is_success": false,
+          "coverage": 0.3871139296583017,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 33.430328369140625,
+          "best_pos_err": 6.575769424438477,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 15,
+        "seed": 15,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.3,
+        "mean_step_ms": 7.666,
+        "final_distance": 210.3164520263672,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 210.3164520263672,
+          "best_pos_err": 17.07303237915039,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 16,
+        "seed": 16,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.29,
+        "mean_step_ms": 7.632,
+        "final_distance": 229.3461456298828,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 229.3461456298828,
+          "best_pos_err": 86.08818817138672,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 17,
+        "seed": 17,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.293,
+        "mean_step_ms": 7.643,
+        "final_distance": 243.3809051513672,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 243.3809051513672,
+          "best_pos_err": 150.6986083984375,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 18,
+        "seed": 18,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.296,
+        "mean_step_ms": 7.653,
+        "final_distance": 252.60983276367188,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 252.60983276367188,
+          "best_pos_err": 138.38328552246094,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 19,
+        "seed": 19,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.324,
+        "mean_step_ms": 7.743,
+        "final_distance": 104.44003295898438,
+        "info": {
+          "is_success": false,
+          "coverage": 0.09046273762086497,
+          "best_coverage": 0.9561012295241134,
+          "pos_err": 104.44003295898438,
+          "best_pos_err": 14.540486335754395,
+          "max_contacts": 1
+        }
+      }
+    ]
+  },
+  {
+    "label": "expertonly__4k",
+    "policy": {
+      "name": "smolvla",
+      "class": "SmolVLAPolicy",
+      "action_dim": 2,
+      "chunk_size": 50,
+      "checkpoint": "pretrained_model",
+      "precision": "bf16",
+      "num_flow_steps": 10,
+      "params_m": 450.0,
+      "compiled": null,
+      "latency": {
+        "n": 120,
+        "mean_ms": 256.27,
+        "p50_ms": 255.96,
+        "p95_ms": 259.65,
+        "p99_ms": 264.94,
+        "max_ms": 274.95,
+        "achiev_hz_at_p95": 3.85
+      }
+    },
+    "env": {
+      "name": "pusht",
+      "task": "Push the T-shaped block onto the T-shaped target.",
+      "action_dim": 2,
+      "max_steps": 300
+    },
+    "mode": "open_loop",
+    "execute_steps": 50,
+    "n_episodes": 20,
+    "successes": 0,
+    "success_rate": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.1611,
+    "mean_steps": 300.0,
+    "mean_episode_s": 2.31,
+    "control_hz": 129.8,
+    "mean_best_pos_err": 88.62,
+    "mean_best_coverage": 0.4857,
+    "latency": {
+      "n": 120,
+      "mean_ms": 256.27,
+      "p50_ms": 255.96,
+      "p95_ms": 259.65,
+      "p99_ms": 264.94,
+      "max_ms": 274.95,
+      "achiev_hz_at_p95": 3.85
+    },
+    "executor": {
+      "n_steps": 6000,
+      "n_inference": 120,
+      "action_reuse": 50.0
+    },
+    "wall_time_s": 46.3,
+    "video": null,
+    "episodes": [
+      {
+        "episode": 0,
+        "seed": 0,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.322,
+        "mean_step_ms": 7.738,
+        "final_distance": 290.76263427734375,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.27318081712314973,
+          "pos_err": 290.76263427734375,
+          "best_pos_err": 19.00943946838379,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 1,
+        "seed": 1,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.331,
+        "mean_step_ms": 7.77,
+        "final_distance": 286.8948669433594,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.27318081712314973,
+          "pos_err": 286.8948669433594,
+          "best_pos_err": 177.82498168945312,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 2,
+        "seed": 2,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.322,
+        "mean_step_ms": 7.739,
+        "final_distance": 189.97776794433594,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.27318081712314973,
+          "pos_err": 189.97776794433594,
+          "best_pos_err": 82.72795867919922,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 3,
+        "seed": 3,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.309,
+        "mean_step_ms": 7.695,
+        "final_distance": 255.8597412109375,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.38278431386452655,
+          "pos_err": 255.8597412109375,
+          "best_pos_err": 55.81187438964844,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 4,
+        "seed": 4,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.322,
+        "mean_step_ms": 7.737,
+        "final_distance": 175.10430908203125,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.38278431386452655,
+          "pos_err": 175.10430908203125,
+          "best_pos_err": 6.832077980041504,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 5,
+        "seed": 5,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.318,
+        "mean_step_ms": 7.724,
+        "final_distance": 287.0135192871094,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.38278431386452655,
+          "pos_err": 287.0135192871094,
+          "best_pos_err": 169.27098083496094,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 6,
+        "seed": 6,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.333,
+        "mean_step_ms": 7.775,
+        "final_distance": 85.72554016113281,
+        "info": {
+          "is_success": false,
+          "coverage": 0.06423920719405736,
+          "best_coverage": 0.44039048420422416,
+          "pos_err": 85.72554016113281,
+          "best_pos_err": 52.1917724609375,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 7,
+        "seed": 7,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.319,
+        "mean_step_ms": 7.729,
+        "final_distance": 221.1585235595703,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.5619768332689348,
+          "pos_err": 221.1585235595703,
+          "best_pos_err": 51.17787551879883,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 8,
+        "seed": 8,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.326,
+        "mean_step_ms": 7.753,
+        "final_distance": 252.1558837890625,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.5619768332689348,
+          "pos_err": 252.1558837890625,
+          "best_pos_err": 209.066650390625,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 9,
+        "seed": 9,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.285,
+        "mean_step_ms": 7.615,
+        "final_distance": 226.85865783691406,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.5619768332689348,
+          "pos_err": 226.85865783691406,
+          "best_pos_err": 167.3048858642578,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 10,
+        "seed": 10,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.307,
+        "mean_step_ms": 7.687,
+        "final_distance": 217.76165771484375,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.5619768332689348,
+          "pos_err": 217.76165771484375,
+          "best_pos_err": 46.510128021240234,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 11,
+        "seed": 11,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.306,
+        "mean_step_ms": 7.684,
+        "final_distance": 226.85598754882812,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.5619768332689348,
+          "pos_err": 226.85598754882812,
+          "best_pos_err": 30.41401481628418,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 12,
+        "seed": 12,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.31,
+        "mean_step_ms": 7.697,
+        "final_distance": 248.70680236816406,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.5619768332689348,
+          "pos_err": 248.70680236816406,
+          "best_pos_err": 49.90202331542969,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 13,
+        "seed": 13,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.303,
+        "mean_step_ms": 7.677,
+        "final_distance": 211.57289123535156,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.5619768332689348,
+          "pos_err": 211.57289123535156,
+          "best_pos_err": 48.413780212402344,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 14,
+        "seed": 14,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.317,
+        "mean_step_ms": 7.721,
+        "final_distance": 217.51429748535156,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.5619768332689348,
+          "pos_err": 217.51429748535156,
+          "best_pos_err": 16.703052520751953,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 15,
+        "seed": 15,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.291,
+        "mean_step_ms": 7.636,
+        "final_distance": 195.820556640625,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.5619768332689348,
+          "pos_err": 195.820556640625,
+          "best_pos_err": 38.133140563964844,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 16,
+        "seed": 16,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.304,
+        "mean_step_ms": 7.678,
+        "final_distance": 309.7172546386719,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.5619768332689348,
+          "pos_err": 309.7172546386719,
+          "best_pos_err": 86.08818817138672,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 17,
+        "seed": 17,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.295,
+        "mean_step_ms": 7.649,
+        "final_distance": 250.3929443359375,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.5619768332689348,
+          "pos_err": 250.3929443359375,
+          "best_pos_err": 150.6986083984375,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 18,
+        "seed": 18,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.298,
+        "mean_step_ms": 7.658,
+        "final_distance": 267.1224060058594,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.5619768332689348,
+          "pos_err": 267.1224060058594,
+          "best_pos_err": 129.63970947265625,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 19,
+        "seed": 19,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.315,
+        "mean_step_ms": 7.716,
+        "final_distance": 237.40782165527344,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.5619768332689348,
+          "pos_err": 237.40782165527344,
+          "best_pos_err": 184.68943786621094,
+          "max_contacts": 1
+        }
+      }
+    ]
+  },
+  {
+    "label": "expertonly__8k",
+    "policy": {
+      "name": "smolvla",
+      "class": "SmolVLAPolicy",
+      "action_dim": 2,
+      "chunk_size": 50,
+      "checkpoint": "pretrained_model",
+      "precision": "bf16",
+      "num_flow_steps": 10,
+      "params_m": 450.0,
+      "compiled": null,
+      "latency": {
+        "n": 120,
+        "mean_ms": 257.33,
+        "p50_ms": 256.22,
+        "p95_ms": 265.21,
+        "p99_ms": 270.61,
+        "max_ms": 272.42,
+        "achiev_hz_at_p95": 3.77
+      }
+    },
+    "env": {
+      "name": "pusht",
+      "task": "Push the T-shaped block onto the T-shaped target.",
+      "action_dim": 2,
+      "max_steps": 300
+    },
+    "mode": "open_loop",
+    "execute_steps": 50,
+    "n_episodes": 20,
+    "successes": 0,
+    "success_rate": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.1611,
+    "mean_steps": 300.0,
+    "mean_episode_s": 2.32,
+    "control_hz": 129.41,
+    "mean_best_pos_err": 64.61,
+    "mean_best_coverage": 0.7606,
+    "latency": {
+      "n": 120,
+      "mean_ms": 257.33,
+      "p50_ms": 256.22,
+      "p95_ms": 265.21,
+      "p99_ms": 270.61,
+      "max_ms": 272.42,
+      "achiev_hz_at_p95": 3.77
+    },
+    "executor": {
+      "n_steps": 6000,
+      "n_inference": 120,
+      "action_reuse": 50.0
+    },
+    "wall_time_s": 46.4,
+    "video": null,
+    "episodes": [
+      {
+        "episode": 0,
+        "seed": 0,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.331,
+        "mean_step_ms": 7.768,
+        "final_distance": 112.29367065429688,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7314774580133393,
+          "pos_err": 112.29367065429688,
+          "best_pos_err": 4.958842754364014,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 1,
+        "seed": 1,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.333,
+        "mean_step_ms": 7.774,
+        "final_distance": 98.01472473144531,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7314774580133393,
+          "pos_err": 98.01472473144531,
+          "best_pos_err": 68.56068420410156,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 2,
+        "seed": 2,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.359,
+        "mean_step_ms": 7.86,
+        "final_distance": 215.52915954589844,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7476514850985138,
+          "pos_err": 215.52915954589844,
+          "best_pos_err": 2.997793436050415,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 3,
+        "seed": 3,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.316,
+        "mean_step_ms": 7.719,
+        "final_distance": 189.57322692871094,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7476514850985138,
+          "pos_err": 189.57322692871094,
+          "best_pos_err": 57.94905471801758,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 4,
+        "seed": 4,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.318,
+        "mean_step_ms": 7.725,
+        "final_distance": 206.013916015625,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 206.013916015625,
+          "best_pos_err": 8.388973236083984,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 5,
+        "seed": 5,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.3,
+        "mean_step_ms": 7.664,
+        "final_distance": 265.7789306640625,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 265.7789306640625,
+          "best_pos_err": 169.27098083496094,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 6,
+        "seed": 6,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.314,
+        "mean_step_ms": 7.711,
+        "final_distance": 206.0279083251953,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 206.0279083251953,
+          "best_pos_err": 52.1917724609375,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 7,
+        "seed": 7,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.325,
+        "mean_step_ms": 7.749,
+        "final_distance": 58.03068542480469,
+        "info": {
+          "is_success": false,
+          "coverage": 0.4048489712730535,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 58.03068542480469,
+          "best_pos_err": 18.256563186645508,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 8,
+        "seed": 8,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.315,
+        "mean_step_ms": 7.715,
+        "final_distance": 178.77284240722656,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 178.77284240722656,
+          "best_pos_err": 127.09236907958984,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 9,
+        "seed": 9,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.291,
+        "mean_step_ms": 7.636,
+        "final_distance": 227.55947875976562,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 227.55947875976562,
+          "best_pos_err": 158.77371215820312,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 10,
+        "seed": 10,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.321,
+        "mean_step_ms": 7.735,
+        "final_distance": 144.4247589111328,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 144.4247589111328,
+          "best_pos_err": 2.734714984893799,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 11,
+        "seed": 11,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.341,
+        "mean_step_ms": 7.801,
+        "final_distance": 40.75758743286133,
+        "info": {
+          "is_success": false,
+          "coverage": 0.32359821754639284,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 40.75758743286133,
+          "best_pos_err": 40.75758743286133,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 12,
+        "seed": 12,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.325,
+        "mean_step_ms": 7.747,
+        "final_distance": 286.77362060546875,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 286.77362060546875,
+          "best_pos_err": 181.02108764648438,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 13,
+        "seed": 13,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.322,
+        "mean_step_ms": 7.738,
+        "final_distance": 29.232749938964844,
+        "info": {
+          "is_success": false,
+          "coverage": 0.35676527501366656,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 29.232749938964844,
+          "best_pos_err": 6.379357814788818,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 14,
+        "seed": 14,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.292,
+        "mean_step_ms": 7.637,
+        "final_distance": 248.3196563720703,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 248.3196563720703,
+          "best_pos_err": 83.46097564697266,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 15,
+        "seed": 15,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.322,
+        "mean_step_ms": 7.738,
+        "final_distance": 194.0882568359375,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 194.0882568359375,
+          "best_pos_err": 14.452372550964355,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 16,
+        "seed": 16,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.314,
+        "mean_step_ms": 7.711,
+        "final_distance": 183.96067810058594,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 183.96067810058594,
+          "best_pos_err": 86.08818817138672,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 17,
+        "seed": 17,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.306,
+        "mean_step_ms": 7.685,
+        "final_distance": 269.5048522949219,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 269.5048522949219,
+          "best_pos_err": 150.6986083984375,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 18,
+        "seed": 18,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.317,
+        "mean_step_ms": 7.721,
+        "final_distance": 217.03224182128906,
+        "info": {
+          "is_success": false,
+          "coverage": 0.0,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 217.03224182128906,
+          "best_pos_err": 45.59795379638672,
+          "max_contacts": 1
+        }
+      },
+      {
+        "episode": 19,
+        "seed": 19,
+        "success": false,
+        "steps": 300,
+        "wall_time_s": 2.314,
+        "mean_step_ms": 7.711,
+        "final_distance": 15.49887752532959,
+        "info": {
+          "is_success": false,
+          "coverage": 0.4551150167933407,
+          "best_coverage": 0.7658575183976681,
+          "pos_err": 15.49887752532959,
+          "best_pos_err": 12.602143287658691,
+          "max_contacts": 1
+        }
+      }
+    ]
+  }
+]

@@ -94,11 +94,10 @@ def main() -> int:
 
     # 1. expert demonstration
     env = ToyReachEnv(drift=0.0)
-    obs = env.reset(seed=3)
+    env.reset(seed=3)
     frames = [env.render_frame(160)]
     for _ in range(env.max_steps):
         result = env.step(env.expert_action())
-        obs = result.obs
         frames.append(env.render_frame(160))
         if result.done:
             break

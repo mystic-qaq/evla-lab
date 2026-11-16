@@ -1,0 +1,70 @@
+{
+  "reference": "expertonly__8k",
+  "rows": [
+    {
+      "label": "expertonly__4k",
+      "success_rate": 0.0,
+      "ci": [
+        0.0,
+        0.1611
+      ],
+      "successes": 0,
+      "episodes": 20,
+      "control_hz": 129.63,
+      "delta_vs_ref": 0.0,
+      "wins_over_ref": 0,
+      "losses_vs_ref": 0,
+      "mcnemar_p": 1.0,
+      "significant_95": false
+    },
+    {
+      "label": "expertonly__8k",
+      "success_rate": 0.0,
+      "ci": [
+        0.0,
+        0.1611
+      ],
+      "successes": 0,
+      "episodes": 20,
+      "control_hz": 127.31,
+      "delta_vs_ref": 0.0,
+      "wins_over_ref": 0,
+      "losses_vs_ref": 0,
+      "mcnemar_p": 1.0,
+      "significant_95": false
+    },
+    {
+      "label": "lora_r16__4k",
+      "success_rate": 0.0,
+      "ci": [
+        0.0,
+        0.1611
+      ],
+      "successes": 0,
+      "episodes": 20,
+      "control_hz": 126.45,
+      "delta_vs_ref": 0.0,
+      "wins_over_ref": 0,
+      "losses_vs_ref": 0,
+      "mcnemar_p": 1.0,
+      "significant_95": false
+    },
+    {
+      "label": "lora_r16__8k",
+      "success_rate": 0.0,
+      "ci": [
+        0.0,
+        0.1611
+      ],
+      "successes": 0,
+      "episodes": 20,
+      "control_hz": 128.07,
+      "delta_vs_ref": 0.0,
+      "wins_over_ref": 0,
+      "losses_vs_ref": 0,
+      "mcnemar_p": 1.0,
+      "significant_95": false
+    }
+  ],
+  "note": "Paired McNemar test over identical seeds; delta is absolute success-rate change."
+}

@@ -86,12 +86,33 @@ class SmolVLAPolicy(Policy):
         if num_flow_steps is not None:
             self.set_num_flow_steps(num_flow_steps)
         self._task = ""
+        self._compiled: str | None = None
 
     # ------------------------------------------------------------------ knobs
     def set_precision(self, precision: str) -> None:
         if precision not in ("fp32", "bf16", "fp16"):
             raise ValueError(f"precision must be fp32/bf16/fp16, got {precision!r}")
         self.precision = precision
+
+    def enable_compile(self, mode: str = "default") -> str:
+        """Compile the action-chunk forward pass with ``torch.compile``.
+
+        The denoise loop is a fixed-shape sequence of small matmuls, which is exactly
+        what ``torch.compile`` is good at; the shapes are static because
+        ``chunk_size`` is fixed, so no graph recompilation should occur per step.
+        Returns a status string so the caller can record whether it took effect.
+        """
+        torch = self.torch
+        if self._compiled:
+            return "already-compiled"
+        try:
+            self.policy.predict_action_chunk = torch.compile(  # type: ignore[method-assign]
+                self.policy.predict_action_chunk, mode=mode, fullgraph=False, dynamic=False
+            )
+        except Exception as exc:  # pragma: no cover - depends on torch build
+            return f"failed: {type(exc).__name__}: {exc}"
+        self._compiled = mode
+        return "compiled"
 
     def set_num_flow_steps(self, steps: int) -> None:
         if steps < 1:
@@ -106,6 +127,7 @@ class SmolVLAPolicy(Policy):
                 "precision": self.precision,
                 "num_flow_steps": int(self.config.num_steps),
                 "params_m": round(sum(p.numel() for p in self.policy.parameters()) / 1e6, 1),
+                "compiled": self._compiled,
             }
         )
         return info

@@ -1,0 +1,134 @@
+{
+  "reference": "ft__bf16__compile__flow4__ope20",
+  "rows": [
+    {
+      "label": "ft__bf16__compile__flow4__ope50",
+      "success_rate": 0.1,
+      "ci": [
+        0.0396,
+        0.2305
+      ],
+      "successes": 4,
+      "episodes": 40,
+      "control_hz": 269.87,
+      "delta_vs_ref": 0.0,
+      "wins_over_ref": 3,
+      "losses_vs_ref": 3,
+      "mcnemar_p": 1.0,
+      "significant_95": false
+    },
+    {
+      "label": "ft__bf16__compile__flow4__ope20",
+      "success_rate": 0.1,
+      "ci": [
+        0.0396,
+        0.2305
+      ],
+      "successes": 4,
+      "episodes": 40,
+      "control_hz": 184.7,
+      "delta_vs_ref": 0.0,
+      "wins_over_ref": 0,
+      "losses_vs_ref": 0,
+      "mcnemar_p": 1.0,
+      "significant_95": false
+    },
+    {
+      "label": "ft__bf16__compile__ope50",
+      "success_rate": 0.075,
+      "ci": [
+        0.0258,
+        0.1986
+      ],
+      "successes": 3,
+      "episodes": 40,
+      "control_hz": 228.74,
+      "delta_vs_ref": -0.025,
+      "wins_over_ref": 2,
+      "losses_vs_ref": 3,
+      "mcnemar_p": 1.0,
+      "significant_95": false
+    },
+    {
+      "label": "ft__fp32__ope50",
+      "success_rate": 0.05,
+      "ci": [
+        0.0138,
+        0.165
+      ],
+      "successes": 2,
+      "episodes": 40,
+      "control_hz": 130.42,
+      "delta_vs_ref": -0.05,
+      "wins_over_ref": 2,
+      "losses_vs_ref": 4,
+      "mcnemar_p": 0.6875,
+      "significant_95": false
+    },
+    {
+      "label": "ft__bf16__compile__flow4__ens10",
+      "success_rate": 0.05,
+      "ci": [
+        0.0138,
+        0.165
+      ],
+      "successes": 2,
+      "episodes": 40,
+      "control_hz": 17.92,
+      "delta_vs_ref": -0.05,
+      "wins_over_ref": 1,
+      "losses_vs_ref": 3,
+      "mcnemar_p": 0.625,
+      "significant_95": false
+    },
+    {
+      "label": "ft__bf16__ope50",
+      "success_rate": 0.025,
+      "ci": [
+        0.0044,
+        0.1288
+      ],
+      "successes": 1,
+      "episodes": 40,
+      "control_hz": 127.36,
+      "delta_vs_ref": -0.075,
+      "wins_over_ref": 1,
+      "losses_vs_ref": 4,
+      "mcnemar_p": 0.375,
+      "significant_95": false
+    },
+    {
+      "label": "zeroshot__ope50",
+      "success_rate": 0.0,
+      "ci": [
+        0.0,
+        0.0876
+      ],
+      "successes": 0,
+      "episodes": 40,
+      "control_hz": 136.72,
+      "delta_vs_ref": -0.1,
+      "wins_over_ref": 0,
+      "losses_vs_ref": 4,
+      "mcnemar_p": 0.125,
+      "significant_95": false
+    },
+    {
+      "label": "ft__bf16__compile__flow4__receding",
+      "success_rate": 0.0,
+      "ci": [
+        0.0,
+        0.1611
+      ],
+      "successes": 0,
+      "episodes": 20,
+      "control_hz": 18.03,
+      "delta_vs_ref": -0.1,
+      "wins_over_ref": 0,
+      "losses_vs_ref": 2,
+      "mcnemar_p": 0.5,
+      "significant_95": false
+    }
+  ],
+  "note": "Paired McNemar test over identical seeds; delta is absolute success-rate change."
+}

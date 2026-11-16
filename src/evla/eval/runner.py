@@ -89,6 +89,14 @@ class EvalResult:
         return float(arr.mean())
 
     @property
+    def mean_best_coverage(self) -> float | None:
+        """Mean closest-to-goal pose coverage (0..1), when the env reports it."""
+        values = [e.info.get("best_coverage") for e in self.episodes]
+        if not values or any(v is None for v in values):
+            return None
+        return float(np.mean(np.asarray(values, dtype=float)))
+
+    @property
     def control_hz(self) -> float:
         """Effective closed-loop control frequency (steps per wall-clock second)."""
         if not self.episodes:
@@ -113,6 +121,8 @@ class EvalResult:
             "control_hz": round(self.control_hz, 2),
             "mean_best_pos_err": (None if self.mean_best_pos_err is None
                                   else round(self.mean_best_pos_err, 2)),
+            "mean_best_coverage": (None if self.mean_best_coverage is None
+                                   else round(self.mean_best_coverage, 4)),
             "latency": self.latency,
             "executor": self.executor,
             "wall_time_s": round(self.wall_time_s, 1),
@@ -152,6 +162,25 @@ def _save_video(frames: list[np.ndarray], path: Path, fps: int = 10) -> str | No
     return str(path)
 
 
+def seed_everything(seed: int) -> None:
+    """Seed every RNG that can influence a rollout.
+
+    A flow-matching policy draws its initial noise at inference time, so without
+    this an evaluation is not reproducible: the same checkpoint on the same scene
+    gives a different success. Seeding also *tightens* paired comparisons, because
+    both configurations then start from the same noise as well as the same scene.
+    """
+    np.random.seed(seed)
+    try:
+        import torch
+
+        torch.manual_seed(seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(seed)
+    except ImportError:  # pragma: no cover - CPU-only install
+        pass
+
+
 def run_episode(
     env: EmbodiedEnv,
     executor: ChunkExecutor,
@@ -160,6 +189,7 @@ def run_episode(
     record_video: Path | None = None,
     frame_stride: int = 2,
 ) -> tuple[EpisodeResult, list[np.ndarray]]:
+    seed_everything(seed)
     obs = env.reset(seed=seed)
     executor.reset(env.task or "")
     frames: list[np.ndarray] = []

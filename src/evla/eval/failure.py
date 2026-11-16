@@ -13,8 +13,9 @@ For Push-T:
     the end-effector never touched the block (``max_contacts == 0``) -- typically a
     reaching/perception problem, not a manipulation problem.
 ``contact_near_miss``
-    the block was moved and came within ``near_miss_px`` of the goal translation but
-    the pose tolerance was not met -- typically an orientation/precision problem.
+    the block was moved and the best pose overlap reached ``near_miss_coverage`` (0.85
+    of the 0.95 needed for success) but the task was not solved -- typically an
+    orientation/precision problem rather than a reaching problem.
 ``contact_missed``
     the block was touched but never got close -- typically a planning or a
     chunk-staleness problem.
@@ -49,32 +50,43 @@ class Taxonomy:
         }
 
 
-def classify_episode(episode, near_miss_px: float = 40.0) -> str:
+NEAR_MISS_COVERAGE = 0.85
+
+
+def classify_episode(
+    episode, near_miss_px: float = 40.0, near_miss_coverage: float = NEAR_MISS_COVERAGE
+) -> str:
+    """Bucket one episode. Prefers the environment's coverage metric when available."""
     if episode.success:
         return "success"
     info = episode.info or {}
     contacts = info.get("max_contacts")
-    best = info.get("best_pos_err")
-    if contacts is None and best is None:
+    coverage = info.get("best_coverage")
+    distance = info.get("best_pos_err")
+    if contacts is None and coverage is None and distance is None:
         return "failed_unknown"
     if contacts is not None and contacts <= 0:
         return "never_contacted"
-    if best is not None and best <= near_miss_px:
+    if coverage is not None:
+        return "contact_near_miss" if coverage >= near_miss_coverage else "contact_missed"
+    if distance is not None and distance <= near_miss_px:
         return "contact_near_miss"
     return "contact_missed"
 
 
-def taxonomy(result: EvalResult, near_miss_px: float = 40.0) -> Taxonomy:
+def taxonomy(
+    result: EvalResult, near_miss_px: float = 40.0, near_miss_coverage: float = NEAR_MISS_COVERAGE
+) -> Taxonomy:
     counts = dict.fromkeys(CATEGORIES, 0)
     for episode in result.episodes:
-        counts[classify_episode(episode, near_miss_px)] += 1
+        counts[classify_episode(episode, near_miss_px, near_miss_coverage)] += 1
     return Taxonomy(label=result.label, episodes=len(result.episodes), counts=counts)
 
 
-def to_markdown(taxonomies: list[Taxonomy], title: str = "Failure taxonomy") -> str:
+def to_markdown(taxonomies: list[Taxonomy], title: str | None = "Failure taxonomy") -> str:
     header = (
-        f"# {title}\n\n"
-        "| config | episodes | success | near miss | touched, missed | never contacted | unknown |\n"
+        (f"# {title}\n\n" if title else "")
+        + "| config | episodes | success | near miss | touched, missed | never contacted | unknown |\n"
         "|---|---:|---:|---:|---:|---:|---:|\n"
     )
     rows = []
@@ -87,8 +99,9 @@ def to_markdown(taxonomies: list[Taxonomy], title: str = "Failure taxonomy") -> 
             f"{c['failed_unknown']} |"
         )
     note = (
-        "\n*Near miss* = block moved and came within the translation tolerance but the full pose "
-        "was not reached. *Never contacted* = the end-effector never touched the block, which "
-        "points at reaching/perception rather than manipulation.\n"
+        "\n*Near miss* = the block was moved and the best pose overlap reached 0.85 of the 0.95 "
+        "needed for success (position roughly right, pose not). *Never contacted* = the "
+        "end-effector never touched the block, which points at reaching/perception rather than "
+        "manipulation.\n"
     )
     return header + "\n".join(rows) + "\n" + note

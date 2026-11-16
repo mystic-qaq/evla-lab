@@ -21,6 +21,11 @@ env:
   name: pusht
   max_steps: 300
 
+# Compile the denoise loop: at 10 Hz a 100 ms budget only fits if one forward pass
+# costs ~50 ms rather than ~135 ms (see docs/OPTIMIZATION.md).
+optimize:
+  compile: true
+
 runtime:
   control_hz: 10
   max_steps: 300

@@ -242,15 +242,18 @@ def test_chunk_executor_over_remote_server_amortises_calls():
 def test_failure_taxonomy_buckets():
     from evla.eval.failure import classify_episode, taxonomy
 
-    def ep(success=False, contacts=None, best=None):
-        return type("E", (), {"success": success, "info": {"max_contacts": contacts,
-                                                          "best_pos_err": best}})()
+    def ep(success=False, contacts=None, best=None, coverage=None):
+        return type("E", (), {"success": success,
+                              "info": {"max_contacts": contacts, "best_pos_err": best,
+                                       "best_coverage": coverage}})()
 
     assert classify_episode(ep(True)) == "success"
     assert classify_episode(ep(False, contacts=0, best=300.0)) == "never_contacted"
     assert classify_episode(ep(False, contacts=4, best=12.0)) == "contact_near_miss"
     assert classify_episode(ep(False, contacts=9, best=180.0)) == "contact_missed"
     assert classify_episode(ep(False)) == "failed_unknown"
+    assert classify_episode(ep(False, contacts=2, coverage=0.9)) == "contact_near_miss"
+    assert classify_episode(ep(False, contacts=2, coverage=0.76)) == "contact_missed"
 
     class FakeResult:
         label = "cfg"

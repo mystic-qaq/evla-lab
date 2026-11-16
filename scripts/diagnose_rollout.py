@@ -1,15 +1,21 @@
-"""Diagnostic: what does the checkpoint actually output in one episode?"""
+"""Diagnostic: what does the checkpoint actually output in one episode?
+
+    python scripts/diagnose_rollout.py outputs/.../pretrained_model
+
+Prints the first actions, the agent trajectory and the pose coverage. This is the
+script that showed a fine-tuned policy commanding sensible pixel-space waypoints
+while the block still ended up rotated relative to the goal -- the difference between
+"the pipeline is broken" and "the policy is imprecise".
+"""
 
 import sys
 
 import numpy as np
 
-sys.path.insert(0, "/home/xy/Embodied_AI_Try/src")
-
 from evla.envs.registry import make_env
 from evla.models.registry import load_policy
 
-ckpt = sys.argv[1]
+ckpt = sys.argv[1] if len(sys.argv) > 1 else "checkpoints/smolvla_base"
 env = make_env({"name": "pusht", "max_steps": 60})
 policy = load_policy({"type": "smolvla", "checkpoint": ckpt, "device": "cuda",
                       "precision": "bf16", "image_key": "top"})

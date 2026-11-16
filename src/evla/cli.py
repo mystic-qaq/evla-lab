@@ -433,7 +433,6 @@ def cmd_leaderboard(args: argparse.Namespace) -> int:
 # ---------------------------------------------------------------------------- deploy
 def cmd_serve(args: argparse.Namespace) -> int:
     from evla.deploy.server import PolicyServer
-    from evla.models.registry import load_policy
 
     cfg = _load_yaml(args.config) if args.config else {}
     policy_cfg = dict(cfg.get("policy", {}))
@@ -441,7 +440,7 @@ def cmd_serve(args: argparse.Namespace) -> int:
         policy_cfg["checkpoint"] = args.checkpoint
     if args.precision:
         policy_cfg["precision"] = args.precision
-    policy = load_policy(policy_cfg)
+    policy, _ = _build_policy(policy_cfg, cfg.get("optimize"), profile=False)
     if hasattr(policy, "warmup"):
         policy.warmup(3)  # type: ignore[attr-defined]
     server = PolicyServer(policy, host=args.host, port=args.port)
@@ -460,7 +459,6 @@ def cmd_deploy(args: argparse.Namespace) -> int:
     from evla.deploy.safety import SafetyConfig
     from evla.deploy.server import RemotePolicy
     from evla.envs.registry import make_env
-    from evla.models.registry import load_policy
 
     cfg = _load_yaml(args.config) if args.config else {}
     rt_cfg = RuntimeConfig.from_dict({**cfg.get("runtime", {}), **({"episodes": args.episodes} if args.episodes else {})})
@@ -478,7 +476,7 @@ def cmd_deploy(args: argparse.Namespace) -> int:
     if args.remote:
         policy = RemotePolicy(args.remote_host, args.remote_port)
     else:
-        policy = load_policy(dict(cfg.get("policy", {})))
+        policy, _ = _build_policy(dict(cfg.get("policy", {})), cfg.get("optimize"), profile=False)
     if hasattr(policy, "warmup"):
         policy.warmup(3)  # type: ignore[attr-defined]
 

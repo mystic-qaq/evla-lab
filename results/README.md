@@ -16,10 +16,11 @@ editing. Each directory is self-describing:
 
 | directory | what it answers |
 |---|---|
-| `pusht_learning_curve/` | does more fine-tuning keep helping? (zero-shot vs 4k/8k/12k/16k/20k, plus LoRA r=16) |
-| `pusht_sweep/` | precision × execution mode × flow steps at fixed weights |
-| `pusht_toy_chunking/` | receding vs open-loop vs temporal ensembling on the toy task (CPU) |
-| `videos/` | recorded rollouts of the fine-tuned policy |
+| `pusht_learning_curve/` | does more fine-tuning keep helping? (zero-shot vs 4k/8k/12k/16k/20k) |
+| `pusht_sweep/` | precision × compile × flow steps × execution mode at fixed weights |
+| `pusht_lora/` | LoRA r=16 vs default expert-only fine-tuning at matched steps |
+| `toy_chunking/` | receding vs open-loop vs temporal ensembling on the toy task (CPU) |
+| `videos/` | recorded rollout of the fine-tuned policy (the frame sequence behind the README gif) |
 | `deploy_sim.json` | fixed-rate deployment runtime report (deadline misses, safety counters) |
 
 Regenerate any markdown without a GPU:

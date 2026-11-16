@@ -1,0 +1,22 @@
+{
+  "episodes": 3,
+  "successes": 0,
+  "success_rate": 0.0,
+  "steps": 900,
+  "inference_calls": 45,
+  "inference_calls_per_step": 0.05,
+  "deadline_misses": 0,
+  "deadline_miss_rate": 0.0,
+  "budget_used_mean": 0.0315,
+  "latency_p50_ms": 0.01,
+  "latency_p95_ms": 2.7,
+  "latency_max_ms": 75.55,
+  "safety": {
+    "clipped": 0,
+    "rate_limited": 12,
+    "nonfinite": 0,
+    "timeouts": 0,
+    "estop_events": 0
+  },
+  "wall_time_s": 89.8
+}

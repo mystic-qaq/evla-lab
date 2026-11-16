@@ -1,0 +1,43 @@
+# Parameter-efficient (LoRA r=16) vs default expert-only fine-tuning, at matched steps.
+#
+#   evla sweep -c configs/sweep_lora.yaml --out results/pusht_lora
+#
+# The LoRA checkpoints are adapters (3 MB each); they are merged into the base model
+# first with scripts/merge_lora_adapter.py, because LeRobot cannot serve an adapter
+# directory directly. Same 20 seeds, same execution strategy as the learning curve.
+#
+# Caveat: the two runs use different cosine schedules (20k vs 8k horizons), so this
+# compares *matched step budgets*, not matched learning-rate trajectories.
+
+title: "LoRA r=16 vs expert-only fine-tuning (matched steps)"
+
+policy:
+  type: smolvla
+  device: cuda
+  image_key: top
+  precision: bf16
+
+env:
+  name: pusht
+  max_steps: 300
+
+eval:
+  episodes: 20
+  seed0: 0
+  mode: open_loop
+  execute_steps: 50
+
+reference: expertonly__8k
+
+sweep:
+  - label: expertonly__4k
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/004000/pretrained_model
+
+  - label: expertonly__8k
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/008000/pretrained_model
+
+  - label: lora_r16__4k
+    checkpoint: outputs/smolvla_pusht_lora8k/merged_004000
+
+  - label: lora_r16__8k
+    checkpoint: outputs/smolvla_pusht_lora8k/merged_008000

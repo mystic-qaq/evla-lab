@@ -139,11 +139,20 @@ def apply_optimizations(policy: Policy, spec: OptimizationSpec) -> tuple[Policy,
             result.skipped["num_flow_steps"] = "policy has no set_num_flow_steps()"
 
     if spec.compile:
-        wrapped = CompiledPolicy(policy, mode=spec.compile_mode)
-        policy = wrapped
-        if wrapped.status == "compiled":
-            result.applied["compile"] = spec.compile_mode
+        # Preferred path: the policy knows which callable to compile (for a VLA that
+        # is the denoise/action-chunk forward, not the training forward).
+        if hasattr(policy, "enable_compile"):
+            status = policy.enable_compile(spec.compile_mode)  # type: ignore[attr-defined]
+            if status in ("compiled", "already-compiled"):
+                result.applied["compile"] = spec.compile_mode
+            else:
+                result.skipped["compile"] = status
         else:
-            result.skipped["compile"] = wrapped.status
+            wrapped = CompiledPolicy(policy, mode=spec.compile_mode)
+            policy = wrapped
+            if wrapped.status == "compiled":
+                result.applied["compile"] = spec.compile_mode
+            else:
+                result.skipped["compile"] = wrapped.status
 
     return policy, result

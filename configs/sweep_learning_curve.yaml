@@ -6,10 +6,10 @@
 # strategy (open loop, 50 actions per plan), so the only thing that changes is how
 # much fine-tuning the policy received.
 #
-# Caveat stated up front: the two runs use different cosine schedules (20k vs 8k
-# horizons), so the LoRA rows compare *matched step budgets*, not matched learning
-# rate. The fair claim is "at 8k steps, LoRA r=16 reaches X% with Yx fewer trainable
-# parameters", not "LoRA is better than expert-only full fine-tuning".
+# The LoRA comparison lives in results/pusht_lora/ instead of here: those checkpoints
+# need the adapter merged into the base model first (scripts/merge_lora_adapter.py),
+# and mixing a different trainable-parameter budget into one curve would suggest a
+# continuity that does not exist.
 
 title: "Push-T: success rate vs amount of fine-tuning"
 
@@ -49,9 +49,3 @@ sweep:
 
   - label: expertonly__20k
     checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
-
-  - label: lora_r16__4k
-    checkpoint: outputs/smolvla_pusht_lora8k/checkpoints/004000/pretrained_model
-
-  - label: lora_r16__8k
-    checkpoint: outputs/smolvla_pusht_lora8k/checkpoints/008000/pretrained_model

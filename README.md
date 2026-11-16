@@ -8,10 +8,11 @@
 
 ![chunking](assets/chunking_ab.gif)
 
-*Same policy, same scene, two execution strategies. Re-planning every step reaches
-the moving target; executing an 8-step chunk open-loop commits to a stale plan and
-misses. This trade-off — not raw model accuracy — is what decides control frequency
-and success rate on a real arm, and it is what this repository measures.*
+*Same policy, same scene, two execution strategies. Against a **moving** target,
+re-planning every step wins (77% vs 40% success) because an 8-step plan goes stale.
+Against the **static** Push-T task the ranking flips (finding 3 below): there is no
+motion to track, and re-planning only re-samples noise. Execution strategy is a
+measured choice, not a default — which is the point of this repository.*
 
 ---
 
@@ -31,9 +32,80 @@ Every stage writes a JSON artefact, so a claim is a file, not a memory of a term
 
 ## Results
 
-{{RESULTS_TABLE}}
+SmolVLA-450M fine-tuned on Push-T for 20k steps (single RTX 3090, 4.3 h), evaluated on
+40 paired seeds — 20 for the receding configuration, which needs 300 inferences per
+episode. `best coverage` is the mean closest pose overlap reached (success = 0.95).
 
-{{FINDINGS}}
+| config | exec / chunk | success (95% CI) | control Hz | p50 infer | best coverage |
+|---|---|---|---:|---:|---:|
+| zero-shot checkpoint | 50 / 50 | 0% (0–9%) | 137 | 237 ms | 0.33 |
+| fine-tuned, fp32 | 50 / 50 | 5% (1–17%) | 130 | 250 ms | 0.89 |
+| fine-tuned, bf16 | 50 / 50 | 2% (0–13%) | 127 | 261 ms | 0.95 |
+| + `torch.compile` | 50 / 50 | 8% (3–20%) | **229** | **86 ms** | 0.91 |
+| + compile + 4 flow steps | 50 / 50 | 10% (4–23%) | **270** | **54 ms** | 0.95 |
+| + compile + 4 steps, exec 20 | 20 / 50 | 10% (4–23%) | 185 | 55 ms | 0.95 |
+| receding horizon (exec 1) | 1 / 50 | 0% (0–16%) | 18 | 52 ms | 0.79 |
+| temporal ensemble (exec 10) | 10 / 50 | 5% (1–17%) | 18 | 52 ms | 0.94 |
+
+![pusht](assets/pusht_rollout.gif)
+
+*A fine-tuned rollout (episode 0 of the fixed seed list, nothing cherry-picked). The
+block is pushed onto the target but lands ~45° off, i.e. coverage ≈ 0.9 against the
+0.95 success threshold. This is what a "near miss" looks like, and why the tables below
+report coverage alongside success.*
+
+Full artefacts: [`results/pusht_sweep/REPORT.md`](results/pusht_sweep/REPORT.md),
+[`LEADERBOARD.md`](results/pusht_sweep/LEADERBOARD.md) (paired McNemar),
+[`results/pusht_learning_curve/`](results/pusht_learning_curve),
+[`results/pusht_lora/`](results/pusht_lora).
+
+**1. Fine-tuning changes the failure mode, not just the score.**
+Pose coverage goes 0.33 → 0.95, and the failure taxonomy flips: the pre-trained
+checkpoint **never touches the block in 29 of 40 episodes**; the fine-tuned one never
+fails to reach it and instead lands within a few degrees of the target in **36 of 40**.
+Success goes 0/40 → 4/40 — a 10-point gain that this sample size cannot formally
+resolve (paired McNemar p = 0.125; 160 episodes per arm would be needed for 10% vs
+2.5%). The coverage and taxonomy numbers carry the claim, not the success rate.
+
+**2. `torch.compile` is the single largest win — up to 4.8x — and it costs nothing measurable.**
+237 ms → 261 ms with bf16 (no, bf16 is not faster at batch 1 here) → 86 ms compiled →
+54 ms compiled with 4 flow steps. The action expert is a chain of small shape-stable
+matmuls, so eager launch overhead dominates. Without this, a 10 Hz loop is impossible;
+with it, the loop uses 3% of its budget (see the deployment run below).
+
+**3. Re-planning every step makes this policy *worse*, not better.**
+Same weights: open-loop chunk execution reaches coverage 0.95, receding horizon only
+0.79. A flow-matching policy re-samples its action noise on every call, so re-planning
+20 times a second injects jitter instead of feedback. "Lower latency is always safer"
+is false — the right question is how much plan staleness the task tolerates.
+
+**4. More fine-tuning is not monotone.** Coverage over checkpoints: 0.49 (4k) → 0.76
+(8k) → 0.92 (12k) → **0.73 (16k)** → 0.95 (20k). Selecting the last checkpoint is a
+coin flip; select on validation coverage.
+
+**5. Parameter-efficient tuning is capacity-limited here.** At matched steps, LoRA r=16
+(2.4M trainable) plateaus at coverage 0.48 while the default expert-only fine-tune
+(≈100M trainable) climbs 0.49 → 0.76. For a domain shift this large, low-rank adapters
+need more rank or more data, not just more steps.
+
+## Deployment run: simulator, 10 Hz, safety layer on
+
+```bash
+evla deploy -c configs/deploy.yaml      # fixed-rate loop + policy server + HAL + safety
+```
+
+```
+steps                 900        (3 episodes x 300, at a real 10 Hz)
+inference calls        45        (one per 20 executed actions)
+deadline misses         0        (mean budget use 3.1%, worst step 76 ms of 100 ms)
+safety                 12 / 900 actions rate-limited, 0 e-stop events
+wall time            89.8 s      (== 900 steps / 10 Hz, exactly as scheduled)
+```
+
+That is the difference between "the model runs" and "the loop holds its rate": the
+budget is spent on inference *amortised over chunks*, and when a policy output jumps
+more than 80 px the safety layer rate-limits it instead of letting the arm do it.
+Raw report: [`results/deploy_sim.json`](results/deploy_sim.json).
 
 ## Quickstart — no GPU, no robot, ~1 minute
 
@@ -54,14 +126,15 @@ evla toy-eval --policy outputs/quickstart/toy_flow.npz --episodes 30 --drift 0.0
 ```
 
 ```
-receding-1       80.0% [62.7%, 90.5%] (24/30)   593.5 Hz
-open_loop-8      53.3% [36.1%, 69.8%] (16/30)   799.9 Hz
-temporal_ens-8   73.3% [55.6%, 85.8%] (22/30)   566.7 Hz
+receding-1       76.7% [59.1%, 88.2%] (23/30)   582.4 Hz
+open_loop-8      40.0% [24.6%, 57.7%] (12/30)   802.7 Hz
+temporal_ens-8   60.0% [42.3%, 75.4%] (18/30)   575.0 Hz
 ```
 
 Same weights, same 30 scenes, three execution strategies: **open-loop execution is
-50% faster and 27 points worse** once the target moves. That is the whole argument
-for measuring the trade-off instead of optimizing one number.
+38% faster and 37 points worse** once the target moves. Temporal ensembling recovers
+most of the accuracy at the same control rate as re-planning. That is the whole
+argument for measuring a trade-off instead of optimizing one number.
 
 ## Reproducing the VLA study
 

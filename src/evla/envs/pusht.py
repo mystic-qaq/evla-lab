@@ -44,6 +44,7 @@ class PushTEnv(EmbodiedEnv):
         self._last_frame: np.ndarray | None = None
         self._best_pos_err = float("inf")
         self._max_contacts = 0
+        self._best_coverage = 0.0
 
     def reset(self, *, seed: int | None = None) -> Observation:
         raw, info = self._env.reset(seed=seed)
@@ -51,6 +52,7 @@ class PushTEnv(EmbodiedEnv):
         self._success = bool(info.get("is_success", False))
         self._best_pos_err = self._pose_error(info)
         self._max_contacts = int(info.get("n_contacts", 0))
+        self._best_coverage = max(self._best_coverage, float(info.get("coverage", 0.0)))
         return self._to_obs(raw)
 
     def step(self, action: np.ndarray) -> StepResult:
@@ -62,6 +64,7 @@ class PushTEnv(EmbodiedEnv):
         pos_err = self._pose_error(info)
         self._best_pos_err = min(self._best_pos_err, pos_err)
         self._max_contacts = max(self._max_contacts, int(info.get("n_contacts", 0)))
+        self._best_coverage = max(self._best_coverage, float(info.get("coverage", 0.0)))
         truncated = bool(truncated) or self._t >= self.max_steps
         return StepResult(
             obs=self._to_obs(raw),
@@ -75,6 +78,12 @@ class PushTEnv(EmbodiedEnv):
             # failure taxonomy (never touched the block vs. touched it and missed).
             info={
                 "is_success": success,
+                # `coverage` is the environment's own progress signal: the IoU between
+                # the block and the goal pose. Success is coverage > 0.95, so 0.8 means
+                # "almost solved" while 0.2 means "never got there" -- far more useful
+                # than a binary flag when comparing partly-trained policies.
+                "coverage": float(info.get("coverage", 0.0)),
+                "best_coverage": self._best_coverage,
                 "pos_err": pos_err,
                 "best_pos_err": self._best_pos_err,
                 "max_contacts": self._max_contacts,

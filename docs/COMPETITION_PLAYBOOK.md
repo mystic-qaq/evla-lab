@@ -106,6 +106,6 @@ lines; swapping in another LeRobot policy is a day's work.
 **"What did you actually learn?"**
 That the bottleneck on a real robot is not the model's accuracy but the *staleness
 budget*: how long a plan may be executed blind. That is why the sweep measures
-`execute_steps` at constant weights — and why on the toy task the same policy goes
-from 80% to 53% success when the plan is executed open-loop against a faster-moving
-target.
+`execute_steps` at constant weights — and why on the toy task the same policy drops
+from 77% to 40% success when its 8-step plan is executed open-loop against a
+faster-moving target.

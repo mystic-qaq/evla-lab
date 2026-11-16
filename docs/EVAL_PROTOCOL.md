@@ -80,6 +80,8 @@ direction* — which is the actual evidence. `evla leaderboard` reports
 
 | metric | why it matters | where |
 |---|---|---|
+| `best coverage` | graded pose overlap (success = 0.95); the only signal that moves before success does | `EvalResult.mean_best_coverage` |
+| failure class | near miss vs never contacted vs touched-but-missed | `evla.eval.failure` |
 | `control_hz` | effective closed-loop rate = 1 / mean step time | `EvalResult.control_hz` |
 | `p50/p95/p99` inference | p95 decides whether the arm stalls | `InstrumentedPolicy.stats` |
 | `action_reuse` | steps executed per inference (chunk amortisation) | `ChunkExecutor.stats` |
@@ -89,6 +91,28 @@ direction* — which is the actual evidence. `evla leaderboard` reports
 
 A configuration is only "better" if it improves success **at the same or lower
 latency**. That is the Pareto view in `docs/OPTIMIZATION.md`.
+
+## 4b. Determinism, chaos, and why a single rollout proves nothing
+
+Rollouts are seeded end to end (`evla.eval.runner.seed_everything`): the scene, NumPy,
+Torch and therefore the flow-matching initial noise. Even so, two runs of the *same*
+checkpoint can disagree:
+
+* a flow-matching policy samples its action noise each time it re-plans;
+* Push-T is contact-rich, so a millimetre difference in approach angle changes the
+  block's final pose;
+* `torch.compile` and bf16 change kernel fusion and summation order, which is enough
+  to move a chaotic trajectory.
+
+Observed in this repository: the same 8k checkpoint scored 2/10 in one run and 0/20 in
+another with identical settings. That is not a bug -- it is the reason single-rollout
+claims ("it worked when I demoed it") are worthless and why the tables here report
+intervals. It also explains the discrete-looking coverage values: the policy drives the
+block into one of a few terminal poses, so coverage takes a handful of values rather
+than a continuum.
+
+Practical consequence: compare *configurations*, never individual episodes, and do not
+read a 1-2 episode difference at 20 episodes as a result.
 
 ## 5. Common ways these numbers get inflated (and how they are blocked here)
 

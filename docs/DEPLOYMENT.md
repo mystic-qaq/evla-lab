@@ -32,10 +32,17 @@ Measured on one RTX 3090 (bf16, 4 flow steps, 96×96 input, batch 1):
 
 | quantity | value | consequence |
 |---|---|---|
-| one `predict_chunk` (H=50) | ~100–140 ms | fits a 10 Hz period (100 ms) only marginally |
-| env step (MuJoCo Push-T) | ~1–5 ms | negligible |
+| one `predict_chunk`, fp32 / 10 flow steps | ~340 ms | cannot hold 10 Hz, cannot even hold 5 Hz |
+| one `predict_chunk`, bf16 / 10 flow steps | ~255 ms | still ~4 Hz |
+| one `predict_chunk`, bf16 / 4 flow steps | ~135 ms | marginal at 10 Hz |
+| one `predict_chunk`, bf16 / 4 steps / compiled | **~50 ms** | comfortable at 10 Hz, 20 Hz at p50 |
+| env step (MuJoCo Push-T) | ~1–3 ms | negligible |
 | TCP round trip, localhost | ~0.3 ms | negligible; not the bottleneck |
 | chunk horizon in *seconds* | 50 / 10 Hz = **5 s** | the arm is blind for up to 5 s if executed open-loop |
+
+The compile row is what makes the loop viable: it is a 2.7x win over eager bf16 at
+identical weights, and it moves the operating point from "cannot hold the control
+rate" to "holds it with 2x margin".
 
 That last row is the real deployment problem. It is why `execute_steps` exists and
 why the sweep measures `execute_steps ∈ {1, 20, 50}` at identical weights: **the
