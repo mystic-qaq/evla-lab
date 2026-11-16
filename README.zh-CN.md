@@ -121,13 +121,16 @@ temporal_ens-8   60.0% [42.3%, 75.4%] (18/30)   575.0 Hz
 
 ## 复现 VLA 实验
 
-需要一张 24GB 显卡。RTX 3090 上的实测耗时：微调约 4.3 小时，评测矩阵约 25 分钟。
+需要一张 24GB 显卡。RTX 3090 上的实测耗时：微调 4.3 小时、学习曲线约 10 分钟、
+优化矩阵约 35 分钟、部署演示约 2 分钟。
 
 ```bash
 bash scripts/setup_env.sh                    # 建 .venv，装 torch + lerobot + evla
 bash scripts/download_assets.sh              # SmolVLA-base（873MB）+ Push-T 数据集
 evla finetune -c configs/finetune_smolvla_pusht.yaml
-evla sweep    -c configs/sweep_pusht.yaml    # 8 组配置，全部使用同一批随机种子
+evla sweep    -c configs/sweep_learning_curve.yaml   # 6 个 checkpoint，各 20 个种子
+evla sweep    -c configs/sweep_pusht.yaml            # 8 组配置，各 40 个种子
+evla deploy   -c configs/deploy.yaml                 # 10 Hz 定频回路
 ```
 
 `evla sweep` 产出 `results/pusht_sweep/{REPORT.md, LEADERBOARD.md, *.json, *.png}`。

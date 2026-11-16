@@ -138,13 +138,16 @@ argument for measuring a trade-off instead of optimizing one number.
 
 ## Reproducing the VLA study
 
-Requires one 24 GB GPU. Wall-clock on an RTX 3090: ~4.3 h fine-tune + ~25 min sweep.
+Requires one 24 GB GPU. Wall-clock on an RTX 3090: 4.3 h fine-tune, ~10 min learning
+curve, ~35 min optimisation matrix, ~2 min deployment run.
 
 ```bash
 bash scripts/setup_env.sh                    # torch + lerobot + evla in .venv
 bash scripts/download_assets.sh              # SmolVLA-base (873 MB) + Push-T dataset
 evla finetune -c configs/finetune_smolvla_pusht.yaml
-evla sweep    -c configs/sweep_pusht.yaml    # 8 configs, all on identical seeds
+evla sweep    -c configs/sweep_learning_curve.yaml   # 6 checkpoints, 20 seeds each
+evla sweep    -c configs/sweep_pusht.yaml            # 8 configs, 40 seeds each
+evla deploy   -c configs/deploy.yaml                 # fixed-rate loop, 10 Hz
 ```
 
 `evla sweep` produces `results/pusht_sweep/{REPORT.md, LEADERBOARD.md, *.json, *.png}`.
