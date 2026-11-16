@@ -1,6 +1,6 @@
 # Leaderboard
 
-Reference config: **expertonly__4k**
+Reference config: **expertonly__8k**
 
 | rank | config | success | 95% CI | Δ vs ref | wins/losses | McNemar p | control Hz |
 |------|--------|---------|--------|----------|-------------|-----------|------------|

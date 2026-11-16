@@ -16,4 +16,3 @@ Reference config: **ft__bf16__compile__flow4__ope20**
 * marks p < 0.05.
 
 Paired McNemar test over identical seeds; delta is absolute success-rate change.
-

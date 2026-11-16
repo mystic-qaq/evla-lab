@@ -107,9 +107,9 @@ reported as "no detectable difference" rather than as wins.
 - **bf16 alone buys nothing at batch 1.** 250 ms (fp32) vs 261 ms (bf16) is within
   run-to-run variance; the win only appears once the kernel-launch overhead is removed
   by compilation. Reporting "bf16 gives 2x" would have been wrong here.
-- **Flow steps trade latency for a small, measurable accuracy cost.** 86 ms → 54 ms
-  going 10 → 4 steps, coverage 0.91 → 0.95 (no detectable cost at this n). Below 4
-  steps the denoiser stops being a reliable sampler, so 4 is the operating point.
+- **Cutting the denoiser from 10 to 4 steps is 86 ms → 54 ms with no measurable
+  accuracy cost** (coverage 0.91 → 0.95, i.e. inside the noise). Below 4 steps the
+  sampler starts to matter, so 4 is the operating point -- measured, not assumed.
 - **Chunk length beats reactivity for a stochastic policy.** Open-loop execution
   reaches coverage 0.95; receding (re-plan every step) only 0.79, because every
   re-plan re-samples the flow noise. Temporal ensembling recovers most of it (0.94)
@@ -127,8 +127,10 @@ ordering is suggestive.
 ## 6. What the numbers imply for a real deployment
 
 * **Choose the operating point by staleness, not by FPS.** A 50-action chunk at 10 Hz
-  means up to 5 s of blind execution; for a dynamic task, `execute_steps` of 10-20 is
-  the defensible choice even though it is ~2-4× more inference.
+  means up to 5 s of blind execution. On the *static* Push-T task chunks of 20-50 are
+  fine (coverage 0.95); on the *moving* toy task an 8-step chunk cost 37 points of
+  success. The task decides, and it has to be measured -- see the toy study in
+  `results/toy_chunking/`.
 * **bf16 is free speed in this setup** and it is the first thing to turn on.
 * **Shortening the flow denoiser trades a measurable amount of accuracy for
   latency** — worth it only if the accuracy loss is inside the CI, and it usually is

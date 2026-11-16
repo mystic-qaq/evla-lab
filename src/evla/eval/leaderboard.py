@@ -48,9 +48,19 @@ def paired_counts(reference: EvalResult, other: EvalResult) -> tuple[int, int, i
 
 
 def build_leaderboard(results: list[EvalResult], reference: str | None = None) -> dict:
+    """Rank configs and compare each against a reference with a paired McNemar test.
+
+    When no reference is given, the best-performing config is used -- defaulting to
+    the first result alphabetically makes every delta meaningless.
+    """
     if not results:
         return {"rows": [], "reference": None}
-    ref = next((r for r in results if r.label == reference), results[0])
+    if reference is None:
+        ref = max(results, key=lambda r: r.rate_estimate.rate)
+    else:
+        ref = next((r for r in results if r.label == reference), None)
+        if ref is None:
+            raise ValueError(f"reference {reference!r} not among {[r.label for r in results]}")
     rows = []
     for r in sorted(results, key=lambda x: -x.rate_estimate.rate):
         est = r.rate_estimate
