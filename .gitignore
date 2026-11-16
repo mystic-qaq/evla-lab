@@ -1,0 +1,29 @@
+# ---- python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ---- project artefacts (anchored: only at the repo root) ----
+/outputs/
+/data/
+/checkpoints/
+/logs/
+/wandb/
+*.mp4
+*.npz
+!assets/*.gif
+
+# ---- OS / editors ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

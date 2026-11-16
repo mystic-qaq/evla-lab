@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evla-lab"
+version = "0.1.0"
+description = "End-to-end Vision-Language-Action pipeline: fine-tuning -> inference optimization -> robot deployment -> statistically rigorous success-rate evaluation"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "evla-lab contributors" }]
+keywords = ["robotics", "embodied-ai", "vision-language-action", "imitation-learning", "inference-optimization"]
+dependencies = [
+  "numpy>=1.24",
+  "pyyaml>=6.0",
+  "tqdm>=4.66",
+  "matplotlib>=3.7",
+]
+
+[project.optional-dependencies]
+sim = ["gym-pusht>=0.1.5", "pygame>=2.5", "imageio>=2.31", "imageio-ffmpeg>=0.4"]
+vla = ["torch>=2.1", "lerobot>=0.3.3", "transformers>=4.45", "peft>=0.11"]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[project.scripts]
+evla = "evla.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
