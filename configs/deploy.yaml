@@ -1,0 +1,48 @@
+# Deployment runtime configuration (simulator by default).
+#
+#   evla deploy -c configs/deploy.yaml                      # sim, in-process policy
+#   evla serve  -c configs/deploy.yaml --port 5599 &        # policy server
+#   evla deploy -c configs/deploy.yaml --remote             # sim, remote policy
+#
+# IMPORTANT: safety limits are task-specific. Push-T actions are end-effector
+# coordinates in PIXELS (0..512), not normalised [-1, 1] -- copying the toy-task
+# limits here would clamp every action to a corner of the workspace. This is exactly
+# the "action-space mismatch" failure mode described in docs/DEPLOYMENT.md.
+
+policy:
+  type: smolvla
+  checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
+  device: cuda
+  precision: bf16
+  num_flow_steps: 4
+  image_key: top
+
+env:
+  name: pusht
+  max_steps: 300
+
+runtime:
+  control_hz: 10
+  max_steps: 300
+  episodes: 3
+  seed: 0
+  mode: open_loop
+  execute_steps: 20
+  realtime: true
+
+safety:
+  action_min: [0.0, 0.0]
+  action_max: [512.0, 512.0]
+  max_delta: 80.0          # pixels per control step (~16% of the workspace)
+  max_latency_ms: 250
+  max_consecutive_violations: 5
+  hold_last_on_timeout: true
+
+# Only used with `--backend so101`. Units are the vendor's (degrees for SO-101).
+# Replace the pixel limits above with the calibrated joint range before using it.
+hardware:
+  port: /dev/ttyACM0
+  robot_id: evla_follower
+  max_relative_target: 5.0
+  action_scale: 1.0
+  control_hz: 10

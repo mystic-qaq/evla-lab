@@ -1,0 +1,37 @@
+# Fine-tuning SmolVLA-450M on Push-T.
+#
+# Every flag here exists for a reason:
+#   empty_cameras=2      SmolVLA was pre-trained with 3 cameras; Push-T has one.
+#                        The missing channels are masked out, not hallucinated.
+#   chunk_size=50        Predict 50 steps (5 s at the dataset's 10 Hz), train the
+#                        flow-matching expert to denoise the whole chunk.
+#   video_backend=pyav   torchcodec needs system FFmpeg libs; PyAV is bundled.
+#   rename_map           the dataset calls its camera `observation.image`; the
+#                        checkpoint expects `observation.images.camera1`.
+#
+# The trainer is LeRobot's own `lerobot-train`; see docs/ARCHITECTURE.md for why
+# this repository wraps rather than reimplements it.
+
+policy:
+  base_checkpoint: checkpoints/smolvla_base
+  repo_id: local/evla-smolvla-pusht
+  device: cuda
+  empty_cameras: 2
+  chunk_size: 50
+  n_action_steps: 50
+
+dataset:
+  repo_id: lerobot/pusht
+  root: data/pusht
+  video_backend: pyav
+  rename_map:
+    observation.image: observation.images.camera1
+
+train:
+  batch_size: 32
+  steps: 20000
+  save_freq: 4000
+  log_freq: 100
+  num_workers: 6
+  output_dir: outputs/smolvla_pusht_20k
+  job_name: smolvla_pusht_20k

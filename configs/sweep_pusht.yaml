@@ -1,0 +1,87 @@
+# The main experiment: fine-tuning quality *and* inference cost on Push-T.
+#
+# Read this file as the experimental design:
+#   A. zero-shot vs fine-tuned          -> does adaptation work at all?
+#   B. execution mode (receding / open-loop / temporal ensembling)
+#                                        -> latency vs reactivity, same weights
+#   C. precision fp32 vs bf16           -> free speedup?
+#   D. flow-matching steps 10 / 4 / 2   -> how far can the denoiser be shortened?
+#
+# All configs share `seeds = seed0 .. seed0+episodes`, so every comparison is
+# paired and can be tested with McNemar (see evla/eval/leaderboard.py).
+#
+#   evla sweep -c configs/sweep_pusht.yaml --out results/pusht_sweep
+
+title: "SmolVLA on Push-T: fine-tuning and inference-cost study"
+
+policy:
+  type: smolvla
+  device: cuda
+  image_key: top
+
+env:
+  name: pusht
+  max_steps: 300
+
+eval:
+  episodes: 20
+  seed0: 0
+  video: false
+
+reference: ft__fp32__ope50
+
+sweep:
+  # A. does fine-tuning help?
+  - label: zeroshot__ope50
+    checkpoint: checkpoints/smolvla_base
+    precision: fp32
+    mode: open_loop
+    execute_steps: 50
+
+  - label: ft__fp32__ope50
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
+    precision: fp32
+    mode: open_loop
+    execute_steps: 50
+
+  # C. precision
+  - label: ft__bf16__ope50
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
+    precision: bf16
+    mode: open_loop
+    execute_steps: 50
+
+  # B. execution strategy
+  - label: ft__bf16__ope20
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
+    precision: bf16
+    mode: open_loop
+    execute_steps: 20
+
+  - label: ft__bf16__receding
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
+    precision: bf16
+    mode: receding
+    execute_steps: 1
+    episodes: 10          # 300 inferences per episode: budgeted separately
+
+  - label: ft__bf16__ens10
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
+    precision: bf16
+    mode: temporal_ens
+    execute_steps: 10
+
+  # D. flow-matching steps
+  - label: ft__bf16__flow4__ope50
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
+    precision: bf16
+    num_flow_steps: 4
+    mode: open_loop
+    execute_steps: 50
+
+  - label: ft__bf16__flow2__ope50
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
+    precision: bf16
+    num_flow_steps: 2
+    mode: open_loop
+    execute_steps: 50

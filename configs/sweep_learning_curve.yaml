@@ -1,0 +1,57 @@
+# Learning curve + parameter-efficient vs expert-only adaptation.
+#
+#   evla sweep -c configs/sweep_learning_curve.yaml --out results/pusht_learning_curve
+#
+# One row per checkpoint, all evaluated on the same 20 seeds at the same execution
+# strategy (open loop, 50 actions per plan), so the only thing that changes is how
+# much fine-tuning the policy received.
+#
+# Caveat stated up front: the two runs use different cosine schedules (20k vs 8k
+# horizons), so the LoRA rows compare *matched step budgets*, not matched learning
+# rate. The fair claim is "at 8k steps, LoRA r=16 reaches X% with Yx fewer trainable
+# parameters", not "LoRA is better than expert-only full fine-tuning".
+
+title: "Push-T: success rate vs amount of fine-tuning"
+
+policy:
+  type: smolvla
+  device: cuda
+  image_key: top
+  precision: bf16
+
+env:
+  name: pusht
+  max_steps: 300
+
+eval:
+  episodes: 20
+  seed0: 0
+  mode: open_loop
+  execute_steps: 50
+
+reference: base__zeroshot
+
+sweep:
+  - label: base__zeroshot
+    checkpoint: checkpoints/smolvla_base
+
+  - label: expertonly__4k
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/004000/pretrained_model
+
+  - label: expertonly__8k
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/008000/pretrained_model
+
+  - label: expertonly__12k
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/012000/pretrained_model
+
+  - label: expertonly__16k
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/016000/pretrained_model
+
+  - label: expertonly__20k
+    checkpoint: outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model
+
+  - label: lora_r16__4k
+    checkpoint: outputs/smolvla_pusht_lora8k/checkpoints/004000/pretrained_model
+
+  - label: lora_r16__8k
+    checkpoint: outputs/smolvla_pusht_lora8k/checkpoints/008000/pretrained_model

@@ -1,0 +1,25 @@
+# Base evaluation config for a single Push-T run.
+#
+#   evla eval -c configs/eval_pusht.yaml \
+#        --checkpoint outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model \
+#        --out results/pusht_smoke/expertonly__20k.json
+#
+# The label is derived from the checkpoint path (run name + step) so that repeated
+# runs cannot silently overwrite each other.
+
+policy:
+  type: smolvla
+  device: cuda
+  precision: bf16
+  image_key: top
+
+env:
+  name: pusht
+  max_steps: 300
+
+eval:
+  episodes: 20
+  seed0: 0
+  mode: open_loop
+  execute_steps: 50
+  video: false

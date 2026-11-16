@@ -1,0 +1,26 @@
+# Record a Push-T rollout with the fine-tuned policy (for the README asset).
+#
+#   evla eval -c configs/eval_pusht_video.yaml \
+#        --checkpoint outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model \
+#        --out results/videos/pusht_20k.json
+#
+# Episode 0 of the fixed seed list is recorded; nothing is cherry-picked.
+
+policy:
+  type: smolvla
+  device: cuda
+  precision: bf16
+  image_key: top
+  num_flow_steps: 4
+
+env:
+  name: pusht
+  max_steps: 300
+
+eval:
+  episodes: 10
+  seed0: 0
+  mode: open_loop
+  execute_steps: 20
+  video: results/videos/pusht_demo.mp4
+  label: pusht_demo
