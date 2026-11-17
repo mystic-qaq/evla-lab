@@ -92,6 +92,44 @@ count.
 (≈100M trainable) climbs 0.49 → 0.76. For a domain shift this large, low-rank adapters
 need more rank or more data, not just more steps.
 
+## Why 10%? A diagnosis, not an excuse
+
+Push-T counts an episode as solved only when the block's pose IoU with the goal exceeds
+0.95 -- position *and* orientation. A T-block rotated by ~30 degrees is already below
+0.8. The fine-tuned policy sits at 0.95 mean best coverage: it repeatedly lands *on*
+the threshold without crossing it on enough frames.
+
+The failure taxonomy says the same thing from the other side. Zero-shot **never touches
+the block in 29 of 40 episodes**; the fine-tuned policy never fails to reach it and is
+a near miss (coverage >= 0.85) in **36 of 40**. This is a precision failure, not a
+competence failure.
+
+Five plausible explanations were tested and rejected:
+
+| hypothesis | measurement | verdict |
+|---|---|---|
+| the 50-action plan goes stale | execute 50 / 20 / 10 all give 4/40 | not the cause |
+| re-planning every step fixes it | receding: 0/20, coverage 0.95 -> 0.79 | worse, not better |
+| too few denoising steps | 10 steps 0.95 vs 4 steps 0.91 | inside the noise at n=40 |
+| simply undertrained | stage-2 continuation: 0.91 -> 0.83 | worse |
+| model capacity | LoRA r16 stalls at 0.48, expert-only reaches 0.95 | mattered, is no longer the limit |
+
+What is left is data. Two hundred demonstrations and four GPU-hours teach "push the
+block onto the target", not "when the pose is 10 degrees off, nudge it this way". The
+last five percent of contact-rich precision comes from correction segments in the
+demonstrations, and this dataset has few of them.
+
+Two honest caveats. 4/40 has a Wilson interval of 4-23%, and the same checkpoint has
+scored 2/10 in one run and 0/20 in another -- "10%" is an order of magnitude, not a
+measurement. And `torch.compile` changes kernel fusion, which is enough to move a
+chaotic contact trajectory; that is why every table here compares configurations on the
+same seed list rather than individual episodes.
+
+What would actually move it, ordered by expected payoff: better demonstrations (the only
+real lever), checkpoint selection on validation coverage (12k scores 0.92 while 16k
+scores 0.73 -- 19 free points), and 160 episodes per arm before claiming any 10-point
+difference.
+
 ## Deployment run: simulator, 10 Hz, safety layer on
 
 ```bash
