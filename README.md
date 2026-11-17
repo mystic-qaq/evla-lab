@@ -92,6 +92,38 @@ count.
 (≈100M trainable) climbs 0.49 → 0.76. For a domain shift this large, low-rank adapters
 need more rank or more data, not just more steps.
 
+## The data: where it comes from, and what it can teach
+
+`lerobot/pusht` is not ours. It is the Push-T demonstration set released with Diffusion
+Policy (Chi et al., arXiv 2303.04137, MIT licence), repackaged in the LeRobot format.
+The original zarr archive is still at diffusion-policy.cs.columbia.edu; the Hub copy
+changes the container (parquet + AV1 video), renames the keys to
+`observation.state` / `observation.image` / `action`, and adds one task string. The
+demonstrations are human teleoperation; the paper documents a 3Dconnexion SpaceMouse for
+its real-robot stations and does not state the device for the simulator set.
+
+`python scripts/audit_dataset.py --root data/pusht` prints all of this from the copy on
+disk. Three properties matter more than the size:
+
+- **Episodes are 49-246 frames (median 122), not 300.** That is 5-25 s of human control,
+  ending when the operator decided the block was in place. A 300-step evaluation asks the
+  policy to stay stable for 2.5x longer than the median demonstration.
+- **The action is an absolute end-effector target, not a delta**, and the state is a
+  position with no velocity. Velocity has to be inferred from context -- which is why the
+  toy environment in this repo carries target velocity explicitly, and why a policy here
+  reacts late to a block that is already rolling.
+- **No demonstration reaches the success threshold.** The reward column is
+  `clip(coverage / 0.95, 0, 1)`; converted back, peak coverage runs 0.77-0.90 (median
+  0.85) and **0 of 206 crosses 0.95**. The reading is insensitive to which convention the
+  converter used: no reward value reaches 1.0, so no episode ever triggered the clipped
+  success value.
+
+That last point reframes the whole result. The policy is fitted to trajectories that
+never solve the task themselves, so it learns to stop where the human stopped. Any
+success it reaches -- the 4/40 in the sweep -- is generalisation past the demonstrations,
+not imitation of them. It also means "improve the demonstrations" is not a hand-wave: the
+teacher's own ceiling is 0.90, and no amount of extra fitting moves it.
+
 ## Why 10%? A diagnosis, not an excuse
 
 Push-T counts an episode as solved only when the block's pose IoU with the goal exceeds
@@ -114,10 +146,12 @@ Five plausible explanations were tested and rejected:
 | simply undertrained | stage-2 continuation: 0.91 -> 0.83 | worse |
 | model capacity | LoRA r16 stalls at 0.48, expert-only reaches 0.95 | mattered, is no longer the limit |
 
-What is left is data. Two hundred demonstrations and four GPU-hours teach "push the
-block onto the target", not "when the pose is 10 degrees off, nudge it this way". The
-last five percent of contact-rich precision comes from correction segments in the
-demonstrations, and this dataset has few of them.
+What is left is data -- and unlike the five rows above, it can be measured directly: no
+demonstration in the set crosses 0.95 either, and the median one stops at 0.85 (see the
+data section above). Four GPU-hours on two hundred demonstrations teach "push the block
+onto the target", not "when the pose is 10 degrees off, nudge it this way". The last five
+percent of contact-rich precision lives in correction segments the teacher never
+performed.
 
 Two honest caveats. 4/40 has a Wilson interval of 4-23%, and the same checkpoint has
 scored 2/10 in one run and 0/20 in another -- "10%" is an order of magnitude, not a
