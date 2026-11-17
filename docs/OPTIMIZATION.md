@@ -91,6 +91,11 @@ Learning curve (same execution strategy, 20 seeds each): coverage 0.30 (zero-sho
 0.49 (4k) → 0.76 (8k) → 0.92 (12k) → 0.73 (16k) → 0.95 (20k); success stays 0 until
 20k (1/20, then 4/40 in the sweep).
 
+A stage-2 continuation (another 10k steps from the 20k checkpoint at half the LR, fresh
+cosine) did not help: coverage 0.91 at 22.5k and 0.83 at 25k, below the 0.95 of the 20k
+checkpoint it started from (`results/pusht_stage2/`). Restarting the schedule perturbs a
+converged optimum; the honest reading is that this task was not step-starved.
+
 Failure taxonomy at 20k: zero-shot **never contacts the block in 29/40 episodes**; the
 fine-tuned policy never fails to reach it and is a *near miss* (coverage ≥ 0.85) in
 36/40. Receding-horizon execution converts 11/20 episodes from near-miss into

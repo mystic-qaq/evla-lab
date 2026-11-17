@@ -79,9 +79,13 @@ Same weights: open-loop chunk execution reaches coverage 0.95, receding horizon 
 20 times a second injects jitter instead of feedback. "Lower latency is always safer"
 is false — the right question is how much plan staleness the task tolerates.
 
-**4. More fine-tuning is not monotone.** Coverage over checkpoints: 0.49 (4k) → 0.76
-(8k) → 0.92 (12k) → **0.73 (16k)** → 0.95 (20k). Selecting the last checkpoint is a
-coin flip; select on validation coverage.
+**4. More fine-tuning is not monotone — and a warm restart can undo it.** Coverage over
+checkpoints: 0.49 (4k) → 0.76 (8k) → 0.92 (12k) → **0.73 (16k)** → 0.95 (20k).
+Continuing the same run for another 5k steps at half the learning rate with a fresh
+cosine schedule made it *worse*: 0.91 at 22.5k, 0.83 at 25k
+([`results/pusht_stage2/`](results/pusht_stage2)). The 20k point was the optimum of that
+schedule, not of "more steps". Select checkpoints on validation coverage, never by step
+count.
 
 **5. Parameter-efficient tuning is capacity-limited here.** At matched steps, LoRA r=16
 (2.4M trainable) plateaus at coverage 0.48 while the default expert-only fine-tune
