@@ -1,0 +1,70 @@
+{
+  "seeds": "30000-30199",
+  "episodes_per_arm": 200,
+  "arms": [
+    {
+      "arm": "old_h50_exec20",
+      "description": "old 20k checkpoint, 50-action chunks, execute 20",
+      "successes": 16,
+      "episodes": 200,
+      "rate": 0.08,
+      "ci_lo": 0.0498,
+      "ci_hi": 0.126
+    },
+    {
+      "arm": "human_only_12k",
+      "description": "human demos only, corrected loss, h16/exec8",
+      "successes": 40,
+      "episodes": 200,
+      "rate": 0.2,
+      "ci_lo": 0.1505,
+      "ci_hi": 0.2609
+    },
+    {
+      "arm": "teacher_only_12k",
+      "description": "626 successful teacher rollouts only",
+      "successes": 59,
+      "episodes": 200,
+      "rate": 0.295,
+      "ci_lo": 0.2361,
+      "ci_hi": 0.3616
+    },
+    {
+      "arm": "mixed_6k",
+      "description": "4x human + 626 teacher, selected checkpoint",
+      "successes": 65,
+      "episodes": 200,
+      "rate": 0.325,
+      "ci_lo": 0.2639,
+      "ci_hi": 0.3927
+    }
+  ],
+  "steps": [
+    {
+      "from": "old_h50_exec20",
+      "to": "human_only_12k",
+      "wins": 12,
+      "losses": 36,
+      "mcnemar_p": 0.0007172696733945827,
+      "rate_ratio": 2.5
+    },
+    {
+      "from": "human_only_12k",
+      "to": "teacher_only_12k",
+      "wins": 29,
+      "losses": 48,
+      "mcnemar_p": 0.039539532877977755,
+      "rate_ratio": 1.475
+    },
+    {
+      "from": "teacher_only_12k",
+      "to": "mixed_6k",
+      "wins": 37,
+      "losses": 43,
+      "mcnemar_p": 0.5764306261883931,
+      "rate_ratio": 1.102
+    }
+  ],
+  "overall_ratio": 4.062,
+  "note": "Paired exact McNemar on identical seeds. The mixing step is not resolved at n=200."
+}

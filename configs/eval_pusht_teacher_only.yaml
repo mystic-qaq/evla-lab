@@ -1,0 +1,20 @@
+# Ablation arm: 626 successful teacher rollouts only, ten flow steps.
+# Same 200 held-out seeds as the headline result; see results/pusht_retrain_20261118/ablation.
+policy:
+  type: smolvla
+  checkpoint: outputs/pusht_retrain_20261118/smolvla_success_large_h16/checkpoints/012000/pretrained_model
+  device: cuda
+  precision: bf16
+  num_flow_steps: 10
+  image_key: top
+env:
+  name: pusht
+  max_steps: 300
+optimize:
+  compile: true
+eval:
+  episodes: 200
+  seed0: 30000
+  mode: open_loop
+  execute_steps: 8
+  label: arm_teacher_only

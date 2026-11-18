@@ -1,0 +1,1703 @@
+{
+  "scheduler": "DDIM",
+  "denoise_steps": 16,
+  "batch_size": 16,
+  "successes": 155,
+  "success_rate": 0.60546875,
+  "ci_lo": 0.5444625238945793,
+  "ci_hi": 0.6633565063905884,
+  "mean_best_coverage": 0.9101668973193335,
+  "episodes": [
+    {
+      "seed": 40000,
+      "success": false,
+      "best_coverage": 0.9150548006999595,
+      "steps": 300
+    },
+    {
+      "seed": 40001,
+      "success": true,
+      "best_coverage": 0.9676192335261384,
+      "steps": 296,
+      "dataset_episode": 0
+    },
+    {
+      "seed": 40002,
+      "success": true,
+      "best_coverage": 0.9662510163501001,
+      "steps": 143,
+      "dataset_episode": 1
+    },
+    {
+      "seed": 40003,
+      "success": false,
+      "best_coverage": 0.9189476307976077,
+      "steps": 300
+    },
+    {
+      "seed": 40004,
+      "success": true,
+      "best_coverage": 0.9674079159449402,
+      "steps": 201,
+      "dataset_episode": 2
+    },
+    {
+      "seed": 40005,
+      "success": true,
+      "best_coverage": 0.9507300066718063,
+      "steps": 215,
+      "dataset_episode": 3
+    },
+    {
+      "seed": 40006,
+      "success": true,
+      "best_coverage": 0.9508801624822057,
+      "steps": 296,
+      "dataset_episode": 4
+    },
+    {
+      "seed": 40007,
+      "success": false,
+      "best_coverage": 0.9262474121293193,
+      "steps": 300
+    },
+    {
+      "seed": 40008,
+      "success": false,
+      "best_coverage": 0.6918286910395575,
+      "steps": 300
+    },
+    {
+      "seed": 40009,
+      "success": true,
+      "best_coverage": 0.9646587476871529,
+      "steps": 160,
+      "dataset_episode": 5
+    },
+    {
+      "seed": 40010,
+      "success": true,
+      "best_coverage": 0.9538413525214494,
+      "steps": 140,
+      "dataset_episode": 6
+    },
+    {
+      "seed": 40011,
+      "success": true,
+      "best_coverage": 0.9558895080117317,
+      "steps": 264,
+      "dataset_episode": 7
+    },
+    {
+      "seed": 40012,
+      "success": true,
+      "best_coverage": 0.9538984913760369,
+      "steps": 216,
+      "dataset_episode": 8
+    },
+    {
+      "seed": 40013,
+      "success": true,
+      "best_coverage": 0.9512103972275402,
+      "steps": 160,
+      "dataset_episode": 9
+    },
+    {
+      "seed": 40014,
+      "success": false,
+      "best_coverage": 0.9410225803991212,
+      "steps": 300
+    },
+    {
+      "seed": 40015,
+      "success": true,
+      "best_coverage": 0.9529664873010907,
+      "steps": 274,
+      "dataset_episode": 10
+    },
+    {
+      "seed": 40016,
+      "success": false,
+      "best_coverage": 0.665723790375066,
+      "steps": 300
+    },
+    {
+      "seed": 40017,
+      "success": false,
+      "best_coverage": 0.8910431184329647,
+      "steps": 300
+    },
+    {
+      "seed": 40018,
+      "success": true,
+      "best_coverage": 0.9585909874619898,
+      "steps": 178,
+      "dataset_episode": 11
+    },
+    {
+      "seed": 40019,
+      "success": true,
+      "best_coverage": 0.9563984340104835,
+      "steps": 138,
+      "dataset_episode": 12
+    },
+    {
+      "seed": 40020,
+      "success": false,
+      "best_coverage": 0.9277182278401531,
+      "steps": 300
+    },
+    {
+      "seed": 40021,
+      "success": false,
+      "best_coverage": 0.9383736444653251,
+      "steps": 300
+    },
+    {
+      "seed": 40022,
+      "success": true,
+      "best_coverage": 0.9533529181523697,
+      "steps": 121,
+      "dataset_episode": 13
+    },
+    {
+      "seed": 40023,
+      "success": true,
+      "best_coverage": 0.9671785088652495,
+      "steps": 123,
+      "dataset_episode": 14
+    },
+    {
+      "seed": 40024,
+      "success": true,
+      "best_coverage": 0.958085871198287,
+      "steps": 274,
+      "dataset_episode": 15
+    },
+    {
+      "seed": 40025,
+      "success": true,
+      "best_coverage": 0.9562852102317219,
+      "steps": 125,
+      "dataset_episode": 16
+    },
+    {
+      "seed": 40026,
+      "success": false,
+      "best_coverage": 0.949165058913003,
+      "steps": 300
+    },
+    {
+      "seed": 40027,
+      "success": true,
+      "best_coverage": 0.9559746098488727,
+      "steps": 227,
+      "dataset_episode": 17
+    },
+    {
+      "seed": 40028,
+      "success": true,
+      "best_coverage": 0.9617020495786399,
+      "steps": 170,
+      "dataset_episode": 18
+    },
+    {
+      "seed": 40029,
+      "success": true,
+      "best_coverage": 0.9600249802103544,
+      "steps": 239,
+      "dataset_episode": 19
+    },
+    {
+      "seed": 40030,
+      "success": false,
+      "best_coverage": 0.6300818149446744,
+      "steps": 300
+    },
+    {
+      "seed": 40031,
+      "success": false,
+      "best_coverage": 0.9357608501721383,
+      "steps": 300
+    },
+    {
+      "seed": 40032,
+      "success": true,
+      "best_coverage": 0.9701668377355296,
+      "steps": 103,
+      "dataset_episode": 20
+    },
+    {
+      "seed": 40033,
+      "success": true,
+      "best_coverage": 0.9574435963891256,
+      "steps": 289,
+      "dataset_episode": 21
+    },
+    {
+      "seed": 40034,
+      "success": true,
+      "best_coverage": 0.9544573278290128,
+      "steps": 128,
+      "dataset_episode": 22
+    },
+    {
+      "seed": 40035,
+      "success": false,
+      "best_coverage": 0.6867014687733242,
+      "steps": 300
+    },
+    {
+      "seed": 40036,
+      "success": true,
+      "best_coverage": 0.9530892371147889,
+      "steps": 290,
+      "dataset_episode": 23
+    },
+    {
+      "seed": 40037,
+      "success": true,
+      "best_coverage": 0.9631890818720104,
+      "steps": 124,
+      "dataset_episode": 24
+    },
+    {
+      "seed": 40038,
+      "success": true,
+      "best_coverage": 0.9603386463413724,
+      "steps": 263,
+      "dataset_episode": 25
+    },
+    {
+      "seed": 40039,
+      "success": false,
+      "best_coverage": 0.9440827075659514,
+      "steps": 300
+    },
+    {
+      "seed": 40040,
+      "success": true,
+      "best_coverage": 0.9587763202812362,
+      "steps": 151,
+      "dataset_episode": 26
+    },
+    {
+      "seed": 40041,
+      "success": true,
+      "best_coverage": 0.973064902547382,
+      "steps": 237,
+      "dataset_episode": 27
+    },
+    {
+      "seed": 40042,
+      "success": true,
+      "best_coverage": 0.9936482428793909,
+      "steps": 129,
+      "dataset_episode": 28
+    },
+    {
+      "seed": 40043,
+      "success": false,
+      "best_coverage": 0.49199109633461424,
+      "steps": 300
+    },
+    {
+      "seed": 40044,
+      "success": false,
+      "best_coverage": 0.6755676972783097,
+      "steps": 300
+    },
+    {
+      "seed": 40045,
+      "success": true,
+      "best_coverage": 0.9582427531986561,
+      "steps": 129,
+      "dataset_episode": 29
+    },
+    {
+      "seed": 40046,
+      "success": false,
+      "best_coverage": 0.9348753793465098,
+      "steps": 300
+    },
+    {
+      "seed": 40047,
+      "success": true,
+      "best_coverage": 0.9510727073370016,
+      "steps": 128,
+      "dataset_episode": 30
+    },
+    {
+      "seed": 40048,
+      "success": true,
+      "best_coverage": 0.9589734095029301,
+      "steps": 207,
+      "dataset_episode": 31
+    },
+    {
+      "seed": 40049,
+      "success": true,
+      "best_coverage": 0.9517817353655308,
+      "steps": 217,
+      "dataset_episode": 32
+    },
+    {
+      "seed": 40050,
+      "success": true,
+      "best_coverage": 0.9624131641047818,
+      "steps": 232,
+      "dataset_episode": 33
+    },
+    {
+      "seed": 40051,
+      "success": true,
+      "best_coverage": 0.9524473758179441,
+      "steps": 207,
+      "dataset_episode": 34
+    },
+    {
+      "seed": 40052,
+      "success": true,
+      "best_coverage": 0.9659113776285961,
+      "steps": 144,
+      "dataset_episode": 35
+    },
+    {
+      "seed": 40053,
+      "success": true,
+      "best_coverage": 0.964868183954446,
+      "steps": 272,
+      "dataset_episode": 36
+    },
+    {
+      "seed": 40054,
+      "success": false,
+      "best_coverage": 0.9272386195998231,
+      "steps": 300
+    },
+    {
+      "seed": 40055,
+      "success": true,
+      "best_coverage": 0.9530453914840971,
+      "steps": 225,
+      "dataset_episode": 37
+    },
+    {
+      "seed": 40056,
+      "success": true,
+      "best_coverage": 0.9542902991157105,
+      "steps": 128,
+      "dataset_episode": 38
+    },
+    {
+      "seed": 40057,
+      "success": true,
+      "best_coverage": 0.9540259538915521,
+      "steps": 96,
+      "dataset_episode": 39
+    },
+    {
+      "seed": 40058,
+      "success": true,
+      "best_coverage": 0.9776674427878693,
+      "steps": 224,
+      "dataset_episode": 40
+    },
+    {
+      "seed": 40059,
+      "success": true,
+      "best_coverage": 0.9685928108966773,
+      "steps": 121,
+      "dataset_episode": 41
+    },
+    {
+      "seed": 40060,
+      "success": false,
+      "best_coverage": 0.9019534569602017,
+      "steps": 300
+    },
+    {
+      "seed": 40061,
+      "success": true,
+      "best_coverage": 0.9633679161636884,
+      "steps": 124,
+      "dataset_episode": 42
+    },
+    {
+      "seed": 40062,
+      "success": false,
+      "best_coverage": 0.9341727156525323,
+      "steps": 300
+    },
+    {
+      "seed": 40063,
+      "success": true,
+      "best_coverage": 0.9501376149175237,
+      "steps": 181,
+      "dataset_episode": 43
+    },
+    {
+      "seed": 40064,
+      "success": false,
+      "best_coverage": 0.9147045798346968,
+      "steps": 300
+    },
+    {
+      "seed": 40065,
+      "success": true,
+      "best_coverage": 0.9747128160889339,
+      "steps": 273,
+      "dataset_episode": 44
+    },
+    {
+      "seed": 40066,
+      "success": true,
+      "best_coverage": 0.9559354710020952,
+      "steps": 201,
+      "dataset_episode": 45
+    },
+    {
+      "seed": 40067,
+      "success": true,
+      "best_coverage": 0.9533776227130845,
+      "steps": 100,
+      "dataset_episode": 46
+    },
+    {
+      "seed": 40068,
+      "success": true,
+      "best_coverage": 0.9513698071674049,
+      "steps": 130,
+      "dataset_episode": 47
+    },
+    {
+      "seed": 40069,
+      "success": false,
+      "best_coverage": 0.9138684830740869,
+      "steps": 300
+    },
+    {
+      "seed": 40070,
+      "success": false,
+      "best_coverage": 0.946896806251615,
+      "steps": 300
+    },
+    {
+      "seed": 40071,
+      "success": false,
+      "best_coverage": 0.9378884736764421,
+      "steps": 300
+    },
+    {
+      "seed": 40072,
+      "success": false,
+      "best_coverage": 0.9440918318968486,
+      "steps": 300
+    },
+    {
+      "seed": 40073,
+      "success": true,
+      "best_coverage": 0.9580190469495163,
+      "steps": 295,
+      "dataset_episode": 48
+    },
+    {
+      "seed": 40074,
+      "success": true,
+      "best_coverage": 0.9592369353778102,
+      "steps": 256,
+      "dataset_episode": 49
+    },
+    {
+      "seed": 40075,
+      "success": false,
+      "best_coverage": 0.6292703760816524,
+      "steps": 300
+    },
+    {
+      "seed": 40076,
+      "success": true,
+      "best_coverage": 0.9546778365526077,
+      "steps": 275,
+      "dataset_episode": 50
+    },
+    {
+      "seed": 40077,
+      "success": true,
+      "best_coverage": 0.9618579282374492,
+      "steps": 126,
+      "dataset_episode": 51
+    },
+    {
+      "seed": 40078,
+      "success": true,
+      "best_coverage": 0.957607381843017,
+      "steps": 165,
+      "dataset_episode": 52
+    },
+    {
+      "seed": 40079,
+      "success": true,
+      "best_coverage": 0.9625614403605905,
+      "steps": 249,
+      "dataset_episode": 53
+    },
+    {
+      "seed": 40080,
+      "success": true,
+      "best_coverage": 0.9643272493618901,
+      "steps": 135,
+      "dataset_episode": 54
+    },
+    {
+      "seed": 40081,
+      "success": false,
+      "best_coverage": 0.9454534580285135,
+      "steps": 300
+    },
+    {
+      "seed": 40082,
+      "success": false,
+      "best_coverage": 0.9086282087886871,
+      "steps": 300
+    },
+    {
+      "seed": 40083,
+      "success": true,
+      "best_coverage": 0.9562981849450315,
+      "steps": 121,
+      "dataset_episode": 55
+    },
+    {
+      "seed": 40084,
+      "success": true,
+      "best_coverage": 0.9529282906089873,
+      "steps": 200,
+      "dataset_episode": 56
+    },
+    {
+      "seed": 40085,
+      "success": true,
+      "best_coverage": 0.9515296325643495,
+      "steps": 248,
+      "dataset_episode": 57
+    },
+    {
+      "seed": 40086,
+      "success": false,
+      "best_coverage": 0.48256479506426914,
+      "steps": 300
+    },
+    {
+      "seed": 40087,
+      "success": true,
+      "best_coverage": 0.9550232814131793,
+      "steps": 256,
+      "dataset_episode": 58
+    },
+    {
+      "seed": 40088,
+      "success": true,
+      "best_coverage": 0.9628799269128085,
+      "steps": 146,
+      "dataset_episode": 59
+    },
+    {
+      "seed": 40089,
+      "success": true,
+      "best_coverage": 0.9600782166670779,
+      "steps": 153,
+      "dataset_episode": 60
+    },
+    {
+      "seed": 40090,
+      "success": true,
+      "best_coverage": 0.9581388100109142,
+      "steps": 212,
+      "dataset_episode": 61
+    },
+    {
+      "seed": 40091,
+      "success": true,
+      "best_coverage": 0.9527916112683574,
+      "steps": 145,
+      "dataset_episode": 62
+    },
+    {
+      "seed": 40092,
+      "success": true,
+      "best_coverage": 0.9543257884881226,
+      "steps": 233,
+      "dataset_episode": 63
+    },
+    {
+      "seed": 40093,
+      "success": true,
+      "best_coverage": 0.951609132669138,
+      "steps": 223,
+      "dataset_episode": 64
+    },
+    {
+      "seed": 40094,
+      "success": true,
+      "best_coverage": 0.9525744445051069,
+      "steps": 224,
+      "dataset_episode": 65
+    },
+    {
+      "seed": 40095,
+      "success": false,
+      "best_coverage": 0.0,
+      "steps": 300
+    },
+    {
+      "seed": 40096,
+      "success": false,
+      "best_coverage": 0.9089522149152993,
+      "steps": 300
+    },
+    {
+      "seed": 40097,
+      "success": false,
+      "best_coverage": 0.944650179439644,
+      "steps": 300
+    },
+    {
+      "seed": 40098,
+      "success": false,
+      "best_coverage": 0.9269019980251333,
+      "steps": 300
+    },
+    {
+      "seed": 40099,
+      "success": false,
+      "best_coverage": 0.9389191681617828,
+      "steps": 300
+    },
+    {
+      "seed": 40100,
+      "success": false,
+      "best_coverage": 0.8993014297680175,
+      "steps": 300
+    },
+    {
+      "seed": 40101,
+      "success": true,
+      "best_coverage": 0.9711622393409619,
+      "steps": 248,
+      "dataset_episode": 66
+    },
+    {
+      "seed": 40102,
+      "success": false,
+      "best_coverage": 0.9415819128823439,
+      "steps": 300
+    },
+    {
+      "seed": 40103,
+      "success": true,
+      "best_coverage": 0.9561929934439471,
+      "steps": 130,
+      "dataset_episode": 67
+    },
+    {
+      "seed": 40104,
+      "success": false,
+      "best_coverage": 0.9445554682922327,
+      "steps": 300
+    },
+    {
+      "seed": 40105,
+      "success": true,
+      "best_coverage": 0.9537733668260933,
+      "steps": 227,
+      "dataset_episode": 68
+    },
+    {
+      "seed": 40106,
+      "success": true,
+      "best_coverage": 0.9725624661851349,
+      "steps": 153,
+      "dataset_episode": 69
+    },
+    {
+      "seed": 40107,
+      "success": false,
+      "best_coverage": 0.46849833497811455,
+      "steps": 300
+    },
+    {
+      "seed": 40108,
+      "success": false,
+      "best_coverage": 0.44924346433749135,
+      "steps": 300
+    },
+    {
+      "seed": 40109,
+      "success": false,
+      "best_coverage": 0.9391804363340989,
+      "steps": 300
+    },
+    {
+      "seed": 40110,
+      "success": false,
+      "best_coverage": 0.9377158383886987,
+      "steps": 300
+    },
+    {
+      "seed": 40111,
+      "success": false,
+      "best_coverage": 0.9322027417514414,
+      "steps": 300
+    },
+    {
+      "seed": 40112,
+      "success": false,
+      "best_coverage": 0.9411450370390234,
+      "steps": 300
+    },
+    {
+      "seed": 40113,
+      "success": true,
+      "best_coverage": 0.9512020699611834,
+      "steps": 164,
+      "dataset_episode": 70
+    },
+    {
+      "seed": 40114,
+      "success": true,
+      "best_coverage": 0.9518454675942902,
+      "steps": 149,
+      "dataset_episode": 71
+    },
+    {
+      "seed": 40115,
+      "success": true,
+      "best_coverage": 0.9524278881681159,
+      "steps": 200,
+      "dataset_episode": 72
+    },
+    {
+      "seed": 40116,
+      "success": true,
+      "best_coverage": 0.9874380606074314,
+      "steps": 224,
+      "dataset_episode": 73
+    },
+    {
+      "seed": 40117,
+      "success": true,
+      "best_coverage": 0.9561667533510764,
+      "steps": 178,
+      "dataset_episode": 74
+    },
+    {
+      "seed": 40118,
+      "success": true,
+      "best_coverage": 0.9549210492627911,
+      "steps": 153,
+      "dataset_episode": 75
+    },
+    {
+      "seed": 40119,
+      "success": true,
+      "best_coverage": 0.9513468707150603,
+      "steps": 193,
+      "dataset_episode": 76
+    },
+    {
+      "seed": 40120,
+      "success": false,
+      "best_coverage": 0.9164734875591333,
+      "steps": 300
+    },
+    {
+      "seed": 40121,
+      "success": false,
+      "best_coverage": 0.9327424513077622,
+      "steps": 300
+    },
+    {
+      "seed": 40122,
+      "success": false,
+      "best_coverage": 0.926092659520512,
+      "steps": 300
+    },
+    {
+      "seed": 40123,
+      "success": true,
+      "best_coverage": 0.9540786422710451,
+      "steps": 278,
+      "dataset_episode": 77
+    },
+    {
+      "seed": 40124,
+      "success": true,
+      "best_coverage": 0.9555134702901669,
+      "steps": 213,
+      "dataset_episode": 78
+    },
+    {
+      "seed": 40125,
+      "success": true,
+      "best_coverage": 0.9551162376012946,
+      "steps": 142,
+      "dataset_episode": 79
+    },
+    {
+      "seed": 40126,
+      "success": false,
+      "best_coverage": 0.9479785348160166,
+      "steps": 300
+    },
+    {
+      "seed": 40127,
+      "success": true,
+      "best_coverage": 0.9523707945747993,
+      "steps": 190,
+      "dataset_episode": 80
+    },
+    {
+      "seed": 40128,
+      "success": true,
+      "best_coverage": 0.9547935424722885,
+      "steps": 232,
+      "dataset_episode": 81
+    },
+    {
+      "seed": 40129,
+      "success": false,
+      "best_coverage": 0.9461575879442946,
+      "steps": 300
+    },
+    {
+      "seed": 40130,
+      "success": true,
+      "best_coverage": 0.9592094236130344,
+      "steps": 233,
+      "dataset_episode": 82
+    },
+    {
+      "seed": 40131,
+      "success": true,
+      "best_coverage": 0.9785111596520353,
+      "steps": 146,
+      "dataset_episode": 83
+    },
+    {
+      "seed": 40132,
+      "success": false,
+      "best_coverage": 0.9245995916778761,
+      "steps": 300
+    },
+    {
+      "seed": 40133,
+      "success": false,
+      "best_coverage": 0.9391589407096165,
+      "steps": 300
+    },
+    {
+      "seed": 40134,
+      "success": false,
+      "best_coverage": 0.9412978771691276,
+      "steps": 300
+    },
+    {
+      "seed": 40135,
+      "success": true,
+      "best_coverage": 0.9560073457347825,
+      "steps": 143,
+      "dataset_episode": 84
+    },
+    {
+      "seed": 40136,
+      "success": false,
+      "best_coverage": 0.9371853881752407,
+      "steps": 300
+    },
+    {
+      "seed": 40137,
+      "success": false,
+      "best_coverage": 0.9393793075398572,
+      "steps": 300
+    },
+    {
+      "seed": 40138,
+      "success": true,
+      "best_coverage": 0.9518227181766014,
+      "steps": 96,
+      "dataset_episode": 85
+    },
+    {
+      "seed": 40139,
+      "success": false,
+      "best_coverage": 0.9414680247778952,
+      "steps": 300
+    },
+    {
+      "seed": 40140,
+      "success": true,
+      "best_coverage": 0.9643176644775489,
+      "steps": 190,
+      "dataset_episode": 86
+    },
+    {
+      "seed": 40141,
+      "success": false,
+      "best_coverage": 0.7750760488793477,
+      "steps": 300
+    },
+    {
+      "seed": 40142,
+      "success": true,
+      "best_coverage": 0.9640681408441318,
+      "steps": 257,
+      "dataset_episode": 87
+    },
+    {
+      "seed": 40143,
+      "success": true,
+      "best_coverage": 0.9673887714180207,
+      "steps": 72,
+      "dataset_episode": 88
+    },
+    {
+      "seed": 40144,
+      "success": false,
+      "best_coverage": 0.941253067299185,
+      "steps": 300
+    },
+    {
+      "seed": 40145,
+      "success": true,
+      "best_coverage": 0.9975276260635245,
+      "steps": 201,
+      "dataset_episode": 89
+    },
+    {
+      "seed": 40146,
+      "success": false,
+      "best_coverage": 0.9214233663792615,
+      "steps": 300
+    },
+    {
+      "seed": 40147,
+      "success": false,
+      "best_coverage": 0.937662593725167,
+      "steps": 300
+    },
+    {
+      "seed": 40148,
+      "success": true,
+      "best_coverage": 0.9695695010360824,
+      "steps": 137,
+      "dataset_episode": 90
+    },
+    {
+      "seed": 40149,
+      "success": true,
+      "best_coverage": 0.9795435367647091,
+      "steps": 161,
+      "dataset_episode": 91
+    },
+    {
+      "seed": 40150,
+      "success": true,
+      "best_coverage": 0.9671294100264146,
+      "steps": 167,
+      "dataset_episode": 92
+    },
+    {
+      "seed": 40151,
+      "success": true,
+      "best_coverage": 0.9607398648870151,
+      "steps": 183,
+      "dataset_episode": 93
+    },
+    {
+      "seed": 40152,
+      "success": false,
+      "best_coverage": 0.7550507378793038,
+      "steps": 300
+    },
+    {
+      "seed": 40153,
+      "success": false,
+      "best_coverage": 0.9412549290583353,
+      "steps": 300
+    },
+    {
+      "seed": 40154,
+      "success": false,
+      "best_coverage": 0.9335911318058925,
+      "steps": 300
+    },
+    {
+      "seed": 40155,
+      "success": false,
+      "best_coverage": 0.9062705472848523,
+      "steps": 300
+    },
+    {
+      "seed": 40156,
+      "success": true,
+      "best_coverage": 0.9543607443637938,
+      "steps": 121,
+      "dataset_episode": 94
+    },
+    {
+      "seed": 40157,
+      "success": true,
+      "best_coverage": 0.9619471144273071,
+      "steps": 203,
+      "dataset_episode": 95
+    },
+    {
+      "seed": 40158,
+      "success": true,
+      "best_coverage": 0.9533484232787324,
+      "steps": 183,
+      "dataset_episode": 96
+    },
+    {
+      "seed": 40159,
+      "success": false,
+      "best_coverage": 0.9463514337720184,
+      "steps": 300
+    },
+    {
+      "seed": 40160,
+      "success": true,
+      "best_coverage": 0.961881888526358,
+      "steps": 86,
+      "dataset_episode": 97
+    },
+    {
+      "seed": 40161,
+      "success": false,
+      "best_coverage": 0.9349612009723096,
+      "steps": 300
+    },
+    {
+      "seed": 40162,
+      "success": true,
+      "best_coverage": 0.9549084936727087,
+      "steps": 140,
+      "dataset_episode": 98
+    },
+    {
+      "seed": 40163,
+      "success": false,
+      "best_coverage": 0.9376602363499281,
+      "steps": 300
+    },
+    {
+      "seed": 40164,
+      "success": true,
+      "best_coverage": 0.9642962950576364,
+      "steps": 199,
+      "dataset_episode": 99
+    },
+    {
+      "seed": 40165,
+      "success": false,
+      "best_coverage": 0.6826158896153087,
+      "steps": 300
+    },
+    {
+      "seed": 40166,
+      "success": true,
+      "best_coverage": 0.9619145796083832,
+      "steps": 208,
+      "dataset_episode": 100
+    },
+    {
+      "seed": 40167,
+      "success": true,
+      "best_coverage": 0.9523387253199663,
+      "steps": 154,
+      "dataset_episode": 101
+    },
+    {
+      "seed": 40168,
+      "success": true,
+      "best_coverage": 0.9538465446996414,
+      "steps": 128,
+      "dataset_episode": 102
+    },
+    {
+      "seed": 40169,
+      "success": true,
+      "best_coverage": 0.9535898671305705,
+      "steps": 152,
+      "dataset_episode": 103
+    },
+    {
+      "seed": 40170,
+      "success": false,
+      "best_coverage": 0.9278228310779463,
+      "steps": 300
+    },
+    {
+      "seed": 40171,
+      "success": false,
+      "best_coverage": 0.6146149302054431,
+      "steps": 300
+    },
+    {
+      "seed": 40172,
+      "success": true,
+      "best_coverage": 0.9550649799838894,
+      "steps": 273,
+      "dataset_episode": 104
+    },
+    {
+      "seed": 40173,
+      "success": false,
+      "best_coverage": 0.9191857677250138,
+      "steps": 300
+    },
+    {
+      "seed": 40174,
+      "success": false,
+      "best_coverage": 0.9325065372144692,
+      "steps": 300
+    },
+    {
+      "seed": 40175,
+      "success": true,
+      "best_coverage": 0.9508955573670352,
+      "steps": 203,
+      "dataset_episode": 105
+    },
+    {
+      "seed": 40176,
+      "success": false,
+      "best_coverage": 0.9158942730848659,
+      "steps": 300
+    },
+    {
+      "seed": 40177,
+      "success": true,
+      "best_coverage": 0.9563173821499762,
+      "steps": 246,
+      "dataset_episode": 106
+    },
+    {
+      "seed": 40178,
+      "success": true,
+      "best_coverage": 0.9601683311836359,
+      "steps": 167,
+      "dataset_episode": 107
+    },
+    {
+      "seed": 40179,
+      "success": false,
+      "best_coverage": 0.46053262157672725,
+      "steps": 300
+    },
+    {
+      "seed": 40180,
+      "success": false,
+      "best_coverage": 0.9267643506386706,
+      "steps": 300
+    },
+    {
+      "seed": 40181,
+      "success": true,
+      "best_coverage": 0.9513644157748631,
+      "steps": 193,
+      "dataset_episode": 108
+    },
+    {
+      "seed": 40182,
+      "success": true,
+      "best_coverage": 0.9886671150267051,
+      "steps": 128,
+      "dataset_episode": 109
+    },
+    {
+      "seed": 40183,
+      "success": true,
+      "best_coverage": 0.9603134655728497,
+      "steps": 169,
+      "dataset_episode": 110
+    },
+    {
+      "seed": 40184,
+      "success": false,
+      "best_coverage": 0.9483216036415312,
+      "steps": 300
+    },
+    {
+      "seed": 40185,
+      "success": true,
+      "best_coverage": 0.9580576323062658,
+      "steps": 88,
+      "dataset_episode": 111
+    },
+    {
+      "seed": 40186,
+      "success": false,
+      "best_coverage": 0.6921066868891395,
+      "steps": 300
+    },
+    {
+      "seed": 40187,
+      "success": true,
+      "best_coverage": 0.9796236193822822,
+      "steps": 177,
+      "dataset_episode": 112
+    },
+    {
+      "seed": 40188,
+      "success": true,
+      "best_coverage": 0.978359205393206,
+      "steps": 176,
+      "dataset_episode": 113
+    },
+    {
+      "seed": 40189,
+      "success": false,
+      "best_coverage": 0.9473322577231217,
+      "steps": 300
+    },
+    {
+      "seed": 40190,
+      "success": true,
+      "best_coverage": 0.9510465443685352,
+      "steps": 171,
+      "dataset_episode": 114
+    },
+    {
+      "seed": 40191,
+      "success": false,
+      "best_coverage": 0.9460362634729474,
+      "steps": 300
+    },
+    {
+      "seed": 40192,
+      "success": true,
+      "best_coverage": 0.9503646965062348,
+      "steps": 223,
+      "dataset_episode": 115
+    },
+    {
+      "seed": 40193,
+      "success": true,
+      "best_coverage": 0.9703671320222079,
+      "steps": 272,
+      "dataset_episode": 116
+    },
+    {
+      "seed": 40194,
+      "success": false,
+      "best_coverage": 0.607989167469863,
+      "steps": 300
+    },
+    {
+      "seed": 40195,
+      "success": true,
+      "best_coverage": 0.9660564036718795,
+      "steps": 226,
+      "dataset_episode": 117
+    },
+    {
+      "seed": 40196,
+      "success": false,
+      "best_coverage": 0.9397472256073868,
+      "steps": 300
+    },
+    {
+      "seed": 40197,
+      "success": false,
+      "best_coverage": 0.5104698606432686,
+      "steps": 300
+    },
+    {
+      "seed": 40198,
+      "success": true,
+      "best_coverage": 0.9554381214692466,
+      "steps": 178,
+      "dataset_episode": 118
+    },
+    {
+      "seed": 40199,
+      "success": true,
+      "best_coverage": 0.9692850325457847,
+      "steps": 287,
+      "dataset_episode": 119
+    },
+    {
+      "seed": 40200,
+      "success": true,
+      "best_coverage": 0.9675041752628172,
+      "steps": 106,
+      "dataset_episode": 120
+    },
+    {
+      "seed": 40201,
+      "success": true,
+      "best_coverage": 0.9742709526549275,
+      "steps": 66,
+      "dataset_episode": 121
+    },
+    {
+      "seed": 40202,
+      "success": true,
+      "best_coverage": 0.9685238473053539,
+      "steps": 106,
+      "dataset_episode": 122
+    },
+    {
+      "seed": 40203,
+      "success": true,
+      "best_coverage": 0.9520752921636845,
+      "steps": 238,
+      "dataset_episode": 123
+    },
+    {
+      "seed": 40204,
+      "success": true,
+      "best_coverage": 0.9527708768964867,
+      "steps": 215,
+      "dataset_episode": 124
+    },
+    {
+      "seed": 40205,
+      "success": false,
+      "best_coverage": 0.9486458229613735,
+      "steps": 300
+    },
+    {
+      "seed": 40206,
+      "success": true,
+      "best_coverage": 0.9536913825612523,
+      "steps": 123,
+      "dataset_episode": 125
+    },
+    {
+      "seed": 40207,
+      "success": true,
+      "best_coverage": 0.9628612930876084,
+      "steps": 132,
+      "dataset_episode": 126
+    },
+    {
+      "seed": 40208,
+      "success": true,
+      "best_coverage": 0.9689617018359253,
+      "steps": 128,
+      "dataset_episode": 127
+    },
+    {
+      "seed": 40209,
+      "success": true,
+      "best_coverage": 0.9500369684773933,
+      "steps": 257,
+      "dataset_episode": 128
+    },
+    {
+      "seed": 40210,
+      "success": true,
+      "best_coverage": 0.9568397605035556,
+      "steps": 64,
+      "dataset_episode": 129
+    },
+    {
+      "seed": 40211,
+      "success": true,
+      "best_coverage": 0.9738354132159892,
+      "steps": 153,
+      "dataset_episode": 130
+    },
+    {
+      "seed": 40212,
+      "success": false,
+      "best_coverage": 0.9469197605623242,
+      "steps": 300
+    },
+    {
+      "seed": 40213,
+      "success": false,
+      "best_coverage": 0.9385953520415161,
+      "steps": 300
+    },
+    {
+      "seed": 40214,
+      "success": true,
+      "best_coverage": 0.9580048614227245,
+      "steps": 120,
+      "dataset_episode": 131
+    },
+    {
+      "seed": 40215,
+      "success": false,
+      "best_coverage": 0.45049263294529346,
+      "steps": 300
+    },
+    {
+      "seed": 40216,
+      "success": false,
+      "best_coverage": 0.9081853787500894,
+      "steps": 300
+    },
+    {
+      "seed": 40217,
+      "success": true,
+      "best_coverage": 0.955110204666219,
+      "steps": 201,
+      "dataset_episode": 132
+    },
+    {
+      "seed": 40218,
+      "success": true,
+      "best_coverage": 0.9500582488712483,
+      "steps": 136,
+      "dataset_episode": 133
+    },
+    {
+      "seed": 40219,
+      "success": true,
+      "best_coverage": 0.9565001754088411,
+      "steps": 188,
+      "dataset_episode": 134
+    },
+    {
+      "seed": 40220,
+      "success": true,
+      "best_coverage": 0.9542728956731161,
+      "steps": 96,
+      "dataset_episode": 135
+    },
+    {
+      "seed": 40221,
+      "success": false,
+      "best_coverage": 0.06604110855643124,
+      "steps": 300
+    },
+    {
+      "seed": 40222,
+      "success": true,
+      "best_coverage": 0.9570844230279875,
+      "steps": 257,
+      "dataset_episode": 136
+    },
+    {
+      "seed": 40223,
+      "success": false,
+      "best_coverage": 0.43732606316410283,
+      "steps": 300
+    },
+    {
+      "seed": 40224,
+      "success": true,
+      "best_coverage": 0.9535638352219455,
+      "steps": 245,
+      "dataset_episode": 137
+    },
+    {
+      "seed": 40225,
+      "success": true,
+      "best_coverage": 0.9549450159598158,
+      "steps": 161,
+      "dataset_episode": 138
+    },
+    {
+      "seed": 40226,
+      "success": false,
+      "best_coverage": 0.9080498254464929,
+      "steps": 300
+    },
+    {
+      "seed": 40227,
+      "success": true,
+      "best_coverage": 0.9546135627150051,
+      "steps": 136,
+      "dataset_episode": 139
+    },
+    {
+      "seed": 40228,
+      "success": true,
+      "best_coverage": 0.9679783888161321,
+      "steps": 183,
+      "dataset_episode": 140
+    },
+    {
+      "seed": 40229,
+      "success": true,
+      "best_coverage": 0.9859944180937186,
+      "steps": 89,
+      "dataset_episode": 141
+    },
+    {
+      "seed": 40230,
+      "success": false,
+      "best_coverage": 0.945175233745106,
+      "steps": 300
+    },
+    {
+      "seed": 40231,
+      "success": true,
+      "best_coverage": 0.9590624979853238,
+      "steps": 89,
+      "dataset_episode": 142
+    },
+    {
+      "seed": 40232,
+      "success": false,
+      "best_coverage": 0.9418079886141063,
+      "steps": 300
+    },
+    {
+      "seed": 40233,
+      "success": true,
+      "best_coverage": 0.9586657719066178,
+      "steps": 158,
+      "dataset_episode": 143
+    },
+    {
+      "seed": 40234,
+      "success": true,
+      "best_coverage": 0.9516705963125294,
+      "steps": 128,
+      "dataset_episode": 144
+    },
+    {
+      "seed": 40235,
+      "success": false,
+      "best_coverage": 0.9470965173349882,
+      "steps": 300
+    },
+    {
+      "seed": 40236,
+      "success": false,
+      "best_coverage": 0.6690972870369888,
+      "steps": 300
+    },
+    {
+      "seed": 40237,
+      "success": true,
+      "best_coverage": 0.9613315696577,
+      "steps": 215,
+      "dataset_episode": 145
+    },
+    {
+      "seed": 40238,
+      "success": true,
+      "best_coverage": 0.9560036457501662,
+      "steps": 142,
+      "dataset_episode": 146
+    },
+    {
+      "seed": 40239,
+      "success": false,
+      "best_coverage": 0.8789599256603445,
+      "steps": 300
+    },
+    {
+      "seed": 40240,
+      "success": true,
+      "best_coverage": 0.9590275002064402,
+      "steps": 206,
+      "dataset_episode": 147
+    },
+    {
+      "seed": 40241,
+      "success": true,
+      "best_coverage": 0.9626758483808648,
+      "steps": 120,
+      "dataset_episode": 148
+    },
+    {
+      "seed": 40242,
+      "success": false,
+      "best_coverage": 0.9327614751061603,
+      "steps": 300
+    },
+    {
+      "seed": 40243,
+      "success": true,
+      "best_coverage": 0.9694848005287467,
+      "steps": 184,
+      "dataset_episode": 149
+    },
+    {
+      "seed": 40244,
+      "success": true,
+      "best_coverage": 0.950380018558624,
+      "steps": 176,
+      "dataset_episode": 150
+    },
+    {
+      "seed": 40245,
+      "success": false,
+      "best_coverage": 0.9408424295265463,
+      "steps": 300
+    },
+    {
+      "seed": 40246,
+      "success": true,
+      "best_coverage": 0.9582091363566979,
+      "steps": 110,
+      "dataset_episode": 151
+    },
+    {
+      "seed": 40247,
+      "success": true,
+      "best_coverage": 0.9517549496850132,
+      "steps": 137,
+      "dataset_episode": 152
+    },
+    {
+      "seed": 40248,
+      "success": true,
+      "best_coverage": 0.950978978009099,
+      "steps": 103,
+      "dataset_episode": 153
+    },
+    {
+      "seed": 40249,
+      "success": true,
+      "best_coverage": 0.9519624469871906,
+      "steps": 267,
+      "dataset_episode": 154
+    },
+    {
+      "seed": 40250,
+      "success": false,
+      "best_coverage": 0.6556263824164213,
+      "steps": 300
+    },
+    {
+      "seed": 40251,
+      "success": false,
+      "best_coverage": 0.9318521021390755,
+      "steps": 300
+    },
+    {
+      "seed": 40252,
+      "success": false,
+      "best_coverage": 0.9367193522498092,
+      "steps": 300
+    },
+    {
+      "seed": 40253,
+      "success": false,
+      "best_coverage": 0.6248834213258221,
+      "steps": 300
+    },
+    {
+      "seed": 40254,
+      "success": false,
+      "best_coverage": 0.9252908877051036,
+      "steps": 300
+    },
+    {
+      "seed": 40255,
+      "success": false,
+      "best_coverage": 0.46246644268382914,
+      "steps": 300
+    }
+  ]
+}

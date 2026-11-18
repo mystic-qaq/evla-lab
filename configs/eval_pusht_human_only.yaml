@@ -1,0 +1,20 @@
+# Ablation arm: human demonstrations only, corrected loss, 16-step prediction.
+# Same 200 held-out seeds as the headline result, so the comparison is paired.
+policy:
+  type: smolvla
+  checkpoint: outputs/pusht_retrain_20261118/smolvla_h16/checkpoints/012000/pretrained_model
+  device: cuda
+  precision: bf16
+  num_flow_steps: 4
+  image_key: top
+env:
+  name: pusht
+  max_steps: 300
+optimize:
+  compile: true
+eval:
+  episodes: 200
+  seed0: 30000
+  mode: open_loop
+  execute_steps: 8
+  label: arm_human_only

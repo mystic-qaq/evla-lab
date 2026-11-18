@@ -1,0 +1,26 @@
+policy:
+  base_checkpoint: outputs/pusht_retrain_20261118/smolvla_mixed_h16/checkpoints/002000/pretrained_model
+  repo_id: local/evla-smolvla-pusht-context2
+  device: cuda
+  empty_cameras: 1
+  chunk_size: 16
+  n_action_steps: 8
+  optimizer_lr: 3.0e-05
+  scheduler_warmup_steps: 200
+  scheduler_decay_steps: 4000
+  n_obs_steps: 2
+dataset:
+  repo_id: local/pusht-mixed-balanced
+  root: outputs/pusht_retrain_20261118/pusht_mixed_balanced
+  video_backend: pyav
+  rename_map:
+    observation.image: observation.images.camera1
+train:
+  batch_size: 32
+  steps: 4000
+  save_freq: 1000
+  log_freq: 100
+  num_workers: 6
+  seed: 1000
+  output_dir: outputs/pusht_retrain_20261118/smolvla_context2_h16
+  job_name: smolvla_pusht_context2

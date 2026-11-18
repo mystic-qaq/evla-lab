@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shlex
 import subprocess
 import sys
 from pathlib import Path
@@ -181,8 +182,9 @@ def cmd_finetune(args: argparse.Namespace) -> int:
     policy = cfg.get("policy", {})
     dataset = cfg.get("dataset", {})
     train = cfg.get("train", {})
+    trainer = [args.trainer] if args.trainer else [sys.executable, "-m", "evla.models.smolvla_train"]
     cmd = [
-        args.trainer,
+        *trainer,
         f"--policy.path={policy['base_checkpoint']}",
         f"--policy.repo_id={policy.get('repo_id', 'local/evla')}",
         "--policy.push_to_hub=false",
@@ -199,11 +201,17 @@ def cmd_finetune(args: argparse.Namespace) -> int:
         f"--save_freq={train.get('save_freq', 4000)}",
         f"--log_freq={train.get('log_freq', 100)}",
         f"--num_workers={train.get('num_workers', 6)}",
+        f"--seed={train.get('seed', 1000)}",
         f"--output_dir={train.get('output_dir', 'outputs/smolvla_pusht')}",
         f"--job_name={train.get('job_name', 'smolvla_pusht')}",
         "--wandb.enable=false",
     ]
-    printable = " \\\n  ".join(cmd)
+    if "episodes" in dataset:
+        cmd.append(f"--dataset.episodes={json.dumps(dataset['episodes'])}")
+    for key in ("optimizer_lr", "scheduler_warmup_steps", "scheduler_decay_steps", "resize_imgs_with_padding", "n_obs_steps"):
+        if key in policy:
+            cmd.append(f"--policy.{key}={json.dumps(policy[key])}")
+    printable = " \\\n  ".join(shlex.quote(arg) for arg in cmd)
     print(printable)
     if args.dry_run:
         return 0
@@ -560,7 +568,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     f = sub.add_parser("finetune", help="launch the SmolVLA fine-tune through lerobot-train")
     f.add_argument("-c", "--config", required=True)
-    f.add_argument("--trainer", default="lerobot-train")
+    f.add_argument("--trainer", help="alternate trainer executable, bypassing the evla SmolVLA loss adapter")
     f.add_argument("--dry-run", action="store_true", dest="dry_run")
     f.set_defaults(func=cmd_finetune)
 

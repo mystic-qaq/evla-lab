@@ -14,7 +14,7 @@ export HF_ENDPOINT=${HF_ENDPOINT:-https://hf-mirror.com}
 export TOKENIZERS_PARALLELISM=false
 export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0}
 
-.venv/bin/lerobot-train \
+.venv/bin/python -m evla.models.smolvla_train \
   --policy.path=outputs/smolvla_pusht_20k/checkpoints/020000/pretrained_model \
   --policy.repo_id=local/evla-smolvla-pusht-30k --policy.push_to_hub=false \
   --policy.empty_cameras=2 --policy.device=cuda \

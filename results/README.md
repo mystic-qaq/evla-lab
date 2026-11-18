@@ -1,5 +1,8 @@
 # Experiment artefacts
 
+The historical Push-T reports contain peak coverage that carried over between episodes.
+Use their success and timing records. Re-evaluate a checkpoint for corrected coverage and failure categories.
+
 Everything here was produced by the CLI in this repository — no notebook, no manual
 editing. Each directory is self-describing:
 
@@ -16,10 +19,11 @@ editing. Each directory is self-describing:
 
 | directory | what it answers |
 |---|---|
+| `pusht_retrain_20261118/` | corrected training and held-out comparison of the original and selected checkpoint |
 | `pusht_learning_curve/` | does more fine-tuning keep helping? (zero-shot vs 4k/8k/12k/16k/20k) |
 | `pusht_sweep/` | precision × compile × flow steps × execution mode at fixed weights |
 | `pusht_lora/` | LoRA r=16 vs default expert-only fine-tuning at matched steps |
-| `pusht_stage2/` | stage-2 continuation (10k more steps at half LR): does more training help? (no) |
+| `pusht_stage2/` | stage-2 continuation checkpoints at half the original learning rate |
 | `toy_chunking/` | receding vs open-loop vs temporal ensembling on the toy task (CPU) |
 | `videos/` | recorded rollout of the fine-tuned policy (the frame sequence behind the README gif) |
 | `deploy_sim.json` | fixed-rate deployment runtime report (deadline misses, safety counters) |

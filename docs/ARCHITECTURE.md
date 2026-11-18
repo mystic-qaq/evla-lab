@@ -21,7 +21,7 @@
                                                      │ HAL · safety          │
                                                      └──────────┬────────────┘
                                                                 │
-                                              MuJoCo sim ◀──────┴──────▶ SO-101 arm
+                                              Pymunk sim ◀──────┴──────▶ SO-101 arm
 ```
 
 Arrow semantics: every box talks to the next one through `evla.types.Observation`
@@ -32,7 +32,7 @@ and `evla.types.Policy`. That is the whole interface.
 | module | responsibility |
 |---|---|
 | `evla.types` | `Observation`, `StepResult`, `Policy` (chunk-predicting ABC) |
-| `evla.envs` | `EmbodiedEnv` ABC, `ToyReachEnv` (no deps), `PushTEnv` (MuJoCo) |
+| `evla.envs` | `EmbodiedEnv` ABC, `ToyReachEnv` (no deps), `PushTEnv` (Pymunk) |
 | `evla.models` | `SmolVLAPolicy` adapter, `FlowChunkPolicy` (from-scratch flow matching) |
 | `evla.data` | demo collection, chunk construction, normalisation stats |
 | `evla.control` | `ChunkExecutor`: receding / open-loop / temporal-ensembling |
@@ -53,7 +53,9 @@ loss. All of that exists, is tested upstream and takes ~4 h of GPU time to even
 validate. Re-implementing it would be a copy with new bugs. The contribution of
 this repository is the *rest* of the loop — inference cost, deployment, and
 statistically defensible measurement — which is where most VLA projects stop.
-`evla finetune` prints the exact upstream command it runs, so nothing is hidden.
+`evla finetune` prints its command and invokes LeRobot 0.4.4 through the
+`evla.models.smolvla_train` adapter. The adapter corrects action padding, physical
+action dimensions and valid-element reduction while retaining LeRobot's training loop.
 
 **2. Policies expose chunks, not single actions.**
 `Policy.predict_chunk` returns `(chunk_size, action_dim)`. LeRobot's own
@@ -66,7 +68,7 @@ measured against each other and against their compute cost.
 `ToyReachEnv` is ~200 lines of NumPy: a point mass, a drifting target, a 96×96
 rendered observation. It exists so that the *entire* pipeline — collect, train,
 evaluate, deploy, report — runs in about a minute on a CPU inside CI. Without it,
-either CI tests nothing that matters or it downloads a MuJoCo scene, and both are
+either CI tests nothing that matters or it downloads a simulation environment, and both are
 worse. Raising the target drift turns the toy into a genuine reactivity stress test
 (see `docs/OPTIMIZATION.md`).
 

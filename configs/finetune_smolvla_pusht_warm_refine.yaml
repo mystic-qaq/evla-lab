@@ -1,0 +1,25 @@
+policy:
+  base_checkpoint: outputs/pusht_retrain_20261118/smolvla_warm_success_h16/checkpoints/006000/pretrained_model
+  repo_id: local/evla-smolvla-pusht-warm-refine
+  device: cuda
+  empty_cameras: 2
+  chunk_size: 16
+  n_action_steps: 8
+  optimizer_lr: 3.0e-05
+  scheduler_warmup_steps: 200
+  scheduler_decay_steps: 4000
+dataset:
+  repo_id: local/pusht-diffusion-success-large
+  root: outputs/pusht_retrain_20261118/diffusion_successes_large
+  video_backend: pyav
+  rename_map:
+    observation.image: observation.images.camera1
+train:
+  batch_size: 32
+  steps: 4000
+  save_freq: 2000
+  log_freq: 100
+  num_workers: 6
+  seed: 1000
+  output_dir: outputs/pusht_retrain_20261118/smolvla_warm_refine_h16
+  job_name: smolvla_pusht_warm_refine

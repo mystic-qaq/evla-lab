@@ -77,14 +77,14 @@ def build_leaderboard(results: list[EvalResult], reference: str | None = None) -
                 "delta_vs_ref": round(est.rate - ref.rate_estimate.rate, 4),
                 "wins_over_ref": c,
                 "losses_vs_ref": b,
-                "mcnemar_p": round(p, 4),
+                "mcnemar_p": p,
                 "significant_95": bool(p < 0.05),
             }
         )
     return {
         "reference": ref.label,
         "rows": rows,
-        "note": "Paired McNemar test over identical seeds; delta is absolute success-rate change.",
+        "note": "The paired McNemar test uses shared seeds. Delta is the absolute success-rate change.",
     }
 
 
@@ -92,7 +92,7 @@ def to_markdown(board: dict, title: str = "Leaderboard") -> str:
     lines = [
         f"# {title}",
         "",
-        f"Reference config: **{board['reference']}**",
+        f"The reference configuration is **{board['reference']}**.",
         "",
         "| rank | config | success | 95% CI | Δ vs ref | wins/losses | McNemar p | control Hz |",
         "|------|--------|---------|--------|----------|-------------|-----------|------------|",
@@ -102,7 +102,7 @@ def to_markdown(board: dict, title: str = "Leaderboard") -> str:
         lines.append(
             f"| {i} | {row['label']} | {row['success_rate']:.1%} | "
             f"{row['ci'][0]:.0%}-{row['ci'][1]:.0%} | {row['delta_vs_ref']:+.1%} | "
-            f"{row['wins_over_ref']}/{row['losses_vs_ref']} | {row['mcnemar_p']:.3f}{sig} | "
+            f"{row['wins_over_ref']}/{row['losses_vs_ref']} | {row['mcnemar_p']:.3g}{sig} | "
             f"{row['control_hz']:.1f} |"
         )
     lines += ["", "* marks p < 0.05.", "", board["note"], ""]

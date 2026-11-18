@@ -29,7 +29,7 @@ echo "[setup] installing torch (CUDA) + lerobot"
 uv pip install --python "$PYBIN" --index-strategy unsafe-best-match \
   torch torchvision --index-url "$INDEX"
 uv pip install --python "$PYBIN" --index-strategy unsafe-best-match \
-  "lerobot[smolvla]" gym-pusht pygame imageio imageio-ffmpeg matplotlib --index-url "$INDEX"
+  "lerobot[smolvla]==0.4.4" "gym-pusht==0.1.8" pygame imageio imageio-ffmpeg matplotlib --index-url "$INDEX"
 
 echo "[setup] installing evla (editable)"
 uv pip install --python "$PYBIN" --no-deps -e "$ROOT"

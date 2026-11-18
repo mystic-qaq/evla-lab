@@ -135,3 +135,13 @@ def test_leaderboard_pairs_by_seed():
     assert row["losses_vs_ref"] == 0
     assert row["delta_vs_ref"] == pytest.approx(7 / 8 - 4 / 8)
     assert board["rows"][0]["label"] == "better"
+
+
+def test_leaderboard_preserves_small_nonzero_p_values():
+    from evla.eval.leaderboard import to_markdown
+
+    base = _FakeResult("base", [0] * 20)
+    better = _FakeResult("better", [1] * 20)
+    board = build_leaderboard([base, better], reference="base")
+    assert board["rows"][0]["mcnemar_p"] == pytest.approx(2 ** -19)
+    assert "1.91e-06" in to_markdown(board)

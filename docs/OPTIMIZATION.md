@@ -7,6 +7,9 @@ The question is not "how fast is the model". It is:
 
 This document is the experimental design, the measurement protocol, and the results.
 
+The historical Push-T peak coverage and derived failure categories in this document
+predate the episode-reset fix. Corrected values are in the README and retraining results.
+
 ## 1. The four knobs under test
 
 | knob | what it changes | expected cost | where |
@@ -76,73 +79,47 @@ the one with a real accuracy cost.
 Measured on one RTX 3090, Push-T, SmolVLA-450M fine-tuned 20k steps, 40 paired seeds
 (20 for receding). Full artefacts: `results/pusht_sweep/{REPORT.md, LEADERBOARD.md}`.
 
-| config | exec / chunk | success (95% CI) | control Hz | p50 | p95 | steps per inference | best coverage |
-|---|---|---|---:|---:|---:|---:|---:|
-| zero-shot | 50 / 50 | 0% (0–9%) | 137 | 237 ms | 250 ms | 50 | 0.33 |
-| ft, fp32 | 50 / 50 | 5% (1–17%) | 130 | 250 ms | 265 ms | 50 | 0.89 |
-| ft, bf16 | 50 / 50 | 2% (0–13%) | 127 | 261 ms | 265 ms | 50 | 0.95 |
-| ft, bf16, compile | 50 / 50 | 8% (3–20%) | 229 | 86 ms | 90 ms | 50 | 0.91 |
-| ft, bf16, compile, flow 4 | 50 / 50 | 10% (4–23%) | 270 | 54 ms | 54 ms | 50 | 0.95 |
-| ft, bf16, compile, flow 4 | 20 / 50 | 10% (4–23%) | 185 | 55 ms | 56 ms | 20 | 0.95 |
-| ft, bf16, compile, flow 4, receding | 1 / 50 | 0% (0–16%) | 18 | 52 ms | 53 ms | 1 | 0.79 |
-| ft, bf16, compile, flow 4, temporal ens | 10 / 50 | 5% (1–17%) | 18 | 52 ms | 54 ms | 1 | 0.94 |
+| config | exec / chunk | success (95% CI) | control Hz | p50 | p95 | steps per inference |
+|---|---|---|---:|---:|---:|---:|
+| zero-shot | 50 / 50 | 0% (0–9%) | 137 | 237 ms | 250 ms | 50 |
+| ft, fp32 | 50 / 50 | 5% (1–17%) | 130 | 250 ms | 265 ms | 50 |
+| ft, bf16 | 50 / 50 | 2% (0–13%) | 127 | 261 ms | 265 ms | 50 |
+| ft, bf16, compile | 50 / 50 | 8% (3–20%) | 229 | 86 ms | 90 ms | 50 |
+| ft, bf16, compile, flow 4 | 50 / 50 | 10% (4–23%) | 270 | 54 ms | 54 ms | 50 |
+| ft, bf16, compile, flow 4 | 20 / 50 | 10% (4–23%) | 185 | 55 ms | 56 ms | 20 |
+| ft, bf16, compile, flow 4, receding | 1 / 50 | 0% (0–16%) | 18 | 52 ms | 53 ms | 1 |
+| ft, bf16, compile, flow 4, temporal ens | 10 / 50 | 5% (1–17%) | 18 | 52 ms | 54 ms | 1 |
 
-Learning curve (same execution strategy, 20 seeds each): coverage 0.30 (zero-shot) →
-0.49 (4k) → 0.76 (8k) → 0.92 (12k) → 0.73 (16k) → 0.95 (20k); success stays 0 until
-20k (1/20, then 4/40 in the sweep).
+The historical coverage measurements contain the episode-reset bug. Corrected
+20-seed learning-curve peak means are 0.507 at 12k, 0.390 at 16k, 0.436 at 20k,
+and 0.460 at 25k. These measurements support checkpoint selection using validation.
 
-A stage-2 continuation (another 10k steps from the 20k checkpoint at half the LR, fresh
-cosine) did not help: coverage 0.91 at 22.5k and 0.83 at 25k, below the 0.95 of the 20k
-checkpoint it started from (`results/pusht_stage2/`). Restarting the schedule perturbs a
-converged optimum; the honest reading is that this task was not step-starved.
-
-Failure taxonomy at 20k: zero-shot **never contacts the block in 29/40 episodes**; the
-fine-tuned policy never fails to reach it and is a *near miss* (coverage ≥ 0.85) in
-36/40. Receding-horizon execution converts 11/20 episodes from near-miss into
-touched-but-missed.
+Repeating the original 40 seeds with the 20k checkpoint gives 4/40 successes for
+both execution lengths. Mean peak coverage is 0.647 with execute 20 and 0.492 with
+execute 50. With execute 20, 16 of the 36 failures reach 0.85 coverage.
 
 ## 5. Reading the results
 
-Three claims survive the noise; the rest are inside the confidence intervals and are
-reported as "no detectable difference" rather than as wins.
+- Historical median latency is 261 ms for eager bf16, 86 ms with compilation,
+  and 54 ms with compilation and four flow steps. Each success-rate estimate has
+  its own uncertainty and requires a paired comparison.
+- The historical 40-seed sweep has four successes for the best configuration and
+  zero for the zero-shot reference. Its paired exact McNemar p-value is 0.125.
+- Corrected peak coverage varies with execution length. The new retraining run
+  selected a 16-step prediction with eight executed actions and four flow steps.
+  On 200 held-out seeds it succeeds 65 times, compared with 16 for the old model.
 
-- **Compile is the win, and it is free.** 261 ms → 86 ms at 10 flow steps, → 54 ms at
-  4 steps: 4.8x end to end, with coverage unchanged inside the noise of 40 episodes.
-  Everything else in this table is a rounding error next to it.
-- **bf16 alone buys nothing at batch 1.** 250 ms (fp32) vs 261 ms (bf16) is within
-  run-to-run variance; the win only appears once the kernel-launch overhead is removed
-  by compilation. Reporting "bf16 gives 2x" would have been wrong here.
-- **Cutting the denoiser from 10 to 4 steps is 86 ms → 54 ms with no measurable
-  accuracy cost** (coverage 0.91 → 0.95, i.e. inside the noise). Below 4 steps the
-  sampler starts to matter, so 4 is the operating point -- measured, not assumed.
-- **Chunk length beats reactivity for a stochastic policy.** Open-loop execution
-  reaches coverage 0.95; receding (re-plan every step) only 0.79, because every
-  re-plan re-samples the flow noise. Temporal ensembling recovers most of it (0.94)
-  at 10x the inference cost of open-loop.
-- **Latency and success are not the same axis.** The two 10% configurations differ by
-  85 Hz in control rate and not at all in success; the receding configuration is the
-  *lowest* latency and the *lowest* quality. Optimising the wrong axis is easy.
-
-Statistical caveat, stated rather than buried: at 40 episodes, 10% vs 0% is
-directionally consistent (paired McNemar 4 wins / 0 losses, p = 0.125; unpaired
-two-proportion p = 0.04) but not resolved. 160 episodes per arm would be needed to
-separate 10% from 2.5% at 80% power. The latency numbers are exact; the success
-ordering is suggestive.
+Full candidate results, confidence intervals, and the frozen final test are in the
+[retraining report](../results/pusht_retrain_20261118/TRAINING_REPORT.md).
 
 ## 6. What the numbers imply for a real deployment
 
-* **Choose the operating point by staleness, not by FPS.** A 50-action chunk at 10 Hz
-  means up to 5 s of blind execution. On the *static* Push-T task chunks of 20-50 are
-  fine (coverage 0.95); on the *moving* toy task an 8-step chunk cost 37 points of
-  success. The task decides, and it has to be measured -- see the toy study in
-  `results/toy_chunking/`.
-* **bf16 is free speed in this setup** and it is the first thing to turn on.
-* **Shortening the flow denoiser trades a measurable amount of accuracy for
-  latency** — worth it only if the accuracy loss is inside the CI, and it usually is
-  not at 2 steps.
-* **Temporal ensembling is the smoothing option**, at the price of paying inference
-  every step. On hardware with 30 Hz servos that may still be the right trade; on a
-  10 Hz task it is dominated by open-loop execution.
+At 10 Hz, executing 50 actions consumes five seconds of simulated time before the
+next observation-dependent plan. Choose this interval using task validation.
+For the retrained model, the measured p95 inference latency is 53.61 ms and the
+maximum is 515.35 ms. Deployment timing must account for the measured tail.
+The evaluation's `control_hz` measures offline simulator throughput. The physical
+simulation step remains 0.1 seconds.
 
 ## 7. Reproducing
 

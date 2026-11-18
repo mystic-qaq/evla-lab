@@ -63,11 +63,10 @@ def markdown_table(results: list[EvalResult]) -> str:
             row += f" {'-' if value is None else f'{value:.0f}'} |"
         rows.append(row)
     note = (
-        "\n`control Hz` is the effective closed-loop rate (1 / mean environment step time, "
-        "including reused actions); `p50/p95 lat` are per-inference latencies measured with "
-        "CUDA synchronisation; `steps/inference` is how many control steps one forward pass buys. "
-        "`best coverage` is the mean best pose overlap reached during an episode (success needs "
-        "0.95) -- a graded signal that keeps moving when binary success is still stuck at zero.\n"
+        "\n`control Hz` is offline simulation throughput computed from mean environment step time. "
+        "`p50/p95 lat` measure individual inference calls with CUDA synchronisation. "
+        "`steps/inference` counts the environment steps served by one prediction. "
+        "`best coverage` averages the maximum coverage of each episode.\n"
     )
     return header + "\n".join(rows) + "\n" + note
 

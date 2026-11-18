@@ -1,0 +1,30 @@
+{
+  "old": {
+    "successes": 16,
+    "episodes": 200,
+    "rate": 0.08,
+    "ci_lo": 0.0498,
+    "ci_hi": 0.126,
+    "ci_method": "wilson"
+  },
+  "best": {
+    "successes": 65,
+    "episodes": 200,
+    "rate": 0.325,
+    "ci_lo": 0.2639,
+    "ci_hi": 0.3927,
+    "ci_method": "wilson"
+  },
+  "gain_percentage_points": 24.5,
+  "rate_ratio": 4.0625,
+  "paired": {
+    "both_successful": 11,
+    "old_only": 5,
+    "best_only": 54,
+    "mcnemar_exact_p": 1.9067358802971057e-11
+  },
+  "remaining_failures": {
+    "peak_at_least_0_85": 72,
+    "peak_below_0_85": 63
+  }
+}

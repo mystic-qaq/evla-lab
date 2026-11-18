@@ -30,67 +30,76 @@ competition is decided by the *other* four questions:
 
 Every stage writes a JSON artefact, so a claim is a file, not a memory of a terminal.
 
-## Results
+## 2026-11-18 Push-T retraining
+
+After fixing episode peak tracking and the valid-action training loss, seven training
+branches were completed on Server3090. The selected SmolVLA checkpoint scored
+**65/200, 32.5%** on held-out seeds 30000–30199, with a 95% Wilson interval of
+**26.4–39.3%**. The original checkpoint scored **16/200, 8.0%** on the same seeds.
+The measured point estimate is 17.5 percentage points below this run's 50% reference target.
+
+The selected model mixes 206 human demonstrations with 626 new successful simulated
+demonstrations, using a fourfold sampling weight for the human data. It predicts 16
+actions and executes 8, with bf16, compilation and four flow steps.
+
+```bash
+CUDA_VISIBLE_DEVICES=3 HF_HUB_OFFLINE=1 evla eval -c configs/eval_pusht_best.yaml
+```
+
+The gain decomposes multiplicatively. All four arms were re-run on the same 200 held-out
+seeds, so every row is a paired comparison (`results/pusht_retrain_20261118/ablation/`):
+
+| step | success | factor | paired McNemar |
+|---|---:|---:|---|
+| original checkpoint, 50-action chunks, execute 20 | 8.0% | — | — |
+| corrected loss + 16-step prediction, execute 8, human data only | 20.0% | **2.50x** | p = 7.2e-4 |
+| + 626 successful teacher rollouts | 29.5% | 1.48x | p = 0.040 |
+| + 4x human mixing (the selected checkpoint) | 32.5% | 1.10x | p = 0.58 |
+
+2.50 x 1.48 x 1.10 = 4.06. The largest single term is the training fix, not the data, and
+teacher-only training already reaches 29.5%. The mixing term is **not resolved** at 200
+episodes -- 64 validation seeds made it look like 15 points, the held-out seeds say 3.
+Keeping the test range frozen is what caught that.
+
+Weights are available in `outputs/pusht_retrain_20261118/best/pretrained_model` in the local
+workspace and on Server3090. Full results and reproduction details are in the training report.
+[Training report](results/pusht_retrain_20261118/TRAINING_REPORT.md)
+
+## Historical Push-T results
 
 SmolVLA-450M fine-tuned on Push-T for 20k steps (single RTX 3090, 4.3 h), evaluated on
 40 paired seeds — 20 for the receding configuration, which needs 300 inferences per
-episode. `best coverage` is the mean closest pose overlap reached (success = 0.95).
+episode. A reset bug inflated the peak coverage logged by these runs. The table keeps
+the recorded success and latency measurements. See the corrected coverage below.
 
-| config | exec / chunk | success (95% CI) | control Hz | p50 infer | best coverage |
-|---|---|---|---:|---:|---:|
-| zero-shot checkpoint | 50 / 50 | 0% (0–9%) | 137 | 237 ms | 0.33 |
-| fine-tuned, fp32 | 50 / 50 | 5% (1–17%) | 130 | 250 ms | 0.89 |
-| fine-tuned, bf16 | 50 / 50 | 2% (0–13%) | 127 | 261 ms | 0.95 |
-| + `torch.compile` | 50 / 50 | 8% (3–20%) | **229** | **86 ms** | 0.91 |
-| + compile + 4 flow steps | 50 / 50 | 10% (4–23%) | **270** | **54 ms** | 0.95 |
-| + compile + 4 steps, exec 20 | 20 / 50 | 10% (4–23%) | 185 | 55 ms | 0.95 |
-| receding horizon (exec 1) | 1 / 50 | 0% (0–16%) | 18 | 52 ms | 0.79 |
-| temporal ensemble (exec 10) | 10 / 50 | 5% (1–17%) | 18 | 52 ms | 0.94 |
+| config | exec / chunk | success (95% CI) | control Hz | p50 infer |
+|---|---|---|---:|---:|
+| zero-shot checkpoint | 50 / 50 | 0% (0–9%) | 137 | 237 ms |
+| fine-tuned, fp32 | 50 / 50 | 5% (1–17%) | 130 | 250 ms |
+| fine-tuned, bf16 | 50 / 50 | 2% (0–13%) | 127 | 261 ms |
+| + `torch.compile` | 50 / 50 | 8% (3–20%) | **229** | **86 ms** |
+| + compile + 4 flow steps | 50 / 50 | 10% (4–23%) | **270** | **54 ms** |
+| + compile + 4 steps, exec 20 | 20 / 50 | 10% (4–23%) | 185 | 55 ms |
+| receding horizon (exec 1) | 1 / 50 | 0% (0–16%) | 18 | 52 ms |
+| temporal ensemble (exec 10) | 10 / 50 | 5% (1–17%) | 18 | 52 ms |
 
 ![pusht](assets/pusht_rollout.gif)
 
-*A fine-tuned rollout (episode 0 of the fixed seed list, nothing cherry-picked). The
-block is pushed onto the target but lands ~45° off, i.e. coverage ≈ 0.9 against the
-0.95 success threshold. This is what a "near miss" looks like, and why the tables below
-report coverage alongside success.*
+*A fine-tuned rollout from the fixed seed list.*
 
 Full artefacts: [`results/pusht_sweep/REPORT.md`](results/pusht_sweep/REPORT.md),
 [`LEADERBOARD.md`](results/pusht_sweep/LEADERBOARD.md) (paired McNemar),
 [`results/pusht_learning_curve/`](results/pusht_learning_curve),
 [`results/pusht_lora/`](results/pusht_lora).
 
-**1. Fine-tuning changes the failure mode, not just the score.**
-Pose coverage goes 0.33 → 0.95, and the failure taxonomy flips: the pre-trained
-checkpoint **never touches the block in 29 of 40 episodes**; the fine-tuned one never
-fails to reach it and instead lands within a few degrees of the target in **36 of 40**.
-Success goes 0/40 → 4/40 — a 10-point gain that this sample size cannot formally
-resolve (paired McNemar p = 0.125; 160 episodes per arm would be needed for 10% vs
-2.5%). The coverage and taxonomy numbers carry the claim, not the success rate.
+**Corrected evaluation.** On the original 40 seeds, the 20k checkpoint achieved
+4/40 with both execution lengths. Its corrected mean episode peak coverage is 0.647
+with 20 steps per plan and 0.492 with 50. At 20 steps per plan, 16 of the 36 failures
+reached 0.85. The corrected 12k, 16k, 20k, and 25k checkpoint means on the learning curve
+protocol are 0.507, 0.390, 0.436, and 0.460.
 
-**2. `torch.compile` is the single largest win — up to 4.8x — and it costs nothing measurable.**
-237 ms → 261 ms with bf16 (no, bf16 is not faster at batch 1 here) → 86 ms compiled →
-54 ms compiled with 4 flow steps. The action expert is a chain of small shape-stable
-matmuls, so eager launch overhead dominates. Without this, a 10 Hz loop is impossible;
-with it, the loop uses 3% of its budget (see the deployment run below).
-
-**3. Re-planning every step makes this policy *worse*, not better.**
-Same weights: open-loop chunk execution reaches coverage 0.95, receding horizon only
-0.79. A flow-matching policy re-samples its action noise on every call, so re-planning
-20 times a second injects jitter instead of feedback. "Lower latency is always safer"
-is false — the right question is how much plan staleness the task tolerates.
-
-**4. More fine-tuning is not monotone — and a warm restart can undo it.** Coverage over
-checkpoints: 0.49 (4k) → 0.76 (8k) → 0.92 (12k) → **0.73 (16k)** → 0.95 (20k).
-Continuing the same run for another 5k steps at half the learning rate with a fresh
-cosine schedule made it *worse*: 0.91 at 22.5k, 0.83 at 25k
-([`results/pusht_stage2/`](results/pusht_stage2)). The 20k point was the optimum of that
-schedule, not of "more steps". Select checkpoints on validation coverage, never by step
-count.
-
-**5. Parameter-efficient tuning is capacity-limited here.** At matched steps, LoRA r=16
-(2.4M trainable) plateaus at coverage 0.48 while the default expert-only fine-tune
-(≈100M trainable) climbs 0.49 → 0.76. For a domain shift this large, low-rank adapters
-need more rank or more data, not just more steps.
+**Inference latency.** At bf16 batch 1, median inference time fell from 261 ms to 86 ms
+with compilation and to 54 ms with four flow steps.
 
 ## The data: where it comes from, and what it can teach
 
@@ -112,57 +121,21 @@ disk. Three properties matter more than the size:
   position with no velocity. Velocity has to be inferred from context -- which is why the
   toy environment in this repo carries target velocity explicitly, and why a policy here
   reacts late to a block that is already rolling.
-- **No demonstration reaches the success threshold.** The reward column is
-  `clip(coverage / 0.95, 0, 1)`; converted back, peak coverage runs 0.77-0.90 (median
-  0.85) and **0 of 206 crosses 0.95**. The reading is insensitive to which convention the
-  converter used: no reward value reaches 1.0, so no episode ever triggered the clipped
-  success value.
+- **The converted dataset records zero successful episodes.** Under the current
+  environment's reward conversion, recorded peak coverage runs 0.77–0.90, with a
+  median of 0.85. These values describe the converted labels. Demonstration replay
+  is needed to check geometric success under the evaluation environment.
 
-That last point reframes the whole result. The policy is fitted to trajectories that
-never solve the task themselves, so it learns to stop where the human stopped. Any
-success it reaches -- the 4/40 in the sweep -- is generalisation past the demonstrations,
-not imitation of them. It also means "improve the demonstrations" is not a hand-wave: the
-teacher's own ceiling is 0.90, and no amount of extra fitting moves it.
+## Push-T training fixes
 
-## Why 10%? A diagnosis, not an excuse
+Push-T measures coverage as the intersection area divided by the target area and
+terminates when it exceeds 0.95. The adapter resets the peak on every episode and logs
+the position and angle errors at that peak. The archived JSONs above predate this fix.
 
-Push-T counts an episode as solved only when the block's pose IoU with the goal exceeds
-0.95 -- position *and* orientation. A T-block rotated by ~30 degrees is already below
-0.8. The fine-tuned policy sits at 0.95 mean best coverage: it repeatedly lands *on*
-the threshold without crossing it on enough frames.
-
-The failure taxonomy says the same thing from the other side. Zero-shot **never touches
-the block in 29 of 40 episodes**; the fine-tuned policy never fails to reach it and is
-a near miss (coverage >= 0.85) in **36 of 40**. This is a precision failure, not a
-competence failure.
-
-Five plausible explanations were tested and rejected:
-
-| hypothesis | measurement | verdict |
-|---|---|---|
-| the 50-action plan goes stale | execute 50 / 20 / 10 all give 4/40 | not the cause |
-| re-planning every step fixes it | receding: 0/20, coverage 0.95 -> 0.79 | worse, not better |
-| too few denoising steps | 10 steps 0.95 vs 4 steps 0.91 | inside the noise at n=40 |
-| simply undertrained | stage-2 continuation: 0.91 -> 0.83 | worse |
-| model capacity | LoRA r16 stalls at 0.48, expert-only reaches 0.95 | mattered, is no longer the limit |
-
-What is left is data -- and unlike the five rows above, it can be measured directly: no
-demonstration in the set crosses 0.95 either, and the median one stops at 0.85 (see the
-data section above). Four GPU-hours on two hundred demonstrations teach "push the block
-onto the target", not "when the pose is 10 degrees off, nudge it this way". The last five
-percent of contact-rich precision lives in correction segments the teacher never
-performed.
-
-Two honest caveats. 4/40 has a Wilson interval of 4-23%, and the same checkpoint has
-scored 2/10 in one run and 0/20 in another -- "10%" is an order of magnitude, not a
-measurement. And `torch.compile` changes kernel fusion, which is enough to move a
-chaotic contact trajectory; that is why every table here compares configurations on the
-same seed list rather than individual episodes.
-
-What would actually move it, ordered by expected payoff: better demonstrations (the only
-real lever), checkpoint selection on validation coverage (12k scores 0.92 while 16k
-scores 0.73 -- 19 free points), and 160 episodes per arm before claiming any 10-point
-difference.
+`evla finetune` uses the LeRobot 0.4.4 training loop with a corrected SmolVLA loss.
+It reads `action_is_pad`, slices the loss to the physical action dimensions and divides
+by the number of valid elements. The independent train, validation and test seed
+ranges keep simulator demonstration collection out of checkpoint selection and testing.
 
 ## Deployment run: simulator, 10 Hz, safety layer on
 
@@ -249,7 +222,7 @@ evla deploy   -c configs/deploy.yaml                 # fixed-rate loop, 10 Hz
      │ SafetyLayer │  clamp · rate-limit · watchdog · e-stop
      └──────┬──────┘
      ┌──────▼──────┐
-     │  HAL        │  MuJoCo sim  ·  SO-101 arm
+     │  HAL        │  Pymunk sim  ·  SO-101 arm
      └─────────────┘
 ```
 
@@ -261,7 +234,7 @@ MLP and a scripted controller are interchangeable — including inside unit test
 ```
 src/evla/
   types.py            Observation, StepResult, Policy            (the whole interface)
-  envs/               toy_reach (numpy, no deps) · pusht (MuJoCo)
+  envs/               toy_reach (numpy, no deps) · pusht (Pymunk)
   models/             smolvla adapter (450M) · flow_chunk (from scratch, 2M)
   data/               demo collection, chunk construction, normalisation
   control/            ChunkExecutor: receding / open_loop / temporal_ens

@@ -1,11 +1,8 @@
-"""Adapter for the Push-T manipulation task (gym-pusht / MuJoCo).
+"""Adapter for the Push-T manipulation task (gym-pusht / Pymunk).
 
-Push-T is the standard small-scale manipulation benchmark shipped with LeRobot:
-a 2D end-effector must push a T-shaped block onto a target pose. It is cheap to
-simulate, has a real-world counterpart (the same task was teleoperated on a real
-arm to build the public dataset), and is what the SmolVLA checkpoints are
-distributed with -- which makes it the right place to study fine-tuning and
-inference cost without burning GPU-hours on a 7B model.
+A simulated pusher moves a T-shaped block onto a fixed target pose. LeRobot's
+public demonstrations provide RGB observations, pusher positions and absolute
+position commands for this low-cost policy-learning benchmark.
 
 The adapter is deliberately defensive about key names because `gym_pusht` has
 changed its observation dict between minor releases.
@@ -45,6 +42,8 @@ class PushTEnv(EmbodiedEnv):
         self._best_pos_err = float("inf")
         self._max_contacts = 0
         self._best_coverage = 0.0
+        self._best_coverage_pos_err = float("nan")
+        self._best_coverage_angle_err_deg = float("nan")
 
     def reset(self, *, seed: int | None = None) -> Observation:
         raw, info = self._env.reset(seed=seed)
@@ -52,7 +51,9 @@ class PushTEnv(EmbodiedEnv):
         self._success = bool(info.get("is_success", False))
         self._best_pos_err = self._pose_error(info)
         self._max_contacts = int(info.get("n_contacts", 0))
-        self._best_coverage = max(self._best_coverage, float(info.get("coverage", 0.0)))
+        self._best_coverage = float(info.get("coverage", 0.0))
+        self._best_coverage_pos_err = self._best_pos_err
+        self._best_coverage_angle_err_deg = self._angle_error_deg(info)
         return self._to_obs(raw)
 
     def step(self, action: np.ndarray) -> StepResult:
@@ -64,7 +65,12 @@ class PushTEnv(EmbodiedEnv):
         pos_err = self._pose_error(info)
         self._best_pos_err = min(self._best_pos_err, pos_err)
         self._max_contacts = max(self._max_contacts, int(info.get("n_contacts", 0)))
-        self._best_coverage = max(self._best_coverage, float(info.get("coverage", 0.0)))
+        coverage = float(info.get("coverage", 0.0))
+        angle_err_deg = self._angle_error_deg(info)
+        if coverage > self._best_coverage:
+            self._best_coverage = coverage
+            self._best_coverage_pos_err = pos_err
+            self._best_coverage_angle_err_deg = angle_err_deg
         truncated = bool(truncated) or self._t >= self.max_steps
         return StepResult(
             obs=self._to_obs(raw),
@@ -78,21 +84,21 @@ class PushTEnv(EmbodiedEnv):
             # failure taxonomy (never touched the block vs. touched it and missed).
             info={
                 "is_success": success,
-                # `coverage` is the environment's own progress signal: the IoU between
-                # the block and the goal pose. Success is coverage > 0.95, so 0.8 means
-                # "almost solved" while 0.2 means "never got there" -- far more useful
-                # than a binary flag when comparing partly-trained policies.
-                "coverage": float(info.get("coverage", 0.0)),
+                # Intersection area divided by target area. Success requires > 0.95.
+                "coverage": coverage,
                 "best_coverage": self._best_coverage,
                 "pos_err": pos_err,
+                "angle_err_deg": angle_err_deg,
                 "best_pos_err": self._best_pos_err,
+                "best_coverage_pos_err": self._best_coverage_pos_err,
+                "best_coverage_angle_err_deg": self._best_coverage_angle_err_deg,
                 "max_contacts": self._max_contacts,
             },
         )
 
     @staticmethod
     def _pose_error(info: dict) -> float:
-        """Block-to-goal translation error in pixels (0 if the fields are missing)."""
+        """Block-to-goal translation error in pixels (NaN if unavailable)."""
         block = info.get("block_pose")
         goal = info.get("goal_pose")
         if block is None or goal is None:
@@ -100,6 +106,15 @@ class PushTEnv(EmbodiedEnv):
         block = np.asarray(block, dtype=np.float32).reshape(-1)
         goal = np.asarray(goal, dtype=np.float32).reshape(-1)
         return float(np.linalg.norm(block[:2] - goal[:2]))
+
+    @staticmethod
+    def _angle_error_deg(info: dict) -> float:
+        block = info.get("block_pose")
+        goal = info.get("goal_pose")
+        if block is None or goal is None:
+            return float("nan")
+        delta = float(block[2]) - float(goal[2])
+        return float(np.degrees(abs((delta + np.pi) % (2 * np.pi) - np.pi)))
 
     def render_frame(self, size: int = 256) -> np.ndarray | None:
         try:

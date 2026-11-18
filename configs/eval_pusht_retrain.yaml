@@ -1,0 +1,19 @@
+policy:
+  type: smolvla
+  device: cuda
+  image_key: top
+  precision: bf16
+  num_flow_steps: 4
+
+env:
+  name: pusht
+  max_steps: 300
+
+optimize:
+  compile: true
+
+eval:
+  episodes: 100
+  seed0: 20000
+  mode: open_loop
+  execute_steps: 8

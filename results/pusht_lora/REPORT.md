@@ -1,5 +1,7 @@
 # Evaluation report
 
+> Historical report generated before the Push-T episode-reset fix. Peak coverage and derived failure categories require re-evaluation. Corrected measurements are in the project README.
+
 | # | config | mode (exec/chunk) | success | 95% Wilson CI | control Hz | p50 lat (ms) | p95 lat (ms) | steps/inference | mean steps | best coverage |
 |---|--------|-------------------|---------|---------------|------------|--------------|--------------|-----------------|------------|-----------------|
 | 1 | expertonly__4k | open_loop (50/50) | **0%** | 0%-16% | 129.6 | 256.07 | 262.94 | 50.0 | 300 | 0.49 |

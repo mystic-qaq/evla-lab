@@ -70,26 +70,22 @@ def main() -> int:
 
     print("\n== how good are the demonstrations? ==")
     peak_reward = episodes["next.reward"].max()
-    # gym_pusht defines reward = clip(coverage / 0.95, 0, 1) and success = coverage > 0.95,
-    # so the reward column can be read two ways. Both are reported: the claim below does
-    # not depend on which convention the converter used.
-    as_coverage = peak_reward
-    as_normalised = peak_reward * SUCCESS_THRESHOLD
-    for name, values in (("reward is coverage", as_coverage), ("reward = coverage/0.95", as_normalised)):
-        over = int((values > SUCCESS_THRESHOLD).sum())
-        print(
-            f"{name:22s} peak min={values.min():.3f} median={values.median():.3f} "
-            f"max={values.max():.3f}   over threshold: {over}/{len(values)}"
-        )
+    # Both gym-pusht and the original LeRobot converter clip reward at one.
+    # An unclipped peak can be converted back to coverage. For solved episodes,
+    # reward alone supplies a lower bound, so use next.success for the count.
+    coverage_lower_bound = peak_reward * SUCCESS_THRESHOLD
+    solved = episodes["next.success"].max().astype(bool)
     print(
-        "  -> no reward value reaches 1.0, so no episode ever triggered the clipped "
-        "success value; under either reading zero demonstrations are solved."
+        f"peak reward     min={peak_reward.min():.3f} median={peak_reward.median():.3f} "
+        f"max={peak_reward.max():.3f}"
     )
-
-    print("\n== what that implies ==")
-    print("The policy is fitted to trajectories that never cross 0.95 themselves.")
-    print("It learns to stop where the human stopped (median peak coverage 0.85), and any")
-    print("success it does reach generalises past the demonstrations rather than copying them.")
+    print(
+        f"peak coverage lower bound  min={coverage_lower_bound.min():.3f} "
+        f"median={coverage_lower_bound.median():.3f} max={coverage_lower_bound.max():.3f}"
+    )
+    print(f"successful episodes       {int(solved.sum())}/{len(solved)} (next.success)")
+    print(f"reward saturated episodes {int((peak_reward >= 1).sum())}/{len(peak_reward)}")
+    print("The success labels describe recorded states. Evaluate learned policies in fresh simulator episodes.")
     return 0
 
 

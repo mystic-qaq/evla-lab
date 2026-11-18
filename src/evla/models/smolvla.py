@@ -74,6 +74,9 @@ class SmolVLAPolicy(Policy):
         self.policy.to(self.device)
         self.policy.eval()
         self.config = self.policy.config
+        from evla.models.smolvla_context import enable_context
+
+        enable_context(self.policy)
         self.chunk_size = int(self.config.n_action_steps)
         self.action_dim = int(self.config.output_features["action"].shape[0])
         self.image_key = image_key
@@ -87,6 +90,7 @@ class SmolVLAPolicy(Policy):
             self.set_num_flow_steps(num_flow_steps)
         self._task = ""
         self._compiled: str | None = None
+        self._previous_obs: Observation | None = None
 
     # ------------------------------------------------------------------ knobs
     def set_precision(self, precision: str) -> None:
@@ -128,6 +132,7 @@ class SmolVLAPolicy(Policy):
                 "num_flow_steps": int(self.config.num_steps),
                 "params_m": round(sum(p.numel() for p in self.policy.parameters()) / 1e6, 1),
                 "compiled": self._compiled,
+                "n_obs_steps": self.config.n_obs_steps,
             }
         )
         return info
@@ -135,6 +140,7 @@ class SmolVLAPolicy(Policy):
     # ------------------------------------------------------------------ policy
     def reset(self, task: str = "") -> None:
         self._task = task or self._task
+        self._previous_obs = None
         self.policy.reset()
 
     @contextmanager
@@ -154,10 +160,15 @@ class SmolVLAPolicy(Policy):
         if img is None:
             raise KeyError(f"observation has no image {self.image_key!r}; got {list(obs.images)}")
         key = self.rename.get("observation.image", "observation.image")
+        state_array = np.asarray(obs.state, np.float32)
+        if self.config.n_obs_steps == 2:
+            previous = self._previous_obs or obs
+            img = np.stack((previous.images[self.image_key], img))
+            state_array = np.stack((previous.state, state_array))
         tensor = torch.from_numpy(np.ascontiguousarray(img)).unsqueeze(0)
-        tensor = tensor.permute(0, 3, 1, 2).float().div_(255.0)
+        tensor = tensor.movedim(-1, -3).float().div_(255.0)
         batch[key] = tensor.to(self.device)
-        state = torch.from_numpy(np.asarray(obs.state, np.float32)).unsqueeze(0).to(self.device)
+        state = torch.from_numpy(state_array).unsqueeze(0).to(self.device)
         batch["observation.state"] = state
         batch["task"] = [obs.task or self._task or DEFAULT_TASK]
         return self.preprocessor(batch)
@@ -174,6 +185,8 @@ class SmolVLAPolicy(Policy):
         # the tensor over the config so a mismatch cannot silently reshape actions.
         chunk = np.asarray(chunk, np.float32).reshape(-1, self.action_dim)
         self.chunk_size = int(chunk.shape[0])
+        if self.config.n_obs_steps == 2:
+            self._previous_obs = obs.copy()
         return chunk
 
     # ------------------------------------------------------------------ helpers

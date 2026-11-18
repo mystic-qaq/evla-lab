@@ -104,12 +104,9 @@ checkpoint can disagree:
 * `torch.compile` and bf16 change kernel fusion and summation order, which is enough
   to move a chaotic trajectory.
 
-Observed in this repository: the same 8k checkpoint scored 2/10 in one run and 0/20 in
-another with identical settings. That is not a bug -- it is the reason single-rollout
-claims ("it worked when I demoed it") are worthless and why the tables here report
-intervals. It also explains the discrete-looking coverage values: the policy drives the
-block into one of a few terminal poses, so coverage takes a handful of values rather
-than a continuum.
+Historical evaluations also had an episode-reset bug that carried peak coverage into
+later episodes. Those repeated peak values require re-evaluation. The current adapter
+starts a new peak on every reset, with a regression test covering consecutive episodes.
 
 Practical consequence: compare *configurations*, never individual episodes, and do not
 read a 1-2 episode difference at 20 episodes as a result.

@@ -1,5 +1,7 @@
 # Evaluation report
 
+> Historical report generated before the Push-T episode-reset fix. Peak coverage and derived failure categories require re-evaluation. Corrected measurements are in the project README.
+
 | # | config | mode (exec/chunk) | success | 95% Wilson CI | control Hz | p50 lat (ms) | p95 lat (ms) | steps/inference | mean steps | best coverage |
 |---|--------|-------------------|---------|---------------|------------|--------------|--------------|-----------------|------------|-----------------|
 | 1 | ft__bf16__compile__flow4__ens10 | temporal_ens (10/50) | **5%** | 1%-17% | 17.9 | 52.4 | 54.27 | 1.0 | 296 | 0.94 |

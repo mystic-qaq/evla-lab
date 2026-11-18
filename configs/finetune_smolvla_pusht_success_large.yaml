@@ -1,0 +1,25 @@
+policy:
+  base_checkpoint: checkpoints/smolvla_base
+  repo_id: local/evla-smolvla-pusht-success-large
+  device: cuda
+  empty_cameras: 2
+  chunk_size: 16
+  n_action_steps: 8
+  optimizer_lr: 0.0001
+  scheduler_warmup_steps: 500
+  scheduler_decay_steps: 12000
+dataset:
+  repo_id: local/pusht-diffusion-success-large
+  root: outputs/pusht_retrain_20261118/diffusion_successes_large
+  video_backend: pyav
+  rename_map:
+    observation.image: observation.images.camera1
+train:
+  batch_size: 32
+  steps: 12000
+  save_freq: 3000
+  log_freq: 100
+  num_workers: 6
+  seed: 1000
+  output_dir: outputs/pusht_retrain_20261118/smolvla_success_large_h16
+  job_name: smolvla_pusht_success_large_h16

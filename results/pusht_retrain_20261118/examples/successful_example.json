@@ -1,0 +1,86 @@
+{
+  "label": "successful_example",
+  "policy": {
+    "name": "smolvla",
+    "class": "SmolVLAPolicy",
+    "action_dim": 2,
+    "chunk_size": 16,
+    "checkpoint": "pretrained_model",
+    "precision": "bf16",
+    "num_flow_steps": 4,
+    "params_m": 450.0,
+    "compiled": "default",
+    "n_obs_steps": 1,
+    "latency": {
+      "n": 17,
+      "mean_ms": 55.3,
+      "p50_ms": 55.01,
+      "p95_ms": 56.38,
+      "p99_ms": 57.42,
+      "max_ms": 57.68,
+      "achiev_hz_at_p95": 17.74
+    }
+  },
+  "env": {
+    "name": "pusht",
+    "task": "Push the T-shaped block onto the T-shaped target.",
+    "action_dim": 2,
+    "max_steps": 300
+  },
+  "mode": "open_loop",
+  "execute_steps": 8,
+  "n_episodes": 1,
+  "successes": 1,
+  "success_rate": 1.0,
+  "ci_lo": 0.2065,
+  "ci_hi": 1.0,
+  "mean_steps": 132.0,
+  "mean_episode_s": 1.62,
+  "control_hz": 98.25,
+  "mean_best_pos_err": 0.47,
+  "mean_best_coverage": 0.9563,
+  "latency": {
+    "n": 17,
+    "mean_ms": 55.3,
+    "p50_ms": 55.01,
+    "p95_ms": 56.38,
+    "p99_ms": 57.42,
+    "max_ms": 57.68,
+    "achiev_hz_at_p95": 17.74
+  },
+  "executor": {
+    "n_steps": 132,
+    "n_inference": 17,
+    "action_reuse": 7.765
+  },
+  "wall_time_s": 2.1,
+  "video": "results/pusht_retrain_20261118/successful_example.mp4",
+  "episodes": [
+    {
+      "episode": 0,
+      "seed": 30005,
+      "success": true,
+      "steps": 132,
+      "wall_time_s": 1.62,
+      "mean_step_ms": 10.178,
+      "final_distance": 3.0984299182891846,
+      "info": {
+        "is_success": true,
+        "coverage": 0.9563006033696736,
+        "best_coverage": 0.9563006033696736,
+        "pos_err": 3.0984299182891846,
+        "angle_err_deg": 2.0130422322942234,
+        "best_pos_err": 0.46856820583343506,
+        "best_coverage_pos_err": 3.0984299182891846,
+        "best_coverage_angle_err_deg": 2.0130422322942234,
+        "max_contacts": 1
+      }
+    }
+  ],
+  "optimizations": {
+    "applied": {
+      "compile": "default"
+    },
+    "skipped": {}
+  }
+}

@@ -10,15 +10,12 @@ For Push-T:
 ``success``
     the environment reported success.
 ``never_contacted``
-    the end-effector never touched the block (``max_contacts == 0``) -- typically a
-    reaching/perception problem, not a manipulation problem.
+    the environment recorded zero contacts (``max_contacts == 0``).
 ``contact_near_miss``
-    the block was moved and the best pose overlap reached ``near_miss_coverage`` (0.85
-    of the 0.95 needed for success) but the task was not solved -- typically an
-    orientation/precision problem rather than a reaching problem.
+    a failed episode with recorded contact and peak coverage at least
+    ``near_miss_coverage`` (0.85 by default).
 ``contact_missed``
-    the block was touched but never got close -- typically a planning or a
-    chunk-staleness problem.
+    a failed episode with recorded contact and peak coverage below the near-miss threshold.
 
 For environments that report nothing but success, everything falls back to
 ``failed_unknown``, which is honest rather than invented.
@@ -99,9 +96,7 @@ def to_markdown(taxonomies: list[Taxonomy], title: str | None = "Failure taxonom
             f"{c['failed_unknown']} |"
         )
     note = (
-        "\n*Near miss* = the block was moved and the best pose overlap reached 0.85 of the 0.95 "
-        "needed for success (position roughly right, pose not). *Never contacted* = the "
-        "end-effector never touched the block, which points at reaching/perception rather than "
-        "manipulation.\n"
+        "\n*Near miss* means a failed episode with recorded contact and peak coverage of at least 0.85. "
+        "*Never contacted* means the environment recorded zero contacts during the episode.\n"
     )
     return header + "\n".join(rows) + "\n" + note

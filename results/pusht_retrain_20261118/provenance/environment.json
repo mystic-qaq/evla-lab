@@ -1,0 +1,33 @@
+{
+  "python": "3.10.21",
+  "packages": {
+    "torch": "2.10.0",
+    "lerobot": "0.4.4",
+    "gym-pusht": "0.1.8",
+    "gymnasium": "1.4.0",
+    "pymunk": "6.11.1",
+    "transformers": "4.57.6",
+    "accelerate": "1.15.0",
+    "numpy": "2.2.6",
+    "pygame": "2.6.1",
+    "av": "15.1.0",
+    "safetensors": "0.8.0",
+    "diffusers": "0.35.2"
+  },
+  "training_mixed_precision": "bf16",
+  "source_sha256": {
+    "src/evla/cli.py": "8f9b6c024b940152e914b25c26b6bb80bd9d246208644f27cfd4505d1207b2e1",
+    "src/evla/envs/pusht.py": "2ff484f3549186259434a91372e1ee7cb52c9684fc36b6b2170e97ec14820b00",
+    "src/evla/models/smolvla.py": "41ca0fa2f603fb47f6b30fc1dc2641b713c3a7c93287a59d28e2dd29cddfac06",
+    "src/evla/models/smolvla_train.py": "ca9eeaca8b839793ab5babf82e6d56f755a6f3f08e12bcc3d7396fc3fdf80b77",
+    "src/evla/models/smolvla_context.py": "3b45f99001160a8c097a592e265da27ffd5000c255082888eea5b44083f3fe7f",
+    "scripts/pusht_diffusion_reference.py": "f60f3dde201c42acba3232f51923e1c6543ce7905203820575363e44d64c7d73",
+    "scripts/prepare_pusht_mixture.py": "ecec1cebe610f11478afb574d25a8e7ce9df21d84c13339bfaab475ed2cb95a7",
+    "src/evla/eval/report.py": "72def946e883265ddd4db6ddcb7cca021a16c737880706532b4855e5a82578f1",
+    "src/evla/eval/failure.py": "41fcf4b37db5cd82dec063c79820dcde140a2fd539f903a22665451c74581096",
+    "src/evla/eval/leaderboard.py": "cf77c6cab75177f44c905b424319eff04d6d19bf8ce74e28506a97f1439f40a5",
+    "tests/test_stats.py": "2afe25f4c86ef9c3b8b8636fcf1b54919a0be30d1cd9ab1fbf515ede56f4ee3c",
+    "tests/test_pusht_training.py": "b3a25d5a8d7d20e433eb18099eac52ea50e6091418b3fa34ddee31e4714b0a18"
+  },
+  "source_hash_scope": "Final delivered source including reporting changes after the frozen test. Model and inference configuration remained frozen."
+}
